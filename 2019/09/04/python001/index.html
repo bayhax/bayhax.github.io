@@ -5,18 +5,18 @@
   
 
   
-  <title>bayhax的博客</title>
+  <title>python001 | bayhax的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="python简介为什么叫PythonPython是大蟒蛇的意思，咱们看到Python的IDLE也是两条蛇一样的图形，据说是因为Guido von Rossum是一个名叫Monty Python的戏剧团体的爱好者。所以才叫python。Python是一种解释性语言。而他开发python这个脚本一方面是为了打发圣诞节期间的无聊；二是为了解决非开放标识造成ABC没有获得成功的问题（ABC是Guido参加">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bayhax的博客">
+<meta property="og:title" content="python001">
 <meta property="og:url" content="http://yoursite.com/2019/09/04/python001/index.html">
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="python简介为什么叫PythonPython是大蟒蛇的意思，咱们看到Python的IDLE也是两条蛇一样的图形，据说是因为Guido von Rossum是一个名叫Monty Python的戏剧团体的爱好者。所以才叫python。Python是一种解释性语言。而他开发python这个脚本一方面是为了打发圣诞节期间的无聊；二是为了解决非开放标识造成ABC没有获得成功的问题（ABC是Guido参加">
 <meta property="og:locale" content="zh">
-<meta property="og:updated_time" content="2019-09-04T15:05:57.879Z">
+<meta property="og:updated_time" content="2019-09-05T14:19:01.784Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bayhax的博客">
+<meta name="twitter:title" content="python001">
 <meta name="twitter:description" content="python简介为什么叫PythonPython是大蟒蛇的意思，咱们看到Python的IDLE也是两条蛇一样的图形，据说是因为Guido von Rossum是一个名叫Monty Python的戏剧团体的爱好者。所以才叫python。Python是一种解释性语言。而他开发python这个脚本一方面是为了打发圣诞节期间的无聊；二是为了解决非开放标识造成ABC没有获得成功的问题（ABC是Guido参加">
   
     <link rel="alternate" href="/atom.xml" title="bayhax的博客" type="application/atom+xml">
@@ -78,6 +78,16 @@
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python001
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="python简介"><a href="#python简介" class="headerlink" title="python简介"></a>python简介</h1><h2 id="为什么叫Python"><a href="#为什么叫Python" class="headerlink" title="为什么叫Python"></a>为什么叫Python</h2><p>Python是大蟒蛇的意思，咱们看到Python的IDLE也是两条蛇一样的图形，据说是因为Guido von Rossum是一个名叫Monty Python的戏剧团体的爱好者。所以才叫python。Python是一种解释性语言。而他开发python这个脚本一方面是为了打发圣诞节期间的无聊；二是为了解决非开放标识造成ABC没有获得成功的问题（ABC是Guido参加设计的一种教学原因）</p>
@@ -138,7 +148,13 @@ print(sys.version)</code></pre><h3 id="编写Python源代码"><a href="#编写Py
 </ol>
 <h2 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h2><p>更强的交互工具<br>IPython</p>
 <pre><code>pip install ipython</code></pre><p>集成开发环境<br>PyCharm<br>Anconda<br>高级文本编辑器<br>Sublime<br>Notepad++</p>
-
+<h3 id="利用自带的turtle库绘制一个正方形"><a href="#利用自带的turtle库绘制一个正方形" class="headerlink" title="利用自带的turtle库绘制一个正方形"></a>利用自带的turtle库绘制一个正方形</h3><pre><code>import turtle as t  # 引入turtle库，重命名为t
+t.pensize(4)  # 笔的粗细
+turtle.pencolor(&quot;blue&quot;)  # 笔的颜色
+for i in range(4):
+    t.forward(100)   # 向前走100像素
+    t.right(90)  # 向右转90度
+t.mainloop()  # 让程序循环，不退出</code></pre>
       
     </div>
     <footer class="article-footer">
@@ -155,7 +171,7 @@ print(sys.version)</code></pre><h3 id="编写Python源代码"><a href="#编写Py
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          python面试题
         
       </div>
     </a>
@@ -163,7 +179,7 @@ print(sys.version)</code></pre><h3 id="编写Python源代码"><a href="#编写Py
   
     <a href="/2019/09/03/markdown/Markdown使用/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">Markdown使用</div>
     </a>
   
 </nav>
@@ -200,15 +216,19 @@ print(sys.version)</code></pre><h3 id="编写Python源代码"><a href="#编写Py
       <ul>
         
           <li>
-            <a href="/2019/09/04/Python面试题/">(no title)</a>
+            <a href="/2019/09/05/python002/">python002</a>
           </li>
         
           <li>
-            <a href="/2019/09/04/python001/">(no title)</a>
+            <a href="/2019/09/04/Python面试题/">python面试题</a>
           </li>
         
           <li>
-            <a href="/2019/09/03/markdown/Markdown使用/">(no title)</a>
+            <a href="/2019/09/04/python001/">python001</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/03/markdown/Markdown使用/">Markdown使用</a>
           </li>
         
           <li>
