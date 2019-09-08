@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>python004 | bayhax的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="循环结构应用场景 持续打印某一相同的话 LED屏上持续滚动的字  for-in循环明确知道循环次数或者对一个容器进行迭代 &amp;apos;&amp;apos;&amp;apos; 1--100求和 &amp;apos;&amp;apos;&amp;apos; sum = 0 for i in range(101):     sum += i print(sum)  &amp;apos;&amp;apos;&amp;apos; 1--100之间的偶数和 &amp;apos;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python004">
+<meta property="og:url" content="http://yoursite.com/2019/09/08/python004/index.html">
+<meta property="og:site_name" content="bayhax的博客">
+<meta property="og:description" content="循环结构应用场景 持续打印某一相同的话 LED屏上持续滚动的字  for-in循环明确知道循环次数或者对一个容器进行迭代 &amp;apos;&amp;apos;&amp;apos; 1--100求和 &amp;apos;&amp;apos;&amp;apos; sum = 0 for i in range(101):     sum += i print(sum)  &amp;apos;&amp;apos;&amp;apos; 1--100之间的偶数和 &amp;apos;">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-09-08T03:10:30.944Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python004">
+<meta name="twitter:description" content="循环结构应用场景 持续打印某一相同的话 LED屏上持续滚动的字  for-in循环明确知道循环次数或者对一个容器进行迭代 &amp;apos;&amp;apos;&amp;apos; 1--100求和 &amp;apos;&amp;apos;&amp;apos; sum = 0 for i in range(101):     sum += i print(sum)  &amp;apos;&amp;apos;&amp;apos; 1--100之间的偶数和 &amp;apos;">
+  
+    <link rel="alternate" href="/atom.xml" title="bayhax的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">bayhax的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">学习交流</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python004" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/python004/" class="article-date">
+  <time datetime="2019-09-08T02:31:12.617Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python004
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="循环结构"><a href="#循环结构" class="headerlink" title="循环结构"></a>循环结构</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>持续打印某一相同的话</li>
+<li>LED屏上持续滚动的字</li>
+</ul>
+<h2 id="for-in循环"><a href="#for-in循环" class="headerlink" title="for-in循环"></a>for-in循环</h2><p>明确知道循环次数或者对一个容器进行迭代</p>
+<pre><code>&apos;&apos;&apos;
+1--100求和
+&apos;&apos;&apos;
+sum = 0
+for i in range(101):
+    sum += i
+print(sum)
+
+&apos;&apos;&apos;
+1--100之间的偶数和
+&apos;&apos;&apos;
+sum = 0
+for i in range(2,101,2):
+    sum += i
+print(sum)</code></pre><h2 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h2><p>不知道循环次数利用while循环</p>
+<pre><code>&apos;&apos;&apos;
+猜数字游戏（1--100）
+&apos;&apos;&apos;
+from random import randint
+answer = randint(1,100)
+count = 0
+while True:
+    count += 1
+    num = int(input(&quot;请输入您猜测的数字：&quot;))
+    if num == answer:
+        print(&quot;bingo,您真厉害！&quot;)
+        break
+    elif num &gt; answer:
+        print(&quot;大了一点点&quot;)
+    else:
+        print(&quot;小了一点点&quot;)
+print(&quot;你总共猜了%d次&quot; % count)
+
+&apos;&apos;&apos;
+九九乘法表
+&apos;&apos;&apos;
+for i in range(1, 10):
+    for j in range(1, i+1):
+        print(&quot;%d*%d=%d&quot; % (i, j, i*j),end=&apos;\t&apos;)
+    print()</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p><em>输入一个数判断是不是素数</em></p>
+<pre><code>import math
+num = int(input(&quot;请输入一个整数：&quot;))
+is_prim = 0
+for i in range(2, math.sqrt(num) + 1):
+    if num % i == 0:
+        is_prim = 1
+        break
+if is_prim and num != 1:
+    print(&quot;不是素数&quot;)
+else:
+    print(&quot;是素数&quot;)</code></pre><p><em>输入两个正整数，计算最大公约数和最小公倍数</em></p>
+<pre><code>num1 = int(input(&quot;请输入第一个数：&quot;))
+num2 = int(input(&quot;请输入第二个数：&quot;))
+if num1 &gt; num2:
+    num1, num2 = num2, num1
+for i in range(num1, 0, -1):
+    if num1 % i == 0 and num2 % y == 0:
+        print(&quot;最大公约数为：%d&quot; % i)
+        print(&quot;最小公倍数为：%d&quot; % (num1*num2//i))
+        break</code></pre><p><em>打印三角形</em><br>打印上三角，正三角，下三角</p>
+<pre><code>row = int(input(&quot;请输入要打印的行数：&quot;))
+for i in range(row):
+    for j in range(i+1):
+        print(&quot;*&quot;,end=&quot;&quot;)
+    print()
+for i in range(row):
+    for j in range(row):
+        if j &lt; row - i - 1:
+            print(&quot; &quot;,end = &quot;&quot;)
+        else:
+            print(&quot;*&quot;,end = &apos;&apos;)
+    print()
+for i in range(row):
+    for j in range(row - i - 1):
+        print(&quot; &quot;,end=&apos;&apos;)
+    for j in range(2*i+1):
+        print(&quot;*&quot;,end=&apos;&apos;)
+    print()</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/python004/" data-id="ck0b29v5h0003n0kvbxe9mzmd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/08/python005/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          python005
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/07/python003/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">python003</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/08/python006/">python006</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python005/">python005</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python004/">python004</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/07/python003/">python003</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python002/">python002</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 王洪粮<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

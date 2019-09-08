@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>python003 | bayhax的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="分支结构应用场景 玩游戏，根据得分是否进入下一关，天天爱消除 周末出入玩还是宅在家 比赛根据得分对阵不同等级的人  if的使用if  elif  else 作为关键字很显然不能用作变量Python中利用缩进来判断是否属于统一代码块，而不是大括号 例子分段求函数值&amp;apos;&amp;apos;&amp;apos;         3x - 5 (x&amp;gt;1) f(x) =  x + 2 (-1 &amp;lt;= x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python003">
+<meta property="og:url" content="http://yoursite.com/2019/09/07/python003/index.html">
+<meta property="og:site_name" content="bayhax的博客">
+<meta property="og:description" content="分支结构应用场景 玩游戏，根据得分是否进入下一关，天天爱消除 周末出入玩还是宅在家 比赛根据得分对阵不同等级的人  if的使用if  elif  else 作为关键字很显然不能用作变量Python中利用缩进来判断是否属于统一代码块，而不是大括号 例子分段求函数值&amp;apos;&amp;apos;&amp;apos;         3x - 5 (x&amp;gt;1) f(x) =  x + 2 (-1 &amp;lt;= x">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-09-08T02:30:44.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python003">
+<meta name="twitter:description" content="分支结构应用场景 玩游戏，根据得分是否进入下一关，天天爱消除 周末出入玩还是宅在家 比赛根据得分对阵不同等级的人  if的使用if  elif  else 作为关键字很显然不能用作变量Python中利用缩进来判断是否属于统一代码块，而不是大括号 例子分段求函数值&amp;apos;&amp;apos;&amp;apos;         3x - 5 (x&amp;gt;1) f(x) =  x + 2 (-1 &amp;lt;= x">
+  
+    <link rel="alternate" href="/atom.xml" title="bayhax的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">bayhax的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">学习交流</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python003" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/07/python003/" class="article-date">
+  <time datetime="2019-09-07T10:21:05.817Z" itemprop="datePublished">2019-09-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python003
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>玩游戏，根据得分是否进入下一关，天天爱消除</li>
+<li>周末出入玩还是宅在家</li>
+<li>比赛根据得分对阵不同等级的人</li>
+</ul>
+<h2 id="if的使用"><a href="#if的使用" class="headerlink" title="if的使用"></a>if的使用</h2><p><em>if  elif  else 作为关键字很显然不能用作变量</em><br>Python中利用缩进来判断是否属于统一代码块，而不是大括号</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="分段求函数值"><a href="#分段求函数值" class="headerlink" title="分段求函数值"></a>分段求函数值</h3><pre><code>&apos;&apos;&apos;
+        3x - 5 (x&gt;1)
+f(x) =  x + 2 (-1 &lt;= x &lt;= 1)
+        5x + 3 (x &lt; -1)
+&apos;&apos;&apos;
+x = float(input(&quot;please input a number:&quot;))
+if x &gt; 1:
+    y = 3 * x - 5
+elif x &gt;= -1:
+    y = x + 2
+else:
+    y = 5 * x + 3
+print(&quot;f(%.2f) = %.2f&quot; % (x,y))</code></pre><h3 id="嵌套分段函数求值"><a href="#嵌套分段函数求值" class="headerlink" title="嵌套分段函数求值"></a>嵌套分段函数求值</h3><pre><code>&apos;&apos;&apos;
+        3x - 5 (x &gt; 1)
+f(x) =  x + 2 (-1 &lt;= x &lt;= 1)
+        5x + 3 (x &lt; -1)
+&apos;&apos;&apos;
+x = float(input(&quot;please input a number:&quot;))
+if x &gt; 1:
+    y = 3 * x - 5
+else:
+    if x &gt;= -1:
+        y = x + 2
+    else:
+        y = 5 * x + 3
+print(&quot;f(%.2f) = %.2f&quot; % (x,y))</code></pre><p><strong>说明：</strong>Flat is better than nested  “扁平化”</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="英制单位与公制单位转换（英寸和厘米）"><a href="#英制单位与公制单位转换（英寸和厘米）" class="headerlink" title="英制单位与公制单位转换（英寸和厘米）"></a>英制单位与公制单位转换（英寸和厘米）</h3><p><em>1英寸 = 1厘米 * 2.54</em></p>
+<pre><code>length = float(input(&quot;请输入长度：&quot;))
+unit = input(&quot;请输入单位：&quot;)
+if unit == &apos;in&apos; or unit == &quot;英寸&quot;:
+    print(&quot;%f英寸 = %f厘米&quot; % (value, value * 2.54))
+elif unit == &quot;cm&quot; or unit == &quot;厘米&quot;:
+    print(&quot;%f厘米 = %f英寸&quot; % (value, value / 2.54))
+else:
+    print(&quot;输入单位有误&quot;)</code></pre><h3 id="掷骰子决定做什么"><a href="#掷骰子决定做什么" class="headerlink" title="掷骰子决定做什么"></a>掷骰子决定做什么</h3><pre><code>from random import randint
+face = randint(1,6)
+if face == 1:
+    reslut = &quot;唱首歌&quot;
+elif face == 2:
+    result = &quot;跳个舞&quot;
+elif face == 3:
+    result = &quot;学猫叫&quot;
+elif face == 4:
+    result = &quot;绕口令&quot;
+elif face == 5:
+    result = &quot;讲笑话&quot;
+else:
+    result = &quot;俯卧撑&quot;
+print(result)</code></pre><h3 id="百分制成绩转等级制"><a href="#百分制成绩转等级制" class="headerlink" title="百分制成绩转等级制"></a>百分制成绩转等级制</h3><pre><code>&apos;&apos;&apos;
+90分以上    --&gt; A
+80分~89分    --&gt; B
+70分~79分       --&gt; C
+60分~69分    --&gt; D
+60分以下    --&gt; E
+&apos;&apos;&apos;
+score = float(input(&apos;请输入成绩: &apos;))
+if score &gt;= 90:
+    grade = &apos;A&apos;
+elif score &gt;= 80:
+    grade = &apos;B&apos;
+elif score &gt;= 70:
+    grade = &apos;C&apos;
+elif score &gt;= 60:
+    grade = &apos;D&apos;
+else:
+    grade = &apos;E&apos;
+print(&apos;对应的等级是:&apos;, grade)</code></pre><h3 id="输入三条边长判断能否构成三角形并计算周长和面积"><a href="#输入三条边长判断能否构成三角形并计算周长和面积" class="headerlink" title="输入三条边长判断能否构成三角形并计算周长和面积"></a>输入三条边长判断能否构成三角形并计算周长和面积</h3><pre><code>import math
+a = float(input(&quot;a = &quot;))
+b = float(input(&quot;b = &quot;))
+c = float(input(&quot;c = &quot;))
+if a + b &gt; c and a + c &gt; b and b + c &gt; a:
+    print(&quot;周长为：%f&quot; % (a + b + c))
+    p = (a + b + c) / 2
+    print(&quot;面积为：%f&quot; % (math.sqrt(p * (p - a) * (p - b) * (p - c))))
+else:
+    print(&quot;n不能构成三角形&quot;)</code></pre><h3 id="个人所得税计算"><a href="#个人所得税计算" class="headerlink" title="个人所得税计算"></a>个人所得税计算</h3><pre><code>salary = float(input(&apos;本月收入: &apos;))
+insurance = float(input(&apos;五险一金: &apos;))
+diff = salary - insurance - 3500
+if diff &lt;= 0:
+    rate = 0
+    deduction = 0
+elif diff &lt; 1500:
+    rate = 0.03
+    deduction = 0
+elif diff &lt; 4500:
+    rate = 0.1
+    deduction = 105
+elif diff &lt; 9000:
+    rate = 0.2
+    deduction = 555
+elif diff &lt; 35000:
+    rate = 0.25
+    deduction = 1005
+elif diff &lt; 55000:
+    rate = 0.3
+    deduction = 2755
+elif diff &lt; 80000:
+    rate = 0.35
+    deduction = 5505
+else:
+    rate = 0.45
+    deduction = 13505
+tax = abs(diff * rate - deduction)
+print(&apos;个人所得税: ￥%.2f元&apos; % tax)
+print(&apos;实际到手收入: ￥%.2f元&apos; % (diff + 3500 - tax))</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/07/python003/" data-id="ck0b29v5b0001n0kv1g3ljuvq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/08/python004/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          python004
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/05/python002/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">python002</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/08/python006/">python006</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python005/">python005</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python004/">python004</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/07/python003/">python003</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python002/">python002</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 王洪粮<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

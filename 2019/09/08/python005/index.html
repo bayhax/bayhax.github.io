@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>python005 | bayhax的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="构造程序逻辑无论程序如何，都是有顺序、分支、循环结构构成的。所以练习吧。寻找水仙花数 import math for i in range(100,1000):     ge = i % 100     shi = i / 10 % 10     bai = i / 100     if ge**3 + shi**3 + bai**3 == i:         print(i,end=&amp;apos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python005">
+<meta property="og:url" content="http://yoursite.com/2019/09/08/python005/index.html">
+<meta property="og:site_name" content="bayhax的博客">
+<meta property="og:description" content="构造程序逻辑无论程序如何，都是有顺序、分支、循环结构构成的。所以练习吧。寻找水仙花数 import math for i in range(100,1000):     ge = i % 100     shi = i / 10 % 10     bai = i / 100     if ge**3 + shi**3 + bai**3 == i:         print(i,end=&amp;apos">
+<meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2019-09-08T08:48:20.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python005">
+<meta name="twitter:description" content="构造程序逻辑无论程序如何，都是有顺序、分支、循环结构构成的。所以练习吧。寻找水仙花数 import math for i in range(100,1000):     ge = i % 100     shi = i / 10 % 10     bai = i / 100     if ge**3 + shi**3 + bai**3 == i:         print(i,end=&amp;apos">
+  
+    <link rel="alternate" href="/atom.xml" title="bayhax的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">bayhax的博客</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">学习交流</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python005" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/python005/" class="article-date">
+  <time datetime="2019-09-08T07:02:29.834Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python005
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="构造程序逻辑"><a href="#构造程序逻辑" class="headerlink" title="构造程序逻辑"></a>构造程序逻辑</h1><p>无论程序如何，都是有顺序、分支、循环结构构成的。所以练习吧。<br><strong>寻找水仙花数</strong></p>
+<pre><code>import math
+for i in range(100,1000):
+    ge = i % 100
+    shi = i / 10 % 10
+    bai = i / 100
+    if ge**3 + shi**3 + bai**3 == i:
+        print(i,end=&apos;   &apos;)</code></pre><p><strong>完美数</strong></p>
+<pre><code>import math
+num = int(input(&quot;请输入您要寻找到的范围：&quot;))
+for i in range(2,num):
+    sum = 0
+    for j in range(1,i//2+1):
+        if i % j == 0:
+            sum += j
+    if sum == i:
+        print(&quot;%d&quot; % i,end=&quot;  &quot;)</code></pre><p><strong>百钱白鸡</strong></p>
+<pre><code>for i in range(1,101):
+for j in range(1,101):
+    k = 100 - i - j
+    if i*5+j*3+k/3==100:
+        print(&quot;公鸡%d 母鸡%d 雏鸡%d&quot; % (i,j,k))</code></pre><p><strong>斐波那契数列</strong></p>
+<pre><code>f1=f2=1
+num = int(input(&quot;请输入您想要寻找的数列范围：&quot;))
+if num &lt; 1:
+    print(&quot;请输入大于1的整数&quot;)
+elif num == 1:
+    print(&quot;1 1&quot;)
+else:
+    print(&quot;1 1&quot;,end=&apos; &apos;)
+    while f2&lt;num:
+        f1, f2 = f2, f1+f2
+        print(&quot;%d&quot; % f2,end=&apos; &apos;)</code></pre><p><strong>Craps赌博游戏</strong></p>
+<pre><code>from random import randint
+money = 1000
+while money &gt; 0:
+    print(&quot;你的赌资为：&quot;, money)
+    whether_on = False
+    while True:
+        debt = int(input(&quot;请下注:&quot;))
+        if 0 &lt; debt &lt;= money:
+            break
+    first = randint(1,6) + randint(1,6)
+    print(&quot;玩家摇出了%d点&quot; % first)
+    if first == 7 or first == 11:
+        print(&quot;玩家胜&quot;)
+        money += debt
+    elif first == 2 or first == 3 or first == 12:
+        print(&quot;庄家胜&quot;)
+        money -= debt
+    else:
+        whether_on = True
+    while whether_on:
+        current = randint(1,6)+randint(1,6)
+        print(&quot;玩家摇出了%d点&quot; % current)
+        if current == 7:
+            print(&quot;庄家胜&quot;)
+            money -= debt
+            whether_on = False
+        elif current == first:
+            print(&quot;玩家胜&quot;)
+            money += debt
+            whether_on = False
+print(&quot;您输光了。。。&quot;)</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/python005/" data-id="ck0b29v5e0002n0kv4426zo0r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/09/08/python006/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          python006
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/08/python004/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">python004</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/09/08/python006/">python006</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python005/">python005</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python004/">python004</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/07/python003/">python003</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/05/python002/">python002</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 王洪粮<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -69,6 +69,532 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-python006" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/python006/" class="article-date">
+  <time datetime="2019-09-08T08:50:29.255Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/08/python006/">python006</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="函数模块的使用"><a href="#函数模块的使用" class="headerlink" title="函数模块的使用"></a>函数模块的使用</h1><p>我们是站在巨人的肩膀上的，很多事情前任已经做过，我们就可以理解吸收<br>拿来直接用就行。或者我们自己编程时，有时候会用到某一个功能很多次，<br>这时候我们就可以将它封装在一个模块中，随时取用，减少代码的重复。<br><em>代码有很多种坏味道，重复是最坏的一种</em></p>
+<h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？<br>可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法<br>那么可以用排列组合公式来展示<br><img src="images/python006.png"><br>那么程序代码可以写成下面这样：</p>
+<pre><code>m = int(input(&quot;m = &quot;))
+n = int(input(&quot;n = &quot;))
+fm = 1
+for num in range(1, m+1):
+    fm *= num
+fn = 1 
+for num in range(1, n+1):
+    fn *= num
+fmn = 1
+for num in range(1, m-n+1):
+    fmn *= num
+print(fm // fn // fmn)</code></pre><p>在上面的程序中，我们看到，对m,n,m-n做的事情是求阶乘，他们三个的功能<br>是一样的，但是写了三次代码，很明显代码重复率太高了，像这样实现一个功能的<br>代码可以单独拿出来写在一个模块中，用到的时候调用就可以了。</p>
+<h2 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h2><p>Python中使用def关键字来定义函数，函数的名字和变量的命名一样，函数后面的括号可以放置参数也可以没有，函数最后可以用return返回函数值，也可以不返回。<br>了解基本规则后，我们对上面的引例进行模块化</p>
+<pre><code>def factorial(num):
+    &apos;&apos;&apos;
+    求阶乘
+    &apos;&apos;&apos;
+    result = 1
+    for i in range(1,num+1):
+        result *= i
+m = int(input(&quot;m = &quot;))
+n = int(input(&quot;n = &quot;))
+print(factorial(m) // factorial(n) // factorial(m-n))</code></pre><p>这样代码量就减少了，而且其他地方如果用到求阶乘的模块也一样可以引用，而求<br>阶乘的代码实际上不用咱们自己写，python中内置了factorial函数，直接拿来用。</p>
+<h2 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h2><p>函数是大多数编程语言中支持的一个“构建快”，Python中的函数的参数可以有默认值，也支持可变参数，所以说Python的函数不需要重载。例如</p>
+<pre><code>from random import randint
+def roll_dice(n=2):
+    &apos;&apos;&apos;
+    摇骰子
+    &apos;&apos;&apos;
+    total = 0
+    for i in range(n):
+        total += randint(1,6)
+    return total</code></pre><p>如果不传递参数，那么n的默认值就是2，摇两颗骰子。<br>可变参数中用*args表示一个可变参数，**kwargs表示后面的集合</p>
+<pre><code>def add(*args):
+    total = 0
+    for i in args:
+        total += i
+    return total
+print(add())
+print(add(1))
+print(add(1,2))
+....</code></pre><h2 id="用模块管理函数"><a href="#用模块管理函数" class="headerlink" title="用模块管理函数"></a>用模块管理函数</h2><p>给函数起名字时，如果自己一个人开发，可以比较容易避免重名，而实际上多个人一起工作开发的时候，就难免会出现这种状况，最简单的解决办法就是每个人将不同的函数封装进一个模块中，然后调用，避免重名的情况，例如</p>
+<pre><code>    model1.py
+    def foo():
+        print(&quot;hello world&quot;)
+
+    model2.py
+    def foo():
+        print(&quot;goodbye&quot;)
+
+    test.py
+    from moudel1 import foo
+    foo()  # 输出hello world
+    from moudel2 import foo
+    foo()  # 输出goodbye
+
+    但切记不可以这样
+    from moudel1 import foo
+    from moudel2 import foo
+    foo()  # 输出goodbye
+这样moudel2会覆盖moudel2，输出goodbye，python中就是同名的引用会覆盖前面的那一个</code></pre><h3 id="实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上name这个条件，例如"><a href="#实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上name这个条件，例如" class="headerlink" title="实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上name这个条件，例如"></a>实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上<strong>name</strong>这个条件，例如</h3><pre><code>    moudel3.py
+    def foo():
+        pass
+    def bar():
+        pass
+    if __name__ == &quot;__main__&quot;:
+        print(&quot;call foo&quot;)
+        foo()
+        print(&quot;call bar&quot;)
+        bar()
+
+    test.py
+    import moudel3
+这里导入moudel3时，程序不会执行if条件中内容，因为模块的名字时moudel3，而不是__main__</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="求最小公倍数和最大公约数的函数"><a href="#求最小公倍数和最大公约数的函数" class="headerlink" title="求最小公倍数和最大公约数的函数"></a>求最小公倍数和最大公约数的函数</h3><pre><code>def gcd(x,y):  # 最大公约数
+    (x,y) = (y,x) if x &gt; y else (x,y)  # 注意加括号
+    for factor in range(x,0,-1):
+        if x % factor == 0 and y % factor == 0:
+            return factor
+
+def lcm(x,y):  # 最小公倍数
+    return x*y//gcd(x,y)</code></pre><h3 id="判断一个数是不是回文数"><a href="#判断一个数是不是回文数" class="headerlink" title="判断一个数是不是回文数"></a>判断一个数是不是回文数</h3><pre><code>def is_palindrome(num):
+    temp = num
+    total = 0
+    while temp&gt;0:
+        total = total * 10 + temp % 10
+        temp //= 10
+    return total == num</code></pre><h3 id="判断一个数是不是素数"><a href="#判断一个数是不是素数" class="headerlink" title="判断一个数是不是素数"></a>判断一个数是不是素数</h3><pre><code>def is_prime(num):
+    for factor in range(2,num):
+        if num % factor == 0:
+            return False
+    return True if num != 1 else False</code></pre><h3 id="判断输入的正整数是不是回文素数"><a href="#判断输入的正整数是不是回文素数" class="headerlink" title="判断输入的正整数是不是回文素数"></a>判断输入的正整数是不是回文素数</h3><pre><code>if __name__ == &quot;__main__&quot;:
+    num = int(input(&quot;请输入一个正整数:&quot;))
+    if is_prime(num) and is_palindrome(num):
+        print(&quot;%d是回文素数&quot; % num)</code></pre><h2 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h2><p>Python查找一个变量会按照 局部作用域–&gt;嵌套作用域–&gt;全局作用域–&gt;内置作用域（隐含标识符）进行查找</p>
+<pre><code>def foo():
+    b = &apos;hello&apos;
+    def bar():
+        c = True
+        print(a)  # 正常输出100，if分支中全局变量有a
+        print(b)  # 正常输出hello，嵌套作用域有b
+        print(c)  # 正常输出True，局部作用域有c
+    bar()
+        print(c)  
+        #NameError,c属于bar的局部作用域中，而不属于外部foo函数
+if __name__ == &quot;__main__&quot;:
+    a = 100
+    print(b)  # NameError，b属于foo的作用域，无法在外部输出
+    foo()</code></pre><p>如果想要在函数内部修改全局变量，必须加上global关键字</p>
+<pre><code>def foo():
+    a = 200  # 这个是局部，不能改变外部的值，内存地址不一样
+    print(a)  # 输出200
+if __name__ == &quot;__main__&quot;:
+    a = 100
+    foo()  # 无法修改a的值为200，这个作用域中的a是全局中
+    print(a)  # 输出100
+
+def foo():
+    global a
+    a = 200  # 这个不是局部，改变外部的值，内存地址一样
+    print(a)  # 输出200
+if __name__ == &quot;__main__&quot;:
+    a = 100
+    foo()  # 修改a的值为200，这个作用域中的a是全局的
+    print(a)  # 输出200</code></pre><p>同理，如果希望内部函数修改嵌套函数中的变量，加上nonlocal就可以<br>在实际开发中，我们应该尽量减少对全局变量的使用，因为全局变量的作用域和影响过于广泛，可能会发生意料之外的修改和使用，除此之外全局变量比局部变量拥有更长的生命周期，可能导致对象占用的内存长时间无法被垃圾回收。事实上，减少对全局变量的使用，也是降低代码之间耦合度的一个重要举措，同时也是对迪米特法则的践行。减少全局变量的使用就意味着我们应该尽量让变量的作用域在函数的内部，但是如果我们希望将一个局部变量的生命周期延长，使其在函数调用结束后依然可以访问，这时候就需要使用闭包<br><strong>以后写程序按照以下格式写,变量作用域</strong><br>这样变量就不是全局变量，有助于垃圾回收<br>def main():<br>    pass  # 代码</p>
+<p>if <strong>name</strong> == “<strong>main</strong>“:<br>    main()</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/python006/" data-id="ck0b29v2t0000n0kvp0mzwc2f" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python005" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/python005/" class="article-date">
+  <time datetime="2019-09-08T07:02:29.834Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/08/python005/">python005</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="构造程序逻辑"><a href="#构造程序逻辑" class="headerlink" title="构造程序逻辑"></a>构造程序逻辑</h1><p>无论程序如何，都是有顺序、分支、循环结构构成的。所以练习吧。<br><strong>寻找水仙花数</strong></p>
+<pre><code>import math
+for i in range(100,1000):
+    ge = i % 100
+    shi = i / 10 % 10
+    bai = i / 100
+    if ge**3 + shi**3 + bai**3 == i:
+        print(i,end=&apos;   &apos;)</code></pre><p><strong>完美数</strong></p>
+<pre><code>import math
+num = int(input(&quot;请输入您要寻找到的范围：&quot;))
+for i in range(2,num):
+    sum = 0
+    for j in range(1,i//2+1):
+        if i % j == 0:
+            sum += j
+    if sum == i:
+        print(&quot;%d&quot; % i,end=&quot;  &quot;)</code></pre><p><strong>百钱白鸡</strong></p>
+<pre><code>for i in range(1,101):
+for j in range(1,101):
+    k = 100 - i - j
+    if i*5+j*3+k/3==100:
+        print(&quot;公鸡%d 母鸡%d 雏鸡%d&quot; % (i,j,k))</code></pre><p><strong>斐波那契数列</strong></p>
+<pre><code>f1=f2=1
+num = int(input(&quot;请输入您想要寻找的数列范围：&quot;))
+if num &lt; 1:
+    print(&quot;请输入大于1的整数&quot;)
+elif num == 1:
+    print(&quot;1 1&quot;)
+else:
+    print(&quot;1 1&quot;,end=&apos; &apos;)
+    while f2&lt;num:
+        f1, f2 = f2, f1+f2
+        print(&quot;%d&quot; % f2,end=&apos; &apos;)</code></pre><p><strong>Craps赌博游戏</strong></p>
+<pre><code>from random import randint
+money = 1000
+while money &gt; 0:
+    print(&quot;你的赌资为：&quot;, money)
+    whether_on = False
+    while True:
+        debt = int(input(&quot;请下注:&quot;))
+        if 0 &lt; debt &lt;= money:
+            break
+    first = randint(1,6) + randint(1,6)
+    print(&quot;玩家摇出了%d点&quot; % first)
+    if first == 7 or first == 11:
+        print(&quot;玩家胜&quot;)
+        money += debt
+    elif first == 2 or first == 3 or first == 12:
+        print(&quot;庄家胜&quot;)
+        money -= debt
+    else:
+        whether_on = True
+    while whether_on:
+        current = randint(1,6)+randint(1,6)
+        print(&quot;玩家摇出了%d点&quot; % current)
+        if current == 7:
+            print(&quot;庄家胜&quot;)
+            money -= debt
+            whether_on = False
+        elif current == first:
+            print(&quot;玩家胜&quot;)
+            money += debt
+            whether_on = False
+print(&quot;您输光了。。。&quot;)</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/python005/" data-id="ck0b29v5e0002n0kv4426zo0r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python004" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/08/python004/" class="article-date">
+  <time datetime="2019-09-08T02:31:12.617Z" itemprop="datePublished">2019-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/08/python004/">python004</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="循环结构"><a href="#循环结构" class="headerlink" title="循环结构"></a>循环结构</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>持续打印某一相同的话</li>
+<li>LED屏上持续滚动的字</li>
+</ul>
+<h2 id="for-in循环"><a href="#for-in循环" class="headerlink" title="for-in循环"></a>for-in循环</h2><p>明确知道循环次数或者对一个容器进行迭代</p>
+<pre><code>&apos;&apos;&apos;
+1--100求和
+&apos;&apos;&apos;
+sum = 0
+for i in range(101):
+    sum += i
+print(sum)
+
+&apos;&apos;&apos;
+1--100之间的偶数和
+&apos;&apos;&apos;
+sum = 0
+for i in range(2,101,2):
+    sum += i
+print(sum)</code></pre><h2 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h2><p>不知道循环次数利用while循环</p>
+<pre><code>&apos;&apos;&apos;
+猜数字游戏（1--100）
+&apos;&apos;&apos;
+from random import randint
+answer = randint(1,100)
+count = 0
+while True:
+    count += 1
+    num = int(input(&quot;请输入您猜测的数字：&quot;))
+    if num == answer:
+        print(&quot;bingo,您真厉害！&quot;)
+        break
+    elif num &gt; answer:
+        print(&quot;大了一点点&quot;)
+    else:
+        print(&quot;小了一点点&quot;)
+print(&quot;你总共猜了%d次&quot; % count)
+
+&apos;&apos;&apos;
+九九乘法表
+&apos;&apos;&apos;
+for i in range(1, 10):
+    for j in range(1, i+1):
+        print(&quot;%d*%d=%d&quot; % (i, j, i*j),end=&apos;\t&apos;)
+    print()</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p><em>输入一个数判断是不是素数</em></p>
+<pre><code>import math
+num = int(input(&quot;请输入一个整数：&quot;))
+is_prim = 0
+for i in range(2, math.sqrt(num) + 1):
+    if num % i == 0:
+        is_prim = 1
+        break
+if is_prim and num != 1:
+    print(&quot;不是素数&quot;)
+else:
+    print(&quot;是素数&quot;)</code></pre><p><em>输入两个正整数，计算最大公约数和最小公倍数</em></p>
+<pre><code>num1 = int(input(&quot;请输入第一个数：&quot;))
+num2 = int(input(&quot;请输入第二个数：&quot;))
+if num1 &gt; num2:
+    num1, num2 = num2, num1
+for i in range(num1, 0, -1):
+    if num1 % i == 0 and num2 % y == 0:
+        print(&quot;最大公约数为：%d&quot; % i)
+        print(&quot;最小公倍数为：%d&quot; % (num1*num2//i))
+        break</code></pre><p><em>打印三角形</em><br>打印上三角，正三角，下三角</p>
+<pre><code>row = int(input(&quot;请输入要打印的行数：&quot;))
+for i in range(row):
+    for j in range(i+1):
+        print(&quot;*&quot;,end=&quot;&quot;)
+    print()
+for i in range(row):
+    for j in range(row):
+        if j &lt; row - i - 1:
+            print(&quot; &quot;,end = &quot;&quot;)
+        else:
+            print(&quot;*&quot;,end = &apos;&apos;)
+    print()
+for i in range(row):
+    for j in range(row - i - 1):
+        print(&quot; &quot;,end=&apos;&apos;)
+    for j in range(2*i+1):
+        print(&quot;*&quot;,end=&apos;&apos;)
+    print()</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/08/python004/" data-id="ck0b29v5h0003n0kvbxe9mzmd" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python003" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/09/07/python003/" class="article-date">
+  <time datetime="2019-09-07T10:21:05.817Z" itemprop="datePublished">2019-09-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/07/python003/">python003</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>玩游戏，根据得分是否进入下一关，天天爱消除</li>
+<li>周末出入玩还是宅在家</li>
+<li>比赛根据得分对阵不同等级的人</li>
+</ul>
+<h2 id="if的使用"><a href="#if的使用" class="headerlink" title="if的使用"></a>if的使用</h2><p><em>if  elif  else 作为关键字很显然不能用作变量</em><br>Python中利用缩进来判断是否属于统一代码块，而不是大括号</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><h3 id="分段求函数值"><a href="#分段求函数值" class="headerlink" title="分段求函数值"></a>分段求函数值</h3><pre><code>&apos;&apos;&apos;
+        3x - 5 (x&gt;1)
+f(x) =  x + 2 (-1 &lt;= x &lt;= 1)
+        5x + 3 (x &lt; -1)
+&apos;&apos;&apos;
+x = float(input(&quot;please input a number:&quot;))
+if x &gt; 1:
+    y = 3 * x - 5
+elif x &gt;= -1:
+    y = x + 2
+else:
+    y = 5 * x + 3
+print(&quot;f(%.2f) = %.2f&quot; % (x,y))</code></pre><h3 id="嵌套分段函数求值"><a href="#嵌套分段函数求值" class="headerlink" title="嵌套分段函数求值"></a>嵌套分段函数求值</h3><pre><code>&apos;&apos;&apos;
+        3x - 5 (x &gt; 1)
+f(x) =  x + 2 (-1 &lt;= x &lt;= 1)
+        5x + 3 (x &lt; -1)
+&apos;&apos;&apos;
+x = float(input(&quot;please input a number:&quot;))
+if x &gt; 1:
+    y = 3 * x - 5
+else:
+    if x &gt;= -1:
+        y = x + 2
+    else:
+        y = 5 * x + 3
+print(&quot;f(%.2f) = %.2f&quot; % (x,y))</code></pre><p><strong>说明：</strong>Flat is better than nested  “扁平化”</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="英制单位与公制单位转换（英寸和厘米）"><a href="#英制单位与公制单位转换（英寸和厘米）" class="headerlink" title="英制单位与公制单位转换（英寸和厘米）"></a>英制单位与公制单位转换（英寸和厘米）</h3><p><em>1英寸 = 1厘米 * 2.54</em></p>
+<pre><code>length = float(input(&quot;请输入长度：&quot;))
+unit = input(&quot;请输入单位：&quot;)
+if unit == &apos;in&apos; or unit == &quot;英寸&quot;:
+    print(&quot;%f英寸 = %f厘米&quot; % (value, value * 2.54))
+elif unit == &quot;cm&quot; or unit == &quot;厘米&quot;:
+    print(&quot;%f厘米 = %f英寸&quot; % (value, value / 2.54))
+else:
+    print(&quot;输入单位有误&quot;)</code></pre><h3 id="掷骰子决定做什么"><a href="#掷骰子决定做什么" class="headerlink" title="掷骰子决定做什么"></a>掷骰子决定做什么</h3><pre><code>from random import randint
+face = randint(1,6)
+if face == 1:
+    reslut = &quot;唱首歌&quot;
+elif face == 2:
+    result = &quot;跳个舞&quot;
+elif face == 3:
+    result = &quot;学猫叫&quot;
+elif face == 4:
+    result = &quot;绕口令&quot;
+elif face == 5:
+    result = &quot;讲笑话&quot;
+else:
+    result = &quot;俯卧撑&quot;
+print(result)</code></pre><h3 id="百分制成绩转等级制"><a href="#百分制成绩转等级制" class="headerlink" title="百分制成绩转等级制"></a>百分制成绩转等级制</h3><pre><code>&apos;&apos;&apos;
+90分以上    --&gt; A
+80分~89分    --&gt; B
+70分~79分       --&gt; C
+60分~69分    --&gt; D
+60分以下    --&gt; E
+&apos;&apos;&apos;
+score = float(input(&apos;请输入成绩: &apos;))
+if score &gt;= 90:
+    grade = &apos;A&apos;
+elif score &gt;= 80:
+    grade = &apos;B&apos;
+elif score &gt;= 70:
+    grade = &apos;C&apos;
+elif score &gt;= 60:
+    grade = &apos;D&apos;
+else:
+    grade = &apos;E&apos;
+print(&apos;对应的等级是:&apos;, grade)</code></pre><h3 id="输入三条边长判断能否构成三角形并计算周长和面积"><a href="#输入三条边长判断能否构成三角形并计算周长和面积" class="headerlink" title="输入三条边长判断能否构成三角形并计算周长和面积"></a>输入三条边长判断能否构成三角形并计算周长和面积</h3><pre><code>import math
+a = float(input(&quot;a = &quot;))
+b = float(input(&quot;b = &quot;))
+c = float(input(&quot;c = &quot;))
+if a + b &gt; c and a + c &gt; b and b + c &gt; a:
+    print(&quot;周长为：%f&quot; % (a + b + c))
+    p = (a + b + c) / 2
+    print(&quot;面积为：%f&quot; % (math.sqrt(p * (p - a) * (p - b) * (p - c))))
+else:
+    print(&quot;n不能构成三角形&quot;)</code></pre><h3 id="个人所得税计算"><a href="#个人所得税计算" class="headerlink" title="个人所得税计算"></a>个人所得税计算</h3><pre><code>salary = float(input(&apos;本月收入: &apos;))
+insurance = float(input(&apos;五险一金: &apos;))
+diff = salary - insurance - 3500
+if diff &lt;= 0:
+    rate = 0
+    deduction = 0
+elif diff &lt; 1500:
+    rate = 0.03
+    deduction = 0
+elif diff &lt; 4500:
+    rate = 0.1
+    deduction = 105
+elif diff &lt; 9000:
+    rate = 0.2
+    deduction = 555
+elif diff &lt; 35000:
+    rate = 0.25
+    deduction = 1005
+elif diff &lt; 55000:
+    rate = 0.3
+    deduction = 2755
+elif diff &lt; 80000:
+    rate = 0.35
+    deduction = 5505
+else:
+    rate = 0.45
+    deduction = 13505
+tax = abs(diff * rate - deduction)
+print(&apos;个人所得税: ￥%.2f元&apos; % tax)
+print(&apos;实际到手收入: ￥%.2f元&apos; % (diff + 3500 - tax))</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/09/07/python003/" data-id="ck0b29v5b0001n0kv1g3ljuvq" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-python002" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/09/05/python002/" class="article-date">
@@ -236,6 +762,217 @@ print(is_leap)</code></pre></li>
         <h1 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h1><ol>
 <li>列出5个常用Python标准库<br> <strong>自身库：</strong><br> os        与操作系统相关联的函数<br> datetime  日期和时间处理的方法<br> random    生成随机数<br> math      数学库函数，对底层C函数库的访问<br> zlib      通用的数据打包和压缩<br> pymsql    连接mysql数据库<br> threading 线程管理<br> multiprocessing  进程管理<br> queue     队列<br> <strong>第三方库：</strong><br> django<br> flask<br> requests<br> virtualenv<br> selenium<br> scrapy<br> xadmin<br> celery<br> re<br> hashlib<br> md5<br> <strong>常用科学计算库：</strong><br> Numpy<br> Scipy<br> Pandas</li>
 <li>Python内建数据类型有哪些？<br> 字符串(str)—不可变<br> 列表(list)—-可变<br> 元组(tupple)–不可变<br> 集合(set)—–可变<br> 字典(dict)—-可变<br> 数字(int)—-不可变<br> 布尔(bool)—不可变</li>
+<li>简述with方法打开处理文件帮我们做了什么？</li>
+<li>列出Python中可变数据类型和不可变数据类型</li>
+<li>Python获取当前日期？</li>
+<li>统计字符串每个单词出现的次数</li>
+<li>用Python删除文件和用Linux命令删除文件方法</li>
+<li>写一段自定义异常代码</li>
+<li>举例说明异常模块中try except else finally 的相关意义</li>
+<li>遇到bug如何处理</li>
+</ol>
+<h1 id="语言特性"><a href="#语言特性" class="headerlink" title="语言特性"></a>语言特性</h1><ol>
+<li>谈谈对Python和其他语言的区别</li>
+<li>简述解释型语言和编译型语言</li>
+<li>Python的解释器种类及相关特点</li>
+<li>说说你知道的Python3和Python2的区别</li>
+<li>Python3和Python2中int和long的区别</li>
+<li>xrange和range的区别</li>
+</ol>
+<h1 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h1><ol>
+<li>什么是PEP8</li>
+<li>了解Python之禅吗</li>
+<li>了解docstring吗</li>
+<li>了解类型注解码</li>
+<li>列举你知道的Python对象的命名规范，例如方法或者类等</li>
+<li>Python中的注释有哪几种</li>
+<li>如何优雅的给一个函数加注释</li>
+<li>如何给变量加注释</li>
+<li>Python代码缩进中是否支持Tab和空格混用</li>
+<li>是否可以在一句import中导入多个库</li>
+<li>再给py文件命名的时候应该注意什么</li>
+<li>列举几个规范Python代码风格的工具</li>
+</ol>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><ol>
+<li>列举Python中的基本数据类型</li>
+<li>如何区别可变数据和不可变数据</li>
+<li>将“hello world”转换为首字母大写”Hello World”</li>
+<li>如何检测字符串中只含有数字</li>
+<li>将字符串”ilovechina”进行反转</li>
+<li>Python中的字符串格式化方式你知道哪些</li>
+<li>有一个字符串开头和末尾都有空格，比如” adabdw “,要求写一个函数把这个<br> 字符串的前后空格都去掉</li>
+<li>获取字符串”123456”最后连个字符</li>
+<li>一个编码为GBK的字符串S，要将其转成UTF-8编码的字符串，应该如何操作</li>
+<li>s = ‘info: xiaoZhang 33     shandong’,<br>用正则切分字符串输出[‘info’,’xiaoZhang’,’33’,’shandong’]<br>a = “你好 中国 “，去除多余空格，只留一个空格</li>
+<li>怎样将字符串转换为小写<br>单引号 双引号 三引号的区别</li>
+</ol>
+<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><ol>
+<li>已知AList = [1,2,3,1,2],对AList列表元素去重，写出具体过程</li>
+<li>如何实现’1,2,3’变成[‘1’,’2’,’3’]</li>
+<li>给定两个list,A和B，找出相同元素和不同元素</li>
+<li>[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]</li>
+<li>合并列表[1,5,7,9]和[2,2,6,8]</li>
+<li>如何打乱一个列表的元素</li>
+</ol>
+<h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><ol>
+<li>字典操作中del和pop有什么区别</li>
+<li>按照字典的内的年龄排序<br> d1 = [<pre><code>{&apos;name&apos;:&apos;alice&apos;,&apos;age&apos;:38}
+{&apos;name&apos;:&apos;bob&apos;,&apos;age&apos;:18}
+{&apos;name&apos;:&apos;Carl&apos;,age:28}</code></pre> ]</li>
+<li>请合并下面的两个字典a = {‘A’:1,”B”:2},b = {‘C’:3,’D’:4}</li>
+<li>如何使用生成式的方式生成一个字典，写一段功能代码</li>
+<li>如何把元组(“a”,”b”)和元组(1,2)变为字典{“a”:1,”b”:2}</li>
+</ol>
+<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ol>
+<li>Python常用的数据结构的类型及其特性<br> A: {1:0,2:0,3:0}<br> B: {“a”:0,”b”:0,”c”:0}<br> C: {(1,2):0,(2,3):0}<br> D: {[1,2]:0,[2,3]:0}</li>
+<li>如何交换字典{“A”:1,”B”:2}的键和值</li>
+<li>Python里面如何实现tuple和list的转换</li>
+<li>我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何<br> 对生成器类型的对象实现相同的功能呢？</li>
+<li>请将[i for i in range(3)]改成生成器</li>
+<li>a=’hello’和b=’你好’编码成bytes类型</li>
+<li>下面的代码输出结果是什么？<br> a = (1,2,3,[4,5,6,7],8)<br> a[2] = 2<br> print(a)</li>
+<li>下面的代码输出结果是什么?<br> a = (1,2,3,[4,5,6,7],8)<br> a[3][0] = 2<br> print(a)</li>
+</ol>
+<h1 id="操作类题目"><a href="#操作类题目" class="headerlink" title="操作类题目"></a>操作类题目</h1><ol>
+<li>Python中交换连个变量的值</li>
+<li>在读文件操作的时候会使用read、readline或者readlines，简述<br> 他们各自的作用</li>
+<li>json序列化时，可以处理的数据类型有哪些，如何定制支持datetime类型</li>
+<li>json序列化时，默认遇到中文会转换成Unicode，如果想要保留中文怎么办</li>
+<li>有两个磁盘文件A和B，各存放一行字母，要求把这两个文件中的信息合并，<br> （按字母顺序排列），输出到一个新文件C中。</li>
+<li>如果当前日期为20190530，要求写一个函数输出N天后的日期，（比如N为2，<br> 则输出20190601）</li>
+<li>写一个函数，接收证书参数n，返回一个函数，函数的功能是把函数的参数<br> 和n相乘并把结果返回</li>
+<li>下面的代码存在什么问题，如何改进<br> def strappend(num):<pre><code>str=&apos;first&apos;
+for i in range(num):
+    str+=str(i)
+return str</code></pre></li>
+<li>一行代码输出1-100之间的所有偶数</li>
+<li>with语句的作用，写一段代码</li>
+<li>Python字典和json字符串相互转换方法</li>
+<li>请写一个Python逻辑，计算一个文件中的大写字母的数量</li>
+<li>请写一段Python连接Mongo数据库，然后查询的代码</li>
+<li>说一说Redis的基本类型</li>
+<li>请写一段Python连接MySQL数据库的代码</li>
+<li>了解Redis的事务吗</li>
+<li>了解数据库的三范式吗</li>
+<li>了解分布式锁吗</li>
+<li>用Python实现一个Redis的分布式锁的功能</li>
+<li>写一段Python使用Mongo数据库创建索引的代码</li>
+</ol>
+<h1 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h1><ol>
+<li>函数装饰器有什么作用，请列举说明</li>
+<li>Python垃圾回收机制</li>
+<li>魔法函数<strong>call</strong>怎么使用</li>
+<li>如何判断一个对象是函数还是方法</li>
+<li>@classmethod和@staticmethod用法和区别</li>
+<li>Python中的接口如何实现</li>
+<li>Python中的反射了解吗</li>
+<li>metaclass作用，以及应用场景</li>
+<li>hasattr() getattr() setattr()的用法</li>
+<li>请列举你知道的Python的魔法方法及用途</li>
+<li>如何知道一个Python对象的类型</li>
+<li>Python的传参是传值还是传址</li>
+<li>Python中的元类(metaclass)使用距离</li>
+<li>简述any()和all()方法</li>
+<li>filter方法求出列表所有奇数并构造新列表，a = [1,2,3,4,5,6,7,8,9]</li>
+<li>什么是猴子补丁</li>
+<li>在Python中是如何管理内存的</li>
+<li>当退出Python时是否释放所有内存分配</li>
+</ol>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><ol>
+<li>使用正则表达式匹配出<html><h1>百度一下，你就知道</h1></html>中的地址<br> a=”张明 98分”，用re.sub,将98替换为100</li>
+<li>正则表达式匹配中(.*)和(.*?)匹配区别</li>
+<li>写一段匹配邮箱的正则表达式</li>
+</ol>
+<h1 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h1><ol>
+<li>解释一下Python中的pass语句的作用</li>
+<li>简述你对input()函数的理解</li>
+<li>Python中的is和==</li>
+<li>Python中的作用域</li>
+<li>三元运算写法和应用场景</li>
+<li>了解enumerate吗</li>
+<li>列举5个Python中的标准模块</li>
+<li>如何在函数中设置一个全局变量</li>
+<li>pathlib的用法举例</li>
+<li>Python中的异常处理，写一个简单的应用场景</li>
+<li>Python中递归的最大次数，那么如何突破呢</li>
+<li>什么是面向对象的mro</li>
+<li>isinstance作用及应用场景</li>
+<li>什么是断言，应用场景</li>
+<li>lambda表达式格式及应用场景</li>
+<li>新式类和旧式类的区别</li>
+<li>dir()是干什么用的</li>
+<li>一个包里有三个模块，demo1.py demo2.py demo3.py，但是<br>使用from tools import * 导入时，如何保证只有demo1 demo3被导入了</li>
+<li>列举5个Python中的异常类以及其含义</li>
+<li>copy和deepcopy的区别是什么</li>
+<li>代码中经常遇到的*args, **kwargs含义及用法</li>
+<li>Python中会有函数或成员变量包含单下划线前缀和结尾<br>和双下划线前缀结尾，区别是什么</li>
+<li>w a+ wb文件写入模式的区别</li>
+<li>举例sort和sorted的区别</li>
+<li>什么是负索引</li>
+<li>pprint模块是干什么用的</li>
+<li>解释一下Python中的赋值运算符 逻辑运算符</li>
+<li>讲讲python中的位运算符</li>
+<li>在Python 中如何使用多进制数字</li>
+<li>怎样生命多个变量并赋值</li>
+</ol>
+<h1 id="算法和数据结构"><a href="#算法和数据结构" class="headerlink" title="算法和数据结构"></a>算法和数据结构</h1><ol>
+<li>已知<br> AList = [1,2,3]<br> BSet = {1,2,3}<br> 从AList和BSet中查找4，最坏时间复杂度哪个大<br> 从AList和BSet中插入4，最坏时间复杂度哪个大</li>
+<li>用Python实现一个二分查找的函数</li>
+<li>Python单例模式的实现方法</li>
+<li>使用Python实现一个斐波那契数列</li>
+<li>找出列表中重复数字</li>
+<li>找出列表中的单个数字</li>
+<li>写一个冒泡排序</li>
+<li>写一个快速排序</li>
+<li>写一个拓扑排序</li>
+<li>Python实现一个二进制计算</li>
+<li>有一组”+”和”-“符号，要求将”+”排到左边，”-“排到右边<br>写出具体的实现方法</li>
+<li>单链表反转</li>
+<li>交叉链表求交点</li>
+<li>用队列实现栈</li>
+<li>找出数据流的中位数</li>
+<li>二叉搜索树中第K小的元素</li>
+</ol>
+<h1 id="爬虫相关"><a href="#爬虫相关" class="headerlink" title="爬虫相关"></a>爬虫相关</h1><ol>
+<li>在requests模块中，requestes.content和requestes.text区别</li>
+<li>简要写一下lxml模块的使用方法框架</li>
+<li>说一说scrapy的工作流程</li>
+<li>scrapy的去重原理</li>
+<li>scrapy中间件有几种类，你用过哪些中间件</li>
+<li>你写爬虫的时候都遇到了什么问题，反爬虫措施，你是怎么解决的</li>
+<li>为什么会用到代理</li>
+<li>代理失效了怎么办</li>
+<li>列出你知道的header的内容以及信息</li>
+<li>说一说打开浏览器访问 百度一下，你就知道 获取到结果的流程</li>
+<li>爬取速度过快出现了验证码怎么处理</li>
+<li>scrapy和scrapy-redis有什么区别，为什么选择redis数据库</li>
+<li>分布式爬虫主要解决什么文集团</li>
+<li>写爬虫用多进程好还是多线程好，为什么</li>
+<li>解析网页的解析器使用最多的是哪几个</li>
+<li>需要登录的网页，如何解决同时限制ip，cookie，session<br>(其中有一些是动态生成的)，在不使用爬虫爬取的情况下</li>
+<li>验证码的解决（简单的：对图像做处理后可以得到，困难的：<br>验证码是点击，拖动等动态进行的）</li>
+<li>使用最多的数据库(mysql,mongodb,redis),对它们的理解</li>
+</ol>
+<h1 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h1><ol>
+<li>TCP和UDP的区别</li>
+<li>简要介绍三次握手和四次挥手</li>
+<li>什么是粘包，socket中造成粘包的原因，哪些情况会出现粘包</li>
+</ol>
+<h1 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h1><ol>
+<li>举例说明conccurent.future的中线程池的用法</li>
+<li>说一说多线程、多进程和协程的区别</li>
+<li>简述GIL</li>
+<li>进程之间如何通信</li>
+<li>IO多路复用的作用</li>
+<li>select、poll、epoll模型的区别</li>
+<li>什么是并发和并行</li>
+<li>一个线程1让线程21去调用一个函数怎么实现</li>
+<li>解释什么是异步非阻塞</li>
+<li>threading.local的作用</li>
+</ol>
+<h1 id="Git面试题"><a href="#Git面试题" class="headerlink" title="Git面试题"></a>Git面试题</h1><ol>
+<li>说说你知道的Git命令</li>
+<li>git如何查看某次提交修改的内容</li>
 </ol>
 
       
@@ -508,23 +1245,23 @@ t.mainloop()  # 让程序循环，不退出</code></pre>
       <ul>
         
           <li>
+            <a href="/2019/09/08/python006/">python006</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python005/">python005</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/08/python004/">python004</a>
+          </li>
+        
+          <li>
+            <a href="/2019/09/07/python003/">python003</a>
+          </li>
+        
+          <li>
             <a href="/2019/09/05/python002/">python002</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/04/Python面试题/">python面试题</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/04/python001/">python001</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/03/markdown/Markdown使用/">Markdown使用</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/02/hello-world/">Hello World</a>
           </li>
         
       </ul>
