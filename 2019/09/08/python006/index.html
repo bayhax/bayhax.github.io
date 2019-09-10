@@ -1,12 +1,60 @@
 <!DOCTYPE html>
-<html>
-<head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="utf-8">
-  
 
-  
-  <title>python006 | bayhax的博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/b.jpg?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Kopieren',
+      copy_success: 'Kopiert',
+      copy_failure: 'Kopieren fehlgeschlagen'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
   <meta name="description" content="函数模块的使用我们是站在巨人的肩膀上的，很多事情前任已经做过，我们就可以理解吸收拿来直接用就行。或者我们自己编程时，有时候会用到某一个功能很多次，这时候我们就可以将它封装在一个模块中，随时取用，减少代码的重复。代码有很多种坏味道，重复是最坏的一种 引例x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法那么可以用排列组">
 <meta property="og:type" content="article">
 <meta property="og:title" content="python006">
@@ -15,85 +63,257 @@
 <meta property="og:description" content="函数模块的使用我们是站在巨人的肩膀上的，很多事情前任已经做过，我们就可以理解吸收拿来直接用就行。或者我们自己编程时，有时候会用到某一个功能很多次，这时候我们就可以将它封装在一个模块中，随时取用，减少代码的重复。代码有很多种坏味道，重复是最坏的一种 引例x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法那么可以用排列组">
 <meta property="og:locale" content="zh">
 <meta property="og:image" content="http://yoursite.com/2019/09/08/python006/images/python006.png">
-<meta property="og:updated_time" content="2019-09-08T12:29:41.114Z">
+<meta property="og:updated_time" content="2019-09-10T13:37:33.100Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python006">
 <meta name="twitter:description" content="函数模块的使用我们是站在巨人的肩膀上的，很多事情前任已经做过，我们就可以理解吸收拿来直接用就行。或者我们自己编程时，有时候会用到某一个功能很多次，这时候我们就可以将它封装在一个模块中，随时取用，减少代码的重复。代码有很多种坏味道，重复是最坏的一种 引例x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法那么可以用排列组">
 <meta name="twitter:image" content="http://yoursite.com/2019/09/08/python006/images/python006.png">
-  
-    <link rel="alternate" href="/atom.xml" title="bayhax的博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-</html>
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">bayhax的博客</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">学习交流</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-python006" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/09/08/python006/" class="article-date">
-  <time datetime="2019-09-08T08:50:29.255Z" itemprop="datePublished">2019-09-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      python006
-    </h1>
+  <link rel="canonical" href="http://yoursite.com/2019/09/08/python006/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>python006 | bayhax的博客</title>
   
 
-      </header>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bayhax的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">学习交流</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Navigationsleiste an/ausschalten">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
     
-    <div class="article-entry" itemprop="articleBody">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Startseite</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>Über</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Schlagwörter<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Kategorien<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archiv<span class="badge">9</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-schedule">
+      
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>Zeitplan</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/08/python006/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王洪粮">
+      <meta itemprop="description" content="坚持  自律   幽默  乐观 向上">
+      <meta itemprop="image" content="/images/bayhax.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bayhax的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">python006
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+
+              
+                
+              
+
+              <time title="Erstellt: 2019-09-08 16:50:29" itemprop="dateCreated datePublished" datetime="2019-09-08T16:50:29+08:00">2019-09-08</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Bearbeitet am</span>
+                <time title="Geändert am: 2019-09-10 21:37:33" itemprop="dateModified" datetime="2019-09-10T21:37:33+08:00">2019-09-10</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
         <h1 id="函数模块的使用"><a href="#函数模块的使用" class="headerlink" title="函数模块的使用"></a>函数模块的使用</h1><p>我们是站在巨人的肩膀上的，很多事情前任已经做过，我们就可以理解吸收<br>拿来直接用就行。或者我们自己编程时，有时候会用到某一个功能很多次，<br>这时候我们就可以将它封装在一个模块中，随时取用，减少代码的重复。<br><em>代码有很多种坏味道，重复是最坏的一种</em></p>
-<h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？<br>可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法<br>那么可以用排列组合公式来展示<br><img src="images/python006.png"><br>那么程序代码可以写成下面这样：</p>
+<h2 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h2><p>x1 + x2 + x3 + x4 = 8这道方程有多少组正整数解？<br>可以将它想象为8个苹果放进四个箱子中，每个箱子中至少有一个的放法<br>那么可以用排列组合公式来展示<br><img src="images/python006.png"></p>
+<a id="more"></a>
+<p>那么程序代码可以写成下面这样：</p>
 <pre><code>m = int(input(&quot;m = &quot;))
 n = int(input(&quot;n = &quot;))
 fm = 1
@@ -220,115 +440,206 @@ if __name__ == &quot;__main__&quot;:
     print(a)  # 输出200</code></pre><p>同理，如果希望内部函数修改嵌套函数中的变量，加上nonlocal就可以<br>在实际开发中，我们应该尽量减少对全局变量的使用，因为全局变量的作用域和影响过于广泛，可能会发生意料之外的修改和使用，除此之外全局变量比局部变量拥有更长的生命周期，可能导致对象占用的内存长时间无法被垃圾回收。事实上，减少对全局变量的使用，也是降低代码之间耦合度的一个重要举措，同时也是对迪米特法则的践行。减少全局变量的使用就意味着我们应该尽量让变量的作用域在函数的内部，但是如果我们希望将一个局部变量的生命周期延长，使其在函数调用结束后依然可以访问，这时候就需要使用闭包<br><strong>以后写程序按照以下格式写,变量作用域</strong><br>这样变量就不是全局变量，有助于垃圾回收<br>def main():<br>    pass  # 代码</p>
 <p>if <strong>name</strong> == “<strong>main</strong>“:<br>    main()</p>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/09/08/python006/" data-id="ck0b29v2t0000n0kvp0mzwc2f" class="article-share-link">Share</a>
+
+    
+    
+    
+        
       
-      
-    </footer>
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/08/python005/" rel="next" title="python005">
+                  <i class="fa fa-chevron-left"></i> python005
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
   </div>
   
-    
-<nav id="article-nav">
   
   
-    <a href="/2019/09/08/python005/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">python005</div>
-    </a>
-  
-</nav>
+  </article>
 
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a></li></ul>
-    </div>
   </div>
 
 
+          </div>
+          
+
+        </div>
+          
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
         
-          <li>
-            <a href="/2019/09/08/python006/">python006</a>
-          </li>
         
-          <li>
-            <a href="/2019/09/08/python005/">python005</a>
-          </li>
         
-          <li>
-            <a href="/2019/09/08/python004/">python004</a>
-          </li>
         
-          <li>
-            <a href="/2019/09/07/python003/">python003</a>
-          </li>
-        
-          <li>
-            <a href="/2019/09/05/python002/">python002</a>
-          </li>
-        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Inhaltsverzeichnis
+        </li>
+        <li class="sidebar-nav-overview">
+          Übersicht
+        </li>
       </ul>
-    </div>
-  </div>
 
-  
-</aside>
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#函数模块的使用"><span class="nav-number">1.</span> <span class="nav-text">函数模块的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引例"><span class="nav-number">1.1.</span> <span class="nav-text">引例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义函数"><span class="nav-number">1.2.</span> <span class="nav-text">定义函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数的参数"><span class="nav-number">1.3.</span> <span class="nav-text">函数的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用模块管理函数"><span class="nav-number">1.4.</span> <span class="nav-text">用模块管理函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上name这个条件，例如"><span class="nav-number">1.4.1.</span> <span class="nav-text">实际工作中，我们写一个模块，当导入它的时候，我们可能不希望它执行，而是希望我们调用它再执行，而且模块中可能会封装几个函数，我们希望调用哪个哪个再执行，这就需要在模块中写上name这个条件，例如</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">1.5.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#求最小公倍数和最大公约数的函数"><span class="nav-number">1.5.1.</span> <span class="nav-text">求最小公倍数和最大公约数的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断一个数是不是回文数"><span class="nav-number">1.5.2.</span> <span class="nav-text">判断一个数是不是回文数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断一个数是不是素数"><span class="nav-number">1.5.3.</span> <span class="nav-text">判断一个数是不是素数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断输入的正整数是不是回文素数"><span class="nav-number">1.5.4.</span> <span class="nav-text">判断输入的正整数是不是回文素数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量作用域"><span class="nav-number">1.6.</span> <span class="nav-text">变量作用域</span></a></li></ol></li></ol></div>
         
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 王洪粮<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/bayhax.jpg"
+      alt="王洪粮">
+  <p class="site-author-name" itemprop="name">王洪粮</p>
+  <div class="site-description" itemprop="description">坚持  自律   幽默  乐观 向上</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">Artikel</span>
+        </a>
+      </div>
     
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/script.js"></script>
-
-
-
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/bayhax" title="GitHub &rarr; https://github.com/bayhax" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:whlbayhax@gmail.com" title="E-Mail &rarr; mailto:whlbayhax@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
   </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">@2019 by bayhax</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
 </body>
 </html>
