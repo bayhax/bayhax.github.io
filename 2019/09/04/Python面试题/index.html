@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 自身库： os        与操作系统相关联的函数 datetime  日期和时间处理的方法 random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理 multiprocessing  进程管理 queue">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-11T14:46:34.321Z">
+<meta property="og:updated_time" content="2019-09-16T14:26:12.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 自身库： os        与操作系统相关联的函数 datetime  日期和时间处理的方法 random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理 multiprocessing  进程管理 queue">
@@ -292,7 +292,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-11 22:46:34" itemprop="dateModified" datetime="2019-09-11T22:46:34+08:00">2019-09-11</time>
+                <time title="修改时间：2019-09-16 22:26:12" itemprop="dateModified" datetime="2019-09-16T22:26:12+08:00">2019-09-16</time>
               </span>
             
           
@@ -311,16 +311,42 @@
         <h1 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h1><ol>
 <li><p>列出5个常用Python标准库<br> <strong>自身库：</strong><br> os        与操作系统相关联的函数<br> datetime  日期和时间处理的方法<br> random    生成随机数<br> math      数学库函数，对底层C函数库的访问<br> zlib      通用的数据打包和压缩<br> pymsql    连接mysql数据库<br> threading 线程管理<br> multiprocessing  进程管理<br> queue     队列<br> <strong>第三方库：</strong><br> django<br> flask<br> requests<br> virtualenv<br> selenium<br> scrapy<br> xadmin<br> celery<br> re<br> hashlib<br> md5<br> <strong>常用科学计算库：</strong><br> Numpy<br> Scipy<br> Pandas</p>
 </li>
-<li><p>Python内建数据类型有哪些？<br> 字符串(str)—不可变<br> 列表(list)—-可变<br> 元组(tuple)–不可变<br> 集合(set)—–可变<br> 字典(dict)—-可变<br> 数字(int)—-不可变<br> 布尔(bool)—不可变</p>
+<li><p>Python内建数据类型有哪些？<br> 字符串(str)—不可变<br> 列表(list)—-可变<br> 元组(tuple)–不可变<br> 字典(dict)—-可变<br> 整型(int)—-不可变<br> 布尔(bool)—不可变</p>
 </li>
 <li><p>简述with方法打开处理文件帮我们做了什么？</p>
+<pre><code>f = open(&quot;./test.txt&quot;, &quot;wb&quot;)
+try:
+    f.write(&quot;hello world&quot;)
+except:
+    pass
+finally:
+    f.close()</code></pre><p>打开文件在进行读写的时候可能会出现一些异常状况，如果按照常规的f.open写法，我们需要try-except-finally做异常判断，并且文件最终不管遇到什么情况，都执行finally:f.close(),而with方法就帮我们实现了finally中的f.close()</p>
 </li>
 <li><p>列出Python中可变数据类型和不可变数据类型<br> 可变： list dict set<br> 不可变： int str bool tuple</p>
 </li>
 <li><p>Python获取当前日期？<br> improt datetime<br> today = datetime.date.today()<br> print(today)</p>
 </li>
 <li><p>统计字符串每个单词出现的次数</p>
-</li>
+<pre><code>import io
+import re
+class Counter:
+    def __init__(self, path):
+        &quot;&quot;&quot;
+        :param path: 文件路径
+        &quot;&quot;&quot;
+        self.mapping = dict()
+        with io.open(path, encoding=&quot;utf-8&quot;) as f:
+            data = f.read()
+            words = [s.lower() for s in re.findall(&quot;\w+&quot;, data)]
+            for word in words:
+                self.mapping[word] = self.mapping.get(word, 0) + 1
+    def most_common(self, n):
+        assert n &gt; 0, &quot;n should be large than 0&quot;
+        return sorted(self.mapping.items(), key=lambda item: item[1], reverse=True)[:n]
+if __name__ == &apos;__main__&apos;:
+    most_common_5 = Counter(&quot;三国演义.txt&quot;).most_common(5)
+    for item in most_common_5:
+        print(item)</code></pre></li>
 <li><p>用Python删除文件和用Linux命令删除文件方法</p>
 <pre><code>python中：
     import os
