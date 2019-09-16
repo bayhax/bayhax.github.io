@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="字符串和常用数据结构使用字符串第二次世界大战促使了现代计算机的诞生，计算机最初的目的是为了计算导弹的运动轨道的，计算的是数值型的信息，但是随着时间的推移，我们处理的数据以文本方式居多，所以计算机要处理的信息就要包括文本形式，处理文本形式的信息，就要了解字符串和它的相关知识。目前处理的图片信息，越来越大规模的音频信息，视频信息，都有相关的处理对象和处理方法。所谓的字符串，就是由零个或多个字符组成的有">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-11T14:34:39.550Z">
+<meta property="og:updated_time" content="2019-09-16T12:49:52.376Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python007">
 <meta name="twitter:description" content="字符串和常用数据结构使用字符串第二次世界大战促使了现代计算机的诞生，计算机最初的目的是为了计算导弹的运动轨道的，计算的是数值型的信息，但是随着时间的推移，我们处理的数据以文本方式居多，所以计算机要处理的信息就要包括文本形式，处理文本形式的信息，就要了解字符串和它的相关知识。目前处理的图片信息，越来越大规模的音频信息，视频信息，都有相关的处理对象和处理方法。所谓的字符串，就是由零个或多个字符组成的有">
@@ -210,7 +210,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">10</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">11</span></a>
 
   </li>
       
@@ -292,7 +292,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-11 22:34:39" itemprop="dateModified" datetime="2019-09-11T22:34:39+08:00">2019-09-11</time>
+                <time title="修改时间：2019-09-16 20:49:52" itemprop="dateModified" datetime="2019-09-16T20:49:52+08:00">2019-09-16</time>
               </span>
             
           
@@ -454,7 +454,305 @@ def main():
     for val in fib(20):
         print(val)
 if __name__ == &apos;__main__&apos;:
-    main()</code></pre>
+    main()</code></pre><h2 id="使用元组"><a href="#使用元组" class="headerlink" title="使用元组"></a>使用元组</h2><p>python中元组与列表类似，但是元组不能修改</p>
+<pre><code>def main():
+    # 定义元组
+    t = (&apos;骆昊&apos;, 38, True, &apos;四川成都&apos;)
+    print(t)
+    # 获取元组中的元素
+    print(t[0])
+    print(t[3])
+    # 遍历元组中的值
+    for member in t:
+        print(member)
+    # 重新给元组赋值
+    # t[0] = &apos;王大锤&apos;  # TypeError
+    # 变量t重新引用了新的元组原来的元组将被垃圾回收
+    t = (&apos;王大锤&apos;, 20, True, &apos;云南昆明&apos;)
+    print(t)
+    # 将元组转换成列表
+    person = list(t)
+    print(person)
+    # 列表是可以修改它的元素的
+    person[0] = &apos;李小龙&apos;
+    person[1] = 25
+    print(person)
+    # 将列表转换成元组
+    fruits_list = [&apos;apple&apos;, &apos;banana&apos;, &apos;orange&apos;]
+    fruits_tuple = tuple(fruits_list)
+    print(fruits_tuple)
+if __name__ == &apos;__main__&apos;:
+    main()</code></pre><p><strong>有了列表，为何还要用元组呢？</strong></p>
+<ul>
+<li>元组中的元素是无法修改的，事实上我们在项目中尤其是多线程环境（后面会讲 到）中可能更喜欢使用的是那些不变对象（一方面因为对象状态不能修改，所以可以避免由此引起的不必要的程序错误，简单的说就是一个不变的对象要比可变的对象更加容易维护；另一方面因为没有任何一个线程能够修改不变对象的内部状态，一个不变对象自动就是线程安全的，这样就可以省掉处理同步化的开销。一个不变对象可以方便的被共享访问）。所以结论就是：如果不需要对元素进行添加、删除、修改的时候，可以考虑使用元组，当然如果一个方法要返回多个值，使用元组也是不错的选择。</li>
+<li>元组在创建时间和占用的空间上面都优于列表。我们可以使用sys模块的getsizeof函数来检查存储同样的元素的元组和列表各自占用了多少内存空间，这个很容易做到。我们也可以在ipython中使用魔法指令%timeit来分析创建同样内容的元组和列表所花费的时间。</li>
+<li>元组的创建所花费的时间显然比列表少</li>
+</ul>
+<h2 id="使用集合"><a href="#使用集合" class="headerlink" title="使用集合"></a>使用集合</h2><pre><code>def main():
+    set1 = {1, 2, 3, 3, 3, 2}
+    print(set1)
+    print(&apos;Length =&apos;, len(set1))
+    set2 = set(range(1, 10))
+    print(set2)
+    set1.add(4)
+    set1.add(5)
+    set2.update([11, 12])
+    print(set1)
+    print(set2)
+    set2.discard(5)
+    # remove的元素如果不存在会引发KeyError
+    if 4 in set2:
+        set2.remove(4)
+    print(set2)
+    # 遍历集合容器
+    for elem in set2:
+        print(elem ** 2, end=&apos; &apos;)
+    print()
+    # 将元组转换成集合
+    set3 = set((1, 2, 3, 3, 2, 1))
+    print(set3.pop())
+    print(set3)
+    # 集合的交集、并集、差集、对称差运算
+    print(set1 &amp; set2)
+    # print(set1.intersection(set2))
+    print(set1 | set2)
+    # print(set1.union(set2))
+    print(set1 - set2)
+    # print(set1.difference(set2))
+    print(set1 ^ set2)
+    # print(set1.symmetric_difference(set2))
+    # 判断子集和超集
+    print(set2 &lt;= set1)
+    # print(set2.issubset(set1))
+    print(set3 &lt;= set1)
+    # print(set3.issubset(set1))
+    print(set1 &gt;= set2)
+    # print(set1.issuperset(set2))
+    print(set1 &gt;= set3)
+    # print(set1.issuperset(set3))
+if __name__ == &apos;__main__&apos;:
+    main()</code></pre><p><em>Python中允许通过一些特殊的方法来为某种类型或数据结构自定义运算符（后面的章节中会讲到），上面的代码中我们对集合进行运算的时候可以调用集合对象的方法，也可以直接使用对应的运算符，例如&amp;运算符跟intersection方法的作用就是一样的，但是使用运算符让代码更加直观。</em></p>
+<h2 id="使用字典"><a href="#使用字典" class="headerlink" title="使用字典"></a>使用字典</h2><pre><code>def main():
+    scores = {&apos;骆昊&apos;: 95, &apos;白元芳&apos;: 78, &apos;狄仁杰&apos;: 82}
+    # 通过键可以获取字典中对应的值
+    print(scores[&apos;骆昊&apos;])
+    print(scores[&apos;狄仁杰&apos;])
+    # 对字典进行遍历(遍历的其实是键再通过键取对应的值)
+    for elem in scores:
+        print(&apos;%s\t---&gt;\t%d&apos; % (elem, scores[elem]))
+    # 更新字典中的元素
+    scores[&apos;白元芳&apos;] = 65
+    scores[&apos;诸葛王朗&apos;] = 71
+    scores.update(冷面=67, 方启鹤=85)
+    print(scores)
+    if &apos;武则天&apos; in scores:
+        print(scores[&apos;武则天&apos;])
+    print(scores.get(&apos;武则天&apos;))
+    # get方法也是通过键获取对应的值但是可以设置默认值
+    print(scores.get(&apos;武则天&apos;, 60))
+    # 删除字典中的元素
+    print(scores.popitem())
+    print(scores.popitem())
+    print(scores.pop(&apos;骆昊&apos;, 100))
+    # 清空字典
+    scores.clear()
+    print(scores)
+if __name__ == &apos;__main__&apos;:
+    main()</code></pre><h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><ol>
+<li><p>在屏幕上显示跑马灯文字</p>
+<pre><code>import os
+import time
+def main():
+    content = &quot;北京欢迎您，为你开天辟地....&quot;
+    while True:
+        # 清理屏幕上的输出
+        os.system(&quot;cls&quot;)  # os.system.clear()
+        print(content)
+        # 间隔200毫秒
+        time.sleep(0.2)  # 打印的快，人眼延迟，感觉是动画
+        content = content[1:] + content[0]
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>设计一个函数产生指定长度的验证码，验证码由大小写字母和数字组成</p>
+<pre><code>import random
+def main(code_len):
+    &apos;&apos;&apos;
+    生成指定长度的验证码
+    ：param code_len:验证码的长度（默认4个字符）
+    ：return: 由大小写英文字母和数字构成的随机验证码
+    &apos;&apos;&apos;
+    all_chars = &apos;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&apos;
+    last_pos = len(all_chars) - 1
+    code = &apos;&apos;
+    for char in range(code_len):
+        index = random.randint(0,last_pos)
+        code += all_chars[index]
+    print(code)
+    return code
+if __name__ == &quot;__main__&quot;:
+    main(code_len=4)</code></pre></li>
+<li><p>设计一个函数返回给定文件名的后缀名。</p>
+<pre><code>def get_suffix(filename, has_dot=False):
+    &apos;&apos;&apos;
+    获取文件名的后缀名
+    ：param fileanme：文件名
+    ：param has_dot：返回的后缀名是否需要带点
+    ：return：文件的后缀名
+    &apos;&apos;&apos;
+    pos = filename.rfind(&apos;.&apos;)  # 最后一次出现.的位置，find返回第一次出现的位置
+    if 0 &lt; pos &lt; len(filename) - 1:
+        index = pos if has_dot else pos + 1
+        print(filename[index:])
+        return filename[index:]
+    else:
+        return &apos;&apos;
+get_suffix(&apos;wenjian.c&apos;,has_dot=True)</code></pre></li>
+<li><p>设计一个函数返回传入的列表中最大和第二大的元素的值</p>
+<pre><code>def max2(l):
+    m1, m2 = (l[0],l[1]) if l[0] &gt; l[1] else(l[1],l[0])
+    for index in range(2,len(l)):
+        if l[index] &gt; m1:
+            m2 = m1
+            m1 = l[index]
+        elif l[index] &gt; m2:
+            m2 = l[index]
+    print(m1,m2)
+    return m1,m2
+max2([1,2,4,1,20,2,4,9])</code></pre></li>
+<li><p>计算指定的年月日是这一年的第几天</p>
+<pre><code>def is_leap_year(year):
+    &apos;&apos;&apos;
+    判断指定年份是否是闰年
+    ：param year：年份
+    ：return：闰年返回True，平年返回False
+    &apos;&apos;&apos;
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+def which_day(year,month,date):
+    &apos;&apos;&apos;
+    计算传入的日期是这一年的第几天
+    ：param year：年
+    ：param month：月
+    ：param date：日
+    ：return：第几天
+    &apos;&apos;&apos;
+    days_of_month = [
+        [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+        [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    ][is_leap_year(year)]  # True时，第二行，False时，第一行
+    total = 0
+    for index in range(month-1):
+        total += days_of_month[index]
+    return total + date
+def main():
+    print(which_day(1980,11,28))
+    print(which_day(1981,12,31))
+    print(which_day(2009,12,2))
+    print(which_day(2019,9,15))
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>打印杨辉三角</p>
+<pre><code>def main():
+    &apos;&apos;&apos;
+    打印杨辉三角
+    &apos;&apos;&apos;
+    num = int(input(&apos;打印几行:&apos;))
+    yh = [[]] * num
+    for row in range(len(yh)):
+        yh[row] = [None] * (row + 1)
+        for col in range(len(yh[row])):
+            if col == 0 or col == row:
+                yh[row][col] = 1
+            else:
+                yh[row][col] = yh[row - 1][col] + yh[row - 1][col - 1]
+            print(yh[row][col], end=&apos;\t&apos;)
+        print()    
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+</ol>
+<h2 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h2><ol>
+<li><p>双色球选号</p>
+<pre><code>from random import randint, randrange, sample
+def display(balls):
+    &apos;&apos;&apos;
+    输出选中的双色球号码
+    &apos;&apos;&apos;
+    for index,ball in enumerate(balls):
+        if index == len(balls) - 1:
+            print(&quot;|&quot;, end = &apos; &apos;)
+        print(&quot;%02d&quot; % ball,end=&apos; &apos;)
+    print()
+def random_select():
+    &apos;&apos;&apos;
+    随机选择一组号码
+    &apos;&apos;&apos;
+    red_balls = [x for x in range(1,34)]
+    selected_balls = []
+    selected_balls = sample(red_balls, 6)  # 不重复的选择六个号码
+    selected_balls.sort()
+    selected_balls.append(randint(1,18))
+    return selected_balls
+def main():
+    n = int(input(&quot;机选几注：&quot;))
+    for i in range(n):
+        display(random_select())
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>约瑟夫环问题<br> <em>“””<br> 《幸运的基督徒》<br> 有15个基督徒和15个非基督徒在海上遇险，为了能让一部分人活下来不得不将其中15个人扔到海里面去，有个人想了个办法就是大家围成一个圈，由某个人开始从1报数，报到9的人就扔到海里面，他后面的人接着从1开始报数，报到9的人继续扔到海里面，直到扔掉15个人。由于上帝的保佑，15个基督徒都幸免于难，问这些人最开始是怎么站的，哪些位置是基督徒哪些位置是非基督徒。<br> “””</em></p>
+<pre><code>def main():
+    persons = [True] * 30
+    counter, index, number = 0, 0, 0
+    while counter &lt; 15:
+        if persons[index]:
+            number += 1
+            if number == 9:
+                persons[index] = False
+                counter += 1
+                number = 0
+        index += 1
+        index %= 30
+    for person in persons:
+        print(&quot;基督徒&quot; if person else &apos;非基督徒&apos;, end=&apos; &apos;)
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>井字棋游戏</p>
+<pre><code>import os
+def print_board(board):
+    print(board[&apos;TL&apos;] + &apos;|&apos; + board[&apos;TM&apos;] + &apos;|&apos; + board[&apos;TR&apos;])
+    print(&apos;-+-+-&apos;)
+    print(board[&apos;ML&apos;] + &apos;|&apos; + board[&apos;MM&apos;] + &apos;|&apos; + board[&apos;MR&apos;])
+    print(&apos;-+-+-&apos;)
+    print(board[&apos;BL&apos;] + &apos;|&apos; + board[&apos;BM&apos;] + &apos;|&apos; + board[&apos;BR&apos;])
+def main():
+    init_board = {
+        &apos;TL&apos;: &apos; &apos;, &apos;TM&apos;: &apos; &apos;, &apos;TR&apos;: &apos; &apos;,
+        &apos;ML&apos;: &apos; &apos;, &apos;MM&apos;: &apos; &apos;, &apos;MR&apos;: &apos; &apos;,
+        &apos;BL&apos;: &apos; &apos;, &apos;BM&apos;: &apos; &apos;, &apos;BR&apos;: &apos; &apos;
+    }
+    begin = True
+    while begin:
+        curr_board = init_board.copy()
+        begin = False
+        turn = &apos;x&apos;
+        counter = 0
+        os.system(&apos;cls&apos;)
+        print_board(curr_board)
+        while counter &lt; 9:
+            move = input(&apos;轮到%s走棋, 请输入位置: &apos; % turn)
+            if curr_board[move] == &apos; &apos;:
+                counter += 1
+                curr_board[move] = turn
+                if turn == &apos;x&apos;:
+                    turn = &apos;o&apos;
+                else:
+                    turn = &apos;x&apos;
+            os.system(&apos;cls&apos;)
+            print_board(curr_board)
+        choice = input(&apos;再玩一局?(yes|no)&apos;)
+        begin = choice == &apos;yes&apos;
+if __name__ == &apos;__main__&apos;:
+    main()</code></pre></li>
+</ol>
+
     </div>
 
     
@@ -479,6 +777,10 @@ if __name__ == &apos;__main__&apos;:
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/16/python008/" rel="prev" title="python008">
+                  python008 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -527,7 +829,7 @@ if __name__ == &apos;__main__&apos;:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串和常用数据结构"><span class="nav-number">1.</span> <span class="nav-text">字符串和常用数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用字符串"><span class="nav-number">1.1.</span> <span class="nav-text">使用字符串</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串和常用数据结构"><span class="nav-number">1.</span> <span class="nav-text">字符串和常用数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用字符串"><span class="nav-number">1.1.</span> <span class="nav-text">使用字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用元组"><span class="nav-number">1.2.</span> <span class="nav-text">使用元组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用集合"><span class="nav-number">1.3.</span> <span class="nav-text">使用集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用字典"><span class="nav-number">1.4.</span> <span class="nav-text">使用字典</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">1.5.</span> <span class="nav-text">练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#综合案例"><span class="nav-number">1.6.</span> <span class="nav-text">综合案例</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -545,7 +847,7 @@ if __name__ == &apos;__main__&apos;:
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
