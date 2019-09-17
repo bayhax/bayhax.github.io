@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/b.jpg?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="面向对象进阶@property装饰器之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python009">
+<meta property="og:url" content="http://bayhax.github.io/2019/09/17/python009/index.html">
+<meta property="og:site_name" content="bayhax的博客">
+<meta property="og:description" content="面向对象进阶@property装饰器之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-17T14:06:02.123Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python009">
+<meta name="twitter:description" content="面向对象进阶@property装饰器之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既">
+  <link rel="canonical" href="http://bayhax.github.io/2019/09/17/python009/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>python009 | bayhax的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bayhax的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">学习交流</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">12</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-schedule">
+      
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://bayhax.github.io/2019/09/17/python009/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王洪粮">
+      <meta itemprop="description" content="坚持  自律   幽默  乐观 向上">
+      <meta itemprop="image" content="/images/bayhax.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bayhax的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">python009
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-17 21:10:00 / 修改时间：22:06:02" itemprop="dateCreated datePublished" datetime="2019-09-17T21:10:00+08:00">2019-09-17</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="面向对象进阶"><a href="#面向对象进阶" class="headerlink" title="面向对象进阶"></a>面向对象进阶</h1><h2 id="property装饰器"><a href="#property装饰器" class="headerlink" title="@property装饰器"></a>@property装饰器</h2><p>之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既安全又方便。</p><a id="more"></a>
+<pre><code>class Person(object):
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+    # 访问器 -getter方法
+    @property
+    def name(self):
+        return self._name
+    # 访问器 -getter方法
+    @property
+    def age(self):
+        return self._age
+    # 修改器 -setter方法
+    @age.setter
+    def age(self, age):
+        self._age = age
+    def play(self):
+        if self._age &lt;= 16:
+            print(&quot;%s正在玩飞行棋&quot; % self._name)
+        else:
+            print(&quot;%s正在玩斗地主&quot; % self._name)
+def main():
+    person = Person(&quot;王大锤&quot;, 12)
+    person.play()
+    person.age = 22
+    person.play()
+    # person.name = &apos;lili&apos;  # AttributeError:can&apos;t set 
+if __name == &quot;__main__&quot;:
+    main()</code></pre><h2 id="slots-魔法"><a href="#slots-魔法" class="headerlink" title="__slots__魔法"></a>__slots__魔法</h2><p>可以看出，python是一门动态语言。通常，动态语言允许我们在程序运行时给对象绑定新的属性或方法，当然也可以对已绑定的属性和方法进行解绑。但是如果我们需要限定自定义类型的对象只能绑定某些属性，可以通过在类中定义<strong>slots</strong>变量来进行限定。需要注意的是<strong>slots</strong>的限定只对当前类的对象生效，对子类<br>并不起任何作用。</p>
+<pre><code>class Person(object):
+    # 限定Person对象只能绑定_name, _age和_gender属性
+    __slots__ = (&apos;_name&apos;, &apos;_age&apos;, &apos;_gender&apos;)
+    def __init__(self, name, age):
+        self._name = name
+        self._age = age
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    def play(self):
+        if self._age &lt;= 16:
+            print(&quot;%s正在玩飞行棋&quot; % self._name)
+        else:
+            print(&quot;%s正在玩斗地主&quot; % self._name)
+def main():
+    person = Person(&quot;bili&quot;, 22)
+    person.play()
+    person._gender = &apos;男&apos;
+# AttributeError:&apos;Person&apos; object has no attribute _is_gay
+    # person._is_gay = True</code></pre><h2 id="静态方法和类方法"><a href="#静态方法和类方法" class="headerlink" title="静态方法和类方法"></a>静态方法和类方法</h2><p>以上所说的在类中定义的方法都是对象方法，也就是说这些方法都是发送给对象的消息。实际上，我们在写类中的方法并不需要都是对象方法，例如定义一个“三角形”类，通过传入三条边长来构造三角形，并提供计算周长和面积的方法，但是传入的三条边未必能构造出三角形对象，因此可以先写一个方法验证三条边是否可以成三角形，这个方法很明显不是对象方法，因为在调用这个方法时，三角形并未创建出来，所以这个方法时属于三角形类的而不属于三角形对象。可以使用静态方法来解决这类问题。</p>
+<pre><code>from math import sqrt
+
+class Triangle(object):
+
+    def __init__(self, a, b, c):
+        self._a = a
+        self._b = b
+        self._c = c
+
+    @staticmethod
+    def is_valid(a, b, c):
+        return a + b &gt; c and b + c &gt; a and a + c &gt; b
+
+    def perimeter(self):
+        return self._a + self._b + self._c
+
+    def area(self):
+        half = self.perimeter() / 2
+        return sqrt(half * (half - self._a) * 
+                    (half - self._b) * (half - self._c))
+def main():
+    a, b, c = 3, 4, 5
+    # 静态方法和类方法都是通过给类发消息来调用的
+    if Triangle.is_valid(a, b, c):
+        t = Triangle(a, b, c)
+        print(t.perimeter())
+        # 也可以通过给类发消息来调用对象方法但是
+        # 要传入接收消息的对象作为参数
+        # print(Triangle.perimeter(t))
+        print(t.area())
+        # print(Triangle.area(t))
+    else:
+        print(&quot;无法构成三角形&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>和静态方法类似，Python还可以在类中定义类方法，类方法的第一个参数约定名为cls,它代表的是当前类相关的信息和对象（类本身也是一个对象，有的地方也称之为类的元数据对象），通过这个参数我们可以获取和类相关的信息并且可以创建出类的对象</p>
+<pre><code>from time import time, localtime, sleep
+
+classs Clock(object):
+    &apos;&apos;&apos;数字时钟&apos;&apos;&apos;
+
+    def __init__(self, hour=0,minute=0,second=0):
+        self._hour = hour
+        self._minute = minute
+        self._second = second
+
+    @classmethod
+    def now(cls):
+        ctime = localtime(time())
+        return cls(ctime.tm_hour, ctime.tm_min, ctime.tm_sec)
+
+    def run(self):
+        &apos;&apos;&apos;走字&apos;&apos;&apos;
+        self._second += 1
+        if self._second == 60:
+            self._second = 0
+            self._minute += 1
+            if self._minute == 60:
+                self._minute = 0
+                self._hour += 1
+                if self._hour == 24:
+                    self._hour =0
+
+    def show(self):
+        &apos;&apos;&apos;显示时间&apos;&apos;&apos;
+        return &apos;%02d:%02d:%02d&apos; % \
+            (self._hour, self._minute, self._second)
+
+def main():
+    # 通过类方法创建对象并获取系统时间
+    clock = Clock.now()
+    while True:
+        print(clock.show())
+        sleep(1)
+        clock.run()
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><h2 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h2><p>类与类之间关系有三种  is-a  has-a  use-a</p>
+<ul>
+<li>is-a 继承或泛化  学生和人的关系  手机和电子产品之间的关系都属于继承</li>
+<li>has-a 关联   部门和员工之间  汽车和引擎之间都属于关联关系。关联关系<br>  如果是整体和部分的关联，那么称之为聚合关系；如果整体进一步负责了部分的生命周期（整体和部分是不可分割的，同时同在同消亡），那么这种就是最强的关联关系，称为合成关系</li>
+<li>use-a 依赖 比如司机有一个驾驶的行为（方法），其中（的参数）使用到了<br>  汽车，那么司机和汽车就是依赖关系<br>下图给出了UML（统一建模语言）对面向对象建模<br>！<a href="images/python009.png"></a><br>利用类之间的这些关系，可以在已有类的基础上完成某些操作，也可以在已有类的基础上创建新的类，这些都是代码复用的重要手段。复用的代码不仅可以减少开发的工作量，也有利于代码的维护和管理。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/16/python008/" rel="next" title="python008">
+                  <i class="fa fa-chevron-left"></i> python008
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象进阶"><span class="nav-number">1.</span> <span class="nav-text">面向对象进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#property装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">@property装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slots-魔法"><span class="nav-number">1.2.</span> <span class="nav-text">__slots__魔法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法和类方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态方法和类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类之间的关系"><span class="nav-number">1.4.</span> <span class="nav-text">类之间的关系</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/bayhax.jpg"
+      alt="王洪粮">
+  <p class="site-author-name" itemprop="name">王洪粮</p>
+  <div class="site-description" itemprop="description">坚持  自律   幽默  乐观 向上</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/bayhax" title="GitHub &rarr; https://github.com/bayhax" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:whlbayhax@gmail.com" title="E-Mail &rarr; mailto:whlbayhax@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">by bayhax</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
