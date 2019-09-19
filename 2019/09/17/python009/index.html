@@ -63,7 +63,7 @@
 <meta property="og:description" content="面向对象进阶@property装饰器之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://bayhax.github.io/2019/09/17/python009/python009.png">
-<meta property="og:updated_time" content="2019-09-17T14:48:47.138Z">
+<meta property="og:updated_time" content="2019-09-19T14:46:27.485Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python009">
 <meta name="twitter:description" content="面向对象进阶@property装饰器之前所讨论过的Python中属性和方法访问权限的问题，虽然不建议将属性设置为私有，但是如果直接将属性暴露给外部也肯定会有问题的，比如没有办法检查赋值给属性的值是否有效。python008中建议将属性命名以单下划线开头，通过这种方式来暗示属性是受保护的，不建议外部直接访问。我们还可以用@property包装器来包装getter和setter方法，使得对属性的访问既">
@@ -283,11 +283,19 @@
                 
               
 
-              <time title="创建时间：2019-09-17 21:10:00 / 修改时间：22:48:47" itemprop="dateCreated datePublished" datetime="2019-09-17T21:10:00+08:00">2019-09-17</time>
+              <time title="创建时间：2019-09-17 21:10:00" itemprop="dateCreated datePublished" datetime="2019-09-17T21:10:00+08:00">2019-09-17</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-19 22:46:27" itemprop="dateModified" datetime="2019-09-19T22:46:27+08:00">2019-09-19</time>
+              </span>
             
           
 
@@ -559,6 +567,301 @@ def main():
 
 if __name__ == &quot;__main__&quot;:
     main()</code></pre><p>Pet类作为了一个抽象类，所谓抽象类就是不能够创建对象的类，这种类的存在就是专门为了让其他类去继承它。Python从语法层面来讲并没有像Java或者c#那样提供对抽象类的支持，但是可以通过abc模块的ABCMeta元类和abstractmethod包装器来达到抽象类的效果，如果一个类中存在抽象方法那么这个类就不能够实例化（创建对象）。Dog和Cat两个子类分别对Pet类中的make_voice抽象方法进行了重写<br>并给出了不同的实现版本，当我们在main函数中调用该方法时，这个方法就表现出了多态行为（同样的方法做了不同的事情）</p>
+<h2 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h2><ol>
+<li><p>奥特曼打小怪兽</p>
+<pre><code>from abc import ABCMeta, abstractmethod
+from random import randint, randrange         
+class Fighter(object, metaclass=ABCMeta):
+    &apos;&apos;&apos;战斗者&apos;&apos;&apos;
+    # 通过__slots__魔法限定对象可以绑定的成员变量
+    __slots = (&apos;_name&apos;, &apos;_hp&apos;)
+    def __init__(self, name, hp):
+        &apos;&apos;&apos;初始化方法
+        ：param name:名字
+        ：param hp:生命值
+        &apos;&apos;&apos;
+        self._name = name
+        self._hp = hp
+    @property
+    def name(self):
+        return self._name
+    @property
+    def hp(self):
+        return self._hp
+    @hp.setter
+    def hp(self, hp):
+        self._hp = hp if hp &gt;= 0 else 0
+    @property
+    def alive(self):
+        return self._hp &gt; 0
+    @abstractmethod
+    def attack(self, other):
+        &apos;&apos;&apos;攻击
+        ：param other:被攻击对象
+        &apos;&apos;&apos;
+        pass
+class Ultraman(Fighter):
+    &apos;&apos;&apos;奥特曼&apos;&apos;&apos;
+    __slots__ = (&apos;_name&apos;, &apos;_hp&apos;, &apos;_mp&apos;)
+    def __init__(self, name, hp, mp):
+        &apos;&apos;&apos;初始化方法
+        :param name: 名字
+        :param hp：生命值
+        :param mp：魔法值
+        &apos;&apos;&apos;
+        super().__init__(name, hp)
+        self._mp = mp
+    def attack(self, other):
+        other.hp -= randint(15, 25)
+    def huge_attack(self, other):
+        &apos;&apos;&apos;究极必杀技
+        ：param other:被攻击的对象
+        ：return:使用成功返回True,否则返回False
+        &apos;&apos;&apos;
+        if self._mp &gt;= 50:
+            self._mp -= 50
+            injury = other.hp * 3 // 4
+            injury = injury if injury &gt;= 50 else 50
+            other.hp -= injury
+            return True
+        else:
+            self.attack(other)
+            return False
+    def magic_attack(self, others):
+        &apos;&apos;&apos;魔法攻击
+        ：param other：被攻击的群体
+        ：return：使用魔法成功返回True，否则返回False
+        &apos;&apos;&apos;
+        if self._mp &gt;= 20:
+            self._mp -= 20
+            for temp in others:
+                if temp.alive:
+                    temp.hp -= randint(10,15)
+            return True
+        else:
+            return False
+    def resume(self):
+        &apos;&apos;&apos;恢复魔法值&apos;&apos;&apos;
+        incr_point = randint(1, 10)
+        self._mp += incr_point
+        return incr_point
+    def __str__(self):
+        return &apos;~~~%s奥特曼~~~\n&apos; % self._name + \
+                &apos;生命值: %d\n&apos; % self._hp + \
+                &apos;魔法值: %d\n&apos; % self._mp
+class Monster(Fighter):
+    &apos;&apos;&apos;小怪兽&apos;&apos;&apos;
+    __slots__ = (&apos;_name&apos;, &apos;_hp&apos;)
+    def attack(self, other):
+        other.hp -= randint(10, 20)
+    def __str__(self):
+        return &apos;~~~%s小怪兽~~~\n&apos; % self._name + \
+                &apos;生命值：%d&apos; % self._hp
+def is_any_alive(monsters):
+    &apos;&apos;&apos;判断有没有小怪兽是活着的&apos;&apos;&apos;
+    for monster in monsters:
+        if monster.alive &gt; 0:
+            return True
+    return False
+def select_alive_one(monsters):
+    &apos;&apos;&apos;选中一只活着的小怪兽&apos;&apos;&apos;
+    monsters_len = len(monsters)
+    while True:
+        index = randrange(monsters_len)
+        monster = monsters[index]
+        if monster.alive &gt; 0:
+            return monster
+def display_info(ultraman, monsters):
+    &apos;&apos;&apos;显示奥特曼和小怪兽的信息&apos;&apos;&apos;
+    print(ultraman)
+    for monster in monsters:
+        print(monster, end=&apos;&apos;)
+def main():
+    u = Ultraman(&apos;mike&apos;, 1000, 120)
+    m1 = Monster(&apos;bilis&apos;, 250)
+    m2 = Monster(&apos;sili&apos;, 500)
+    m3 = Monster(&apos;hiesl&apos;, 750)
+    ms = [m1, m2, m3]
+    fight_round = 1
+    while u.alive and is_any_alive(ms):
+        print(&apos;=====第%02d回合=====&apos; % fight_round)    
+        m = select_alive_one(ms)  # 选中一只小怪兽
+        skill = randint(1, 10)  # 通过随机数选择使用哪种技能
+        if skill &lt;= 6:  # 60%的概率使用普通攻击
+            print(&quot;%s使用普通攻击打了%s&quot; % (u.name, m.name))
+            u.attack(m)
+            print(&apos;%s的魔法值恢复了%d点&apos; % (u.name, u.resume()))
+        elif skill &lt;= 9:  # 30%的概率使用魔法攻击（可能因魔法值不足而失败）
+            if u.magic_attack(ms):
+                print(&quot;%s使用了魔法攻击&quot; % u.name)
+            else:
+                print(&quot;%s使用魔法失败&quot; % u.name)
+        else:  # 10%的几率使用救济必杀技（如果魔法值不足则使用普通攻击）
+            if u.huge_attack(m):
+                print(&quot;%s使用究极必杀技虐了%s&quot; % (u.name, m.name))
+            else:
+                print(&apos;%s使用普通攻击攻打了%s&apos; % (u.name, m.name))
+                print(&apos;%s的魔法值恢复了%d点&apos; % (u.name, u.resume()))                    
+        if m.alive &gt; 0:  # 如果选中的小怪兽没有死就回击奥特曼
+            print(&apos;%s回击了%s &apos; % (m.name, u.name))
+            m.attack(u)
+        display_info(u, ms)  # 每个回合结束后显示奥特曼和小怪兽的信息
+        fight_round += 1
+    print(&apos;\n=====战斗结束=====\n&apos;)
+    if u.alive &gt; 0:
+        print(&quot;%s奥特曼胜利&quot; % u.name)
+    else:
+        print(&quot;小怪兽胜利&quot;)
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>扑克游戏</p>
+<pre><code>import random
+class Card(object):
+    &apos;&apos;&apos;一张牌&apos;&apos;&apos;
+    def __init__(self, suite, face):
+        self._suite = suite
+        self._face = face
+    @property
+    def face(self):
+        return self._face
+    @property
+    def suite(self):
+        return self._suite
+    def __str__(self):
+        if self._face == 1:
+            face_str = &apos;A&apos;
+        elif self._face == 11:
+            face_str = &apos;J&apos;
+        elif self._face == 12:
+            face_str = &apos;Q&apos;
+        elif self._face == 13:
+            face_str == &apos;K&apos;
+        else:
+            face_str = str(self._face)
+        return &apos;%s%s&apos; % (self._suite, face_str)
+    def __repr__(self):
+        return self.__str__()
+class Poker(object):
+    &apos;&apos;&apos;一副牌&apos;&apos;&apos;
+    def __init__(self):
+        self._cards = [Card(suite, face)
+                        for suite in &apos;♠♥♣♦&apos;
+                        for face in range(1, 14)
+                    ]
+        self._current = 0
+    @property
+    def cards(self):
+        return self._cards
+    def shuffle(self):
+        &apos;&apos;&apos;洗牌（随机乱序）&apos;&apos;&apos;
+        self._current = 0
+        random.shuffle(self._cards)
+    @property
+    def next(self):
+        &apos;&apos;&apos;发牌&apos;&apos;&apos;
+        card = self._cards[self._current]
+        self._current += 1
+        return card
+    @property
+    def has_next(self):
+        &apos;&apos;&apos;还没有发牌&apos;&apos;&apos;
+        return self._current &lt; len(self._cards)
+class Player(object):
+    &apos;&apos;&apos;玩家&apos;&apos;&apos;
+    def __init__(self, name):
+        self._name = name
+        self._cards_on_hand = []
+    @property
+    def name(self):
+        return self._name
+    @property
+    def cards_on_hand(self):
+        return self._cards_on_hand
+    def get(self, card):
+        &apos;&apos;&apos;摸牌&apos;&apos;&apos;
+        self._cards_on_hand.append(card)
+    def arrange(self, card_key):
+        &apos;&apos;&apos;玩家整理手上的牌&apos;&apos;&apos;
+        self._cards_on_hands.sort(key=card_key)
+# 排序规则-现根据花色再根据点数排序
+def get_key(card):
+    return (card.suite, card.face)
+def main():
+    p = Poker()
+    p.shuffle()
+    players = [Player(&apos;东邪&apos;)， Player(&apos;西毒&apos;)，Player(&apos;南帝&apos;)，Player(&apos;北丐&apos;)]
+    for _ in range(13):
+        for player in players:
+            player.get(p.next)
+    for player in players:
+        print(player.name + &apos;:&apos;, end=&apos; &apos;)
+        player.arrange(get_key)
+        print(player.cards_on_hand)
+if __name__ == &quot;__main__&quot;：
+    main()</code></pre></li>
+<li><p>工资结算系统<br>‘’’<br>某公司有三类员工，分别是部分经理、程序员、销售员<br>需要设计一个工资结算系统，根据提供的员工信息计算月薪<br>部门经理的月薪是每月固定15000元，程序员的月薪按本月<br>工作时间计算，每小时150元，销售员的月薪是1200元的底薪<br>加上销售额的5%的提出<br>‘’’</p>
+<pre><code>from abc import ABCMeta, abstractmethod
+class Employee(object, metaclass=ABCMeta):
+    &apos;&apos;&apos;员工&apos;&apos;&apos;
+    def __init__(self, name):
+        &apos;&apos;&apos;初始化方法
+        ：param name:姓名
+        &apos;&apos;&apos;
+        self._name = name
+    @property
+    def name(self):
+        return self._name
+    @abstractmethod
+    def get_salary(self):
+        &apos;&apos;&apos;
+        获得月薪
+        ：return:月薪
+        &apos;&apos;&apos;
+        pass
+class Manager(Employee):
+    &apos;&apos;&apos;部门经理&apos;&apos;&apos;
+    def get_salay(self):
+        return 15000.0
+class Programmer(Employee):
+    &apos;&apos;&apos;程序员&apos;&apos;&apos;
+    def __init__(self, name, working_hour=0):
+        super().__init__(name)
+        self.working_hour = working_hour
+    @property
+    def working_hour(self):
+        return self._working_hour
+    @working_hour.setter
+    def working_hour(self, working_hour):
+        self._working_hour = working_hour if working_hour &gt; 0 else 0
+    def get_salary(self):
+        return 150.0 * self._working_hour
+class Salesman(Employee):
+    &apos;&apos;&apos;销售员&apos;&apos;&apos;
+    def __init__(self, name, sales=0):
+        super().__init__(name)
+        self._sales = sales
+    @property
+    def sales(self):
+        return self._sales
+    @sales.setter
+    def sales(self, sales):
+        self._sales = sales is sales &gt; 0 else 0
+    def get_salary(self):
+        return 1200.0 + self._sales * 0.05
+def main():
+    emps = [Manager(&apos;刘备&apos;), Programmer(&apos;诸葛亮&apos;)，
+    Manager(&apos;曹操&apos;), Salesman(&apos;荀彧&apos;), Salesmain(&apos;吕布&apos;)，Programmer(&apos;张辽&apos;), Programmer(&apos;赵云&apos;)
+    ]
+    for emp in emps:
+        if isinstance(emp, Programmer):
+            emp.working_hour = int(input(&apos;请输入%s本月工作时间：&apos; % emp.name))
+        elif isinstance(emp, Salesman):
+            emp.sales = float(input(&apos;请输入%s本月销售额：&apos; % emp.name))
+        # 同样是接收get_salary这个消息但是不同的员工表现出了不同的行为（多态）
+        print(&apos;%s本月工资为：￥%s元&apos; % (emp.name, emp.get_salary()))
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+</ol>
 
     </div>
 
@@ -632,7 +935,7 @@ if __name__ == &quot;__main__&quot;:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象进阶"><span class="nav-number">1.</span> <span class="nav-text">面向对象进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#property装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">@property装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slots-魔法"><span class="nav-number">1.2.</span> <span class="nav-text">__slots__魔法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法和类方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态方法和类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类之间的关系"><span class="nav-number">1.4.</span> <span class="nav-text">类之间的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承和多态"><span class="nav-number">1.5.</span> <span class="nav-text">继承和多态</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#面向对象进阶"><span class="nav-number">1.</span> <span class="nav-text">面向对象进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#property装饰器"><span class="nav-number">1.1.</span> <span class="nav-text">@property装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#slots-魔法"><span class="nav-number">1.2.</span> <span class="nav-text">__slots__魔法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态方法和类方法"><span class="nav-number">1.3.</span> <span class="nav-text">静态方法和类方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类之间的关系"><span class="nav-number">1.4.</span> <span class="nav-text">类之间的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承和多态"><span class="nav-number">1.5.</span> <span class="nav-text">继承和多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#综合案例"><span class="nav-number">1.6.</span> <span class="nav-text">综合案例</span></a></li></ol></li></ol></div>
         
       </div>
       <!--/noindex-->
