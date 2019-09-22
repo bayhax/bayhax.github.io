@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/b.jpg?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="图形用户界面和游戏开发基于tkinter模块的GUIGUI图形用户界面的缩写(Graphical User Interface)，python默认的GUI开发模块是tkinter（python3以前叫做Tkinter），它是基于TK的，TK是一个工具包，提供了跨平台的GUI控件。python不擅长GUI应用的开发，tkinter也不是最好的选择，wxPyhton，PyQt,等也都不错基本上用tki">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python010">
+<meta property="og:url" content="http://bayhax.github.io/2019/09/22/python010/index.html">
+<meta property="og:site_name" content="bayhax的博客">
+<meta property="og:description" content="图形用户界面和游戏开发基于tkinter模块的GUIGUI图形用户界面的缩写(Graphical User Interface)，python默认的GUI开发模块是tkinter（python3以前叫做Tkinter），它是基于TK的，TK是一个工具包，提供了跨平台的GUI控件。python不擅长GUI应用的开发，tkinter也不是最好的选择，wxPyhton，PyQt,等也都不错基本上用tki">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-22T08:43:05.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python010">
+<meta name="twitter:description" content="图形用户界面和游戏开发基于tkinter模块的GUIGUI图形用户界面的缩写(Graphical User Interface)，python默认的GUI开发模块是tkinter（python3以前叫做Tkinter），它是基于TK的，TK是一个工具包，提供了跨平台的GUI控件。python不擅长GUI应用的开发，tkinter也不是最好的选择，wxPyhton，PyQt,等也都不错基本上用tki">
+  <link rel="canonical" href="http://bayhax.github.io/2019/09/22/python010/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>python010 | bayhax的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">bayhax的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">学习交流</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类<span class="badge">0</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">14</span></a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-schedule">
+      
+    
+      
+    
+
+    <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://bayhax.github.io/2019/09/22/python010/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王洪粮">
+      <meta itemprop="description" content="坚持  自律   幽默  乐观 向上">
+      <meta itemprop="image" content="/images/bayhax.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="bayhax的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">python010
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-22 15:35:34 / 修改时间：16:43:05" itemprop="dateCreated datePublished" datetime="2019-09-22T15:35:34+08:00">2019-09-22</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="图形用户界面和游戏开发"><a href="#图形用户界面和游戏开发" class="headerlink" title="图形用户界面和游戏开发"></a>图形用户界面和游戏开发</h1><h2 id="基于tkinter模块的GUI"><a href="#基于tkinter模块的GUI" class="headerlink" title="基于tkinter模块的GUI"></a>基于tkinter模块的GUI</h2><p>GUI图形用户界面的缩写(Graphical User Interface)，python<br>默认的GUI开发模块是tkinter（python3以前叫做Tkinter），它是基于<br>TK的，TK是一个工具包，提供了跨平台的GUI控件。python不擅长GUI应用的开发，<br>tkinter也不是最好的选择，wxPyhton，PyQt,等也都不错<br>基本上用tkinter开发GUI应用需要5个步骤：</p><a id="more"></a>
+<ol>
+<li><p>导入tkinter模块中国我们需要的东西</p>
+</li>
+<li><p>创建一个顶层窗口对象并用它来承载整个GUI应用</p>
+</li>
+<li><p>在顶层窗口对象上添加GUI组件</p>
+</li>
+<li><p>通过代码将这些GUI组件的功能组织起来</p>
+</li>
+<li><p>进入世间主循环</p>
+<pre><code>import tkinter
+import tkinter.messagebox
+def main():
+    flag = True
+    # 修改标签上的文字
+    def change_label_text():
+        nonlocal flag
+        flag = not flag
+        color, msg = (&apos;red&apos;, &apos;Hello, world!&apos;)\
+        if flag else (&apos;blue&apos;, &apos;Goodbye, world!&apos;)
+    label.config(text=msg, fg=color)
+    # 确认退出
+    def confirm_to_quit():
+        if tkinter.messagebox.askokcancel(&apos;温馨提示&apos;, &apos;确定要退出吗?&apos;):
+            top.quit()
+    # 创建顶层窗口
+    top = tkinter.Tk()
+    # 设置窗口大小
+    top.geometry(&apos;240x160&apos;)
+    # 设置窗口标题
+    top.title(&apos;小游戏&apos;)
+    # 创建标签对象并添加到顶层窗口
+    label = tkinter.Label(top, text=&apos;Hello, world!&apos;, font=&apos;Arial -32&apos;, fg=&apos;red&apos;)
+    label.pack(expand=1)
+    # 创建一个装按钮的容器
+    panel = tkinter.Frame(top)
+    # 创建按钮对象 指定添加到哪个容器中 通过command参数绑定事件回调函数
+    button1 = tkinter.Button(panel, text=&apos;修改&apos;, command=change_label_text)
+    button1.pack(side=&apos;left&apos;)
+    button2 = tkinter.Button(panel, text=&apos;退出&apos;, command=confirm_to_quit)
+    button2.pack(side=&apos;right&apos;)
+    panel.pack(side=&apos;bottom&apos;)
+    # 开启主事件循环
+    tkinter.mainloop()
+if __name__ == &apos;__main__&apos;:
+    main()</code></pre><p><em>注意</em>：GUI应用通常是事件驱动式的，之所以要进入主事件循环就是要监<br>听鼠标，键盘等各种事件的发生并执行对应的代码对事件进行处理，因为事件会持续的发生，所以需要这样的一个循环一直运行着等待下一个事件的发生。另一方面，TK为控件的摆放提供了三种布局管理器，通过布局管理器可以对控件进行定位，这三种布局管理器分别是：Placer（开发者提供控件的大小和摆放位置）,Packer（自动将控件填充到合适的位置）,Grid（基于网格坐标来摆放控件）</p>
+<h2 id="使用Pygame进行游戏开发"><a href="#使用Pygame进行游戏开发" class="headerlink" title="使用Pygame进行游戏开发"></a>使用Pygame进行游戏开发</h2><p>Pygame是一个开源的Python模块，专门用于多媒体应用干的开发，包含对图像，声音，视频，事件，碰撞等的支持。用C语言实现，被广泛的应用于游戏、模拟器、播放器等的开发。</p>
+<h3 id="大球吃小球，体会面向对象程序设计"><a href="#大球吃小球，体会面向对象程序设计" class="headerlink" title="大球吃小球，体会面向对象程序设计"></a>大球吃小球，体会面向对象程序设计</h3><h4 id="制作游戏窗口"><a href="#制作游戏窗口" class="headerlink" title="制作游戏窗口"></a>制作游戏窗口</h4><pre><code>import pygame
+
+def main():
+    # 初始化导入的pygame中的模块
+    pygame.init()
+    # 初始化用于显示的窗口并设置窗口尺寸
+    screen = pygame.display.set_mode((800,600))
+    # 设置当前窗口的标题
+    pygame.display.set_caption(&quot;大球吃小球&quot;)
+    running = True
+    # 开启一个事件循环处理发生的事件
+    while running:
+        # 从消息队列中获取事件并对事件进行处理
+        for event in pygame.event.get()：
+            if event.type == pygame.QUIT:
+                running = False
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+</ol>
+<h4 id="在窗口中绘图"><a href="#在窗口中绘图" class="headerlink" title="在窗口中绘图"></a>在窗口中绘图</h4><p>可以通过pygame中的draw模块的函数在窗口上绘图，可以绘制：线条，矩形，多边形，圆形，椭圆，圆弧等。RGB  “24位颜色表示法”</p>
+<pre><code>import pygame
+def main():
+    # 初始化导入的pygame模块
+    pygame.init()
+    # 初始化用于显示的窗口并设置尺寸
+    screen = pygame.display.set_mode((800,600))
+    # 设置当前窗口的标题
+    pygame.display.set_caption(&quot;打球吃小球&quot;)
+    # 设置窗口的背景颜色
+    screen.fill((242,242,242))
+    # 绘制一个圆形,屏幕、颜色、圆心位置、半径、0表示填充圆
+    pygame.draw.circle(screen,(255, 0, 0),(100,100),30,0)
+    # 刷新当前窗口，（渲染窗口将绘制的图像呈现）
+    pygame.display.flip()
+    running = True
+    # 开启一个事件循环处理发生的事件
+    while running:
+        # 从消息队列中获取事件并对事件进行处理
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False        
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><h4 id="加载图像"><a href="#加载图像" class="headerlink" title="加载图像"></a>加载图像</h4><pre><code>import pygame
+def main():
+    # 初始化导入的pygame中模块
+    pygame.init()
+    # 初始化用于显示的窗口并设置窗口尺寸
+    screen = pygame.display.set_mode((800,600))
+    # 设置当前窗口的标题
+    pygame.display.set_caption(&quot;大球吃小球&quot;)
+    # 设置窗口的背景色
+    screen.fill((255,255,255))
+    # 通过制定的文件名加载图像
+    ball_image = pygame.image.load(&quot;./res/ball.png&quot;)
+    # 在窗口上渲染图像
+    screen.blit(ball_image, (50,50))
+    # 刷新当前窗口
+    pygame.display.flip()
+    running = True
+    # 开启一个事件循环处理发生的事件
+    while running:
+        # 从消息队列中获取事件进行处理
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><h4 id="实现动画效果-视觉延迟"><a href="#实现动画效果-视觉延迟" class="headerlink" title="实现动画效果  视觉延迟"></a>实现动画效果  视觉延迟</h4><pre><code>import game
+
+
+def main():
+    # 初始化导入的pygame模块
+    pygame.init()
+    # 设置用于显示的窗口并设置尺寸
+    screen = pygame.display.set_mode((800,600))
+    # 设置窗口的标题
+    pygame.display.set_caption(&quot;大球吃小球&quot;)
+    # 定义变量来表示小球在屏幕上的位置
+    x, y = 50, 50
+    running = True
+    # 开启一个事件循环处理发生的事件
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        screen.fill((255, 255, 255))
+        pygame.draw.circle(screen,(255,0,0),(x,y),30,0)
+        pygame.display.flip()
+        # 每个50毫秒就改变小球的位置再刷新窗口
+        pygame.time.delay(50)
+        x, y = x + 5，y + 5
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><h4 id="碰撞检测-pygame中的sprite-动画精灵-模块提供了对碰撞检测的支持。"><a href="#碰撞检测-pygame中的sprite-动画精灵-模块提供了对碰撞检测的支持。" class="headerlink" title="碰撞检测 pygame中的sprite(动画精灵)模块提供了对碰撞检测的支持。"></a>碰撞检测 pygame中的sprite(动画精灵)模块提供了对碰撞检测的支持。</h4><pre><code>from enum import Enum, unique
+from math import sqrt
+from random import randint
+
+import pygame
+
+
+@unique
+class Color(Enum):
+    &apos;&apos;&apos;颜色&apos;&apos;&apos;
+
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    GRAY = (242, 242, 242)
+
+    @staticmethod
+    def random_color():
+        &apos;&apos;&apos;获得随机颜色&apos;&apos;&apos;
+        r = randint(0, 255)
+        g = randint(0, 255)
+        b = randint(0, 255)
+        return (r, g, b)
+
+
+class Ball(object):
+    &apos;&apos;&apos;球&apos;&apos;&apos;
+
+    def __init__(self,x,y,radius,sx,sy,color=Color.RED):
+        &apos;&apos;&apos;初始化方法&apos;&apos;&apos;
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.sx = sx
+        self.sy = sy
+        self.color = color
+        self.alive = True
+
+    def move(self, screen):
+        &apos;&apos;&apos;移动&apos;&apos;&apos;
+        self.x += self.sx
+        self.y += self.sy
+        if self.x - self.radius &lt;= 0 or \
+            self.x + self.radius &gt;= screen.get_width():
+            self.sx = -self.sx
+        if sely.y - self.radius &lt;= 0 or \
+            self.y + self.radius &gt;= screen.get_height():
+                sely.sy = -self.sy
+
+    def eat(self, other):
+        &apos;&apos;&apos;吃其他球&apos;&apos;&apos;
+        if self.alive and other.alive and self != other:
+            dx, dy = self.x - other.x, self.y - other.y
+            distance = sqrt(dx ** 2 + dy ** 2)
+            if distance &lt; self.radius + other.radius and \
+                self.radius &gt; other.radius:
+                other.alive = False
+                self.radius = self.radius + int(other.radius)
+
+    def draw(self, screen):
+        &apos;&apos;&apos;在窗口上绘制球&apos;&apos;&apos;
+        pygame.draw.circle(screen, self.color, 
+                            (self.x, self.y), self,radius, 0)</code></pre><h4 id="事件处理"><a href="#事件处理" class="headerlink" title="事件处理"></a>事件处理</h4><p>可以在事件循环中对鼠标事件进行处理，type属性判断事件类型，pos位置</p>
+<pre><code>def main():
+    # 定义用来装所有球的容器
+    balls = []    
+    # 初始化导入的pygame的模块
+    pygame.init()
+    # 初始化窗口
+    screen = pygame.display.set_mode((800,600))
+    # 设置当前窗口的标题
+    pygame.display.set_caption(&quot;大球吃小球&quot;)
+    running = True
+    # 开启事件循环处理
+    while running:
+        # 从消息队列中获取事件并进行处理
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            # 处理鼠标事件的代码
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                # 获取点击鼠标的位置
+                x, y = event.pos
+                radius = randint(10, 100)
+                sx, sy = randint(-10, 10), randint(-10, 10)
+                color = Color.random_color()
+                # 在点击鼠标的位置创建一个球随机
+                ball = Ball(x, y, radius, sx, sy,color)
+                # 将球添加到列表容器中
+                balls.append(ball)
+        screen.fill((255,255,255))
+        # 取出容器中的球，如果没被吃掉就绘制，被吃掉了就移出
+        for ball in balls:
+            if ball.alive:
+                ball.draw(screen)
+            else:
+                balls.remove(ball)
+        pygame.display.flip()
+        # 每隔50毫秒就改变球的位置再刷新窗口
+        pygame.time.display(50)
+        for ball in balls:
+            ball.move(screen)
+            # 检查球有没有吃到其他的球
+            for other in balls:
+                ball.eat(other)
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>py</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/09/17/python009/" rel="next" title="python009">
+                  <i class="fa fa-chevron-left"></i> python009
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/22/python011/" rel="prev" title="python011.md">
+                  python011.md <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图形用户界面和游戏开发"><span class="nav-number">1.</span> <span class="nav-text">图形用户界面和游戏开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于tkinter模块的GUI"><span class="nav-number">1.1.</span> <span class="nav-text">基于tkinter模块的GUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Pygame进行游戏开发"><span class="nav-number">1.2.</span> <span class="nav-text">使用Pygame进行游戏开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#大球吃小球，体会面向对象程序设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">大球吃小球，体会面向对象程序设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#制作游戏窗口"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">制作游戏窗口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在窗口中绘图"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">在窗口中绘图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载图像"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">加载图像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现动画效果-视觉延迟"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">实现动画效果  视觉延迟</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#碰撞检测-pygame中的sprite-动画精灵-模块提供了对碰撞检测的支持。"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">碰撞检测 pygame中的sprite(动画精灵)模块提供了对碰撞检测的支持。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件处理"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">事件处理</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/bayhax.jpg"
+      alt="王洪粮">
+  <p class="site-author-name" itemprop="name">王洪粮</p>
+  <div class="site-description" itemprop="description">坚持  自律   幽默  乐观 向上</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/bayhax" title="GitHub &rarr; https://github.com/bayhax" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:whlbayhax@gmail.com" title="E-Mail &rarr; mailto:whlbayhax@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">by bayhax</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
