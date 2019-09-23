@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="使用正则表达式在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要，正则表达式就是用于描述这些规则的工具，换句话说正则表达式是一种工具，它定义了字符串的匹配模式（如何检查一个字符串是否有跟某种模式匹配的部分或者从一个字符串中将与模式匹配的部分提取出来或者替换掉）。Python通过标准库中的re模块来支持正则表达式操作。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-22T14:08:47.814Z">
+<meta property="og:updated_time" content="2019-09-22T14:12:27.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python012">
 <meta name="twitter:description" content="使用正则表达式在编写处理字符串的程序或网页时，经常会有查找符合某些复杂规则的字符串的需要，正则表达式就是用于描述这些规则的工具，换句话说正则表达式是一种工具，它定义了字符串的匹配模式（如何检查一个字符串是否有跟某种模式匹配的部分或者从一个字符串中将与模式匹配的部分提取出来或者替换掉）。Python通过标准库中的re模块来支持正则表达式操作。">
@@ -210,7 +210,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">15</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">16</span></a>
 
   </li>
       
@@ -281,7 +281,7 @@
                 
               
 
-              <time title="创建时间：2019-09-22 18:05:56 / 修改时间：22:08:47" itemprop="dateCreated datePublished" datetime="2019-09-22T18:05:56+08:00">2019-09-22</time>
+              <time title="创建时间：2019-09-22 18:05:56 / 修改时间：22:12:27" itemprop="dateCreated datePublished" datetime="2019-09-22T18:05:56+08:00">2019-09-22</time>
             </span>
           
             
@@ -515,7 +515,59 @@
 <td align="center"></td>
 </tr>
 </tbody></table>
-<h2 id="Python对正则表达式的支持-import-re，re模块中核心函数"><a href="#Python对正则表达式的支持-import-re，re模块中核心函数" class="headerlink" title="Python对正则表达式的支持 import re，re模块中核心函数"></a>Python对正则表达式的支持 import re，re模块中核心函数</h2><p>| :–: | :–: |<br>|函数|说明|<br>|complie(pattern, flags=0)|编译正则表达式返回正则表达式对象|<br>|match(pattern,string,flags=0)|用正则表达式匹配字符串 成功返回匹配对象，不成功返回None|<br>|search(pattern,string,flags=0)|搜索字符串中第一次出现正则表达式的模式，成功返回匹配对此，否则None|<br>|split(pattern,string,maxsplit=0,flags=0)|用正则表达式指定的模式分隔符拆分字符串  返回列表|<br>|sub(patter, repl,string,count=0,flags=0)|用指定的字符串替换原字符串中与正则表达式匹配的模式，可以利用count指定替换掉的次数|<br>|fullmatch(pattern,string,flags=0)|用match函数的完全匹配（从字符串开头到结尾）版本|<br>|findall(pattern,string,flags=0)|查找字符串所有与正则表达式匹配的模式，返回字符串的列表|<br>|finditer(pattern,string,flags=0)|查找字符串所有与正则表达式匹配的模式，返回一个迭代器|<br>|purge()|清除隐式编译的正则表达式的缓存|<br>|re.I/re.IGNORECASE|忽略大小写匹配标记|<br>|re.M/re.MULTILINE|多行匹配标记|<br><em><strong>说明： </strong>上面提到的re模块中的这些函数，实际开发中也可以用正则表达式对象的方法替代对这些函数的使用，如果一个正则表达式需要重复的使用，那么先通过compile函数编译正则表达式并创建出正则表达式对象无疑是更为明智的选择。</em></p>
+<h2 id="Python对正则表达式的支持-import-re，re模块中核心函数"><a href="#Python对正则表达式的支持-import-re，re模块中核心函数" class="headerlink" title="Python对正则表达式的支持 import re，re模块中核心函数"></a>Python对正则表达式的支持 import re，re模块中核心函数</h2><table>
+<thead>
+<tr>
+<th align="center">函数</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">complie(pattern, flags=0)</td>
+<td align="center">编译正则表达式返回正则表达式对象</td>
+</tr>
+<tr>
+<td align="center">match(pattern,string,flags=0)</td>
+<td align="center">用正则表达式匹配字符串 成功返回匹配对象，不成功返回None</td>
+</tr>
+<tr>
+<td align="center">search(pattern,string,flags=0)</td>
+<td align="center">搜索字符串中第一次出现正则表达式的模式，成功返回匹配对此，否则None</td>
+</tr>
+<tr>
+<td align="center">split(pattern,string,maxsplit=0,flags=0)</td>
+<td align="center">用正则表达式指定的模式分隔符拆分字符串  返回列表</td>
+</tr>
+<tr>
+<td align="center">sub(patter, repl,string,count=0,flags=0)</td>
+<td align="center">用指定的字符串替换原字符串中与正则表达式匹配的模式，可以利用count指定替换掉的次数</td>
+</tr>
+<tr>
+<td align="center">fullmatch(pattern,string,flags=0)</td>
+<td align="center">用match函数的完全匹配（从字符串开头到结尾）版本</td>
+</tr>
+<tr>
+<td align="center">findall(pattern,string,flags=0)</td>
+<td align="center">查找字符串所有与正则表达式匹配的模式，返回字符串的列表</td>
+</tr>
+<tr>
+<td align="center">finditer(pattern,string,flags=0)</td>
+<td align="center">查找字符串所有与正则表达式匹配的模式，返回一个迭代器</td>
+</tr>
+<tr>
+<td align="center">purge()</td>
+<td align="center">清除隐式编译的正则表达式的缓存</td>
+</tr>
+<tr>
+<td align="center">re.I/re.IGNORECASE</td>
+<td align="center">忽略大小写匹配标记</td>
+</tr>
+<tr>
+<td align="center">re.M/re.MULTILINE</td>
+<td align="center">多行匹配标记</td>
+</tr>
+</tbody></table>
+<p><em><strong>说明： </strong>上面提到的re模块中的这些函数，实际开发中也可以用正则表达式对象的方法替代对这些函数的使用，如果一个正则表达式需要重复的使用，那么先通过compile函数编译正则表达式并创建出正则表达式对象无疑是更为明智的选择。</em></p>
 <h3 id="1-验证输入的用户名和QQ号是否有效并给出对应的提示信息"><a href="#1-验证输入的用户名和QQ号是否有效并给出对应的提示信息" class="headerlink" title="1.验证输入的用户名和QQ号是否有效并给出对应的提示信息"></a>1.验证输入的用户名和QQ号是否有效并给出对应的提示信息</h3><pre><code>&apos;&apos;&apos;
 验证输入用户名和QQ号是否有效并给出对应的提示信息
 要求：用户名必须由字母数字下划线构成且长度在6--20个字符之间
@@ -614,6 +666,10 @@ if __name__ == &quot;__main__&quot;:
 
             <div class="post-nav-prev post-nav-item">
               
+                <a href="/2019/09/23/python013/" rel="prev" title="python013">
+                  python013 <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
@@ -679,7 +735,7 @@ if __name__ == &quot;__main__&quot;:
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
