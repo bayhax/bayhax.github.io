@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="进程和线程当今的计算机早就已经是多CPU或多核了，四核八核等等，目前的操作系统也都是支持“多任务”的操作系统。也就是说可以同时运行多个程序，也可以将一个程序分解为若干个相对独立的子任务，让多个子任务并发的执行，从而缩短程序的运行时间，让用户获得更好的体验。概念进程：进程是操作系统中执行的一个程序，操作系统以进程为单位分配存储空间，每个进程都有自己的地址空间、数据栈以及其他用于跟踪进程执行的辅助数据">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-23T14:51:45.033Z">
+<meta property="og:updated_time" content="2019-09-24T15:19:35.973Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python013">
 <meta name="twitter:description" content="进程和线程当今的计算机早就已经是多CPU或多核了，四核八核等等，目前的操作系统也都是支持“多任务”的操作系统。也就是说可以同时运行多个程序，也可以将一个程序分解为若干个相对独立的子任务，让多个子任务并发的执行，从而缩短程序的运行时间，让用户获得更好的体验。概念进程：进程是操作系统中执行的一个程序，操作系统以进程为单位分配存储空间，每个进程都有自己的地址空间、数据栈以及其他用于跟踪进程执行的辅助数据">
@@ -281,11 +281,19 @@
                 
               
 
-              <time title="创建时间：2019-09-23 21:55:43 / 修改时间：22:51:45" itemprop="dateCreated datePublished" datetime="2019-09-23T21:55:43+08:00">2019-09-23</time>
+              <time title="创建时间：2019-09-23 21:55:43" itemprop="dateCreated datePublished" datetime="2019-09-23T21:55:43+08:00">2019-09-23</time>
             </span>
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-24 23:19:35" itemprop="dateModified" datetime="2019-09-24T23:19:35+08:00">2019-09-24</time>
+              </span>
             
           
 
@@ -302,7 +310,234 @@
       
         <h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><p>当今的计算机早就已经是多CPU或多核了，四核八核等等，目前的操作系统也都是支持“多任务”的操作系统。也就是说可以同时运行多个程序，也可以将一个程序分解为若干个相对独立的子任务，让多个子任务并发的执行，从而缩短程序的运行时间，让用户获得更好的体验。</p><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>进程：进程是操作系统中执行的一个程序，操作系统以进程为单位分配存储空间，每个进程都有自己的地址空间、数据栈以及其他用于跟踪进程执行的辅助数据，操作系统管理所有进程的执行，为他们合理的分配资源。进程可以通过fork或spawn的方式创建新的进程来执行其他的任务，不过新的进程也有自己独立的控件，因此必须通过进程间通信机制（IPC,Inter-Process Communication)来实现数据共享，包括管道、信号、套接字、共享内存区等。<br>一个进程还可以拥有多个并发的执行线索，简单的说就是拥有多个可以获得CPU调度的执行单元，这就是所谓的线程。由于线程在同一进程下，它们可以共享相同的上下文，因此相对于进程而言，线程间的信息共享和通信更加容易。当然在单核CPU中，真正的并发是不可能的，因为在某个时刻能够获得CPU的只有唯一的一个线程，多个线程共享了CPU的执行时间。多线程可以提升程序的性能和改善用户体验。但是多线程因为占用了更多的CPU执行时间，导致其他程序无法获得足够的CPU执行时间，而且在开发者角度讲，编写和调试多线程程序有些困难。<br>Python既支持多进程又支持多线程，因此Python实现并发编程主要有三种方式：<br>多进程、多线程、多进程+多线程。还有协程</p><a id="more"></a>
 
-<h2 id="Python中的多进程"><a href="#Python中的多进程" class="headerlink" title="Python中的多进程"></a>Python中的多进程</h2>
+<h2 id="Python中的多进程"><a href="#Python中的多进程" class="headerlink" title="Python中的多进程"></a>Python中的多进程</h2><p>Unix和Linux系统有fork()函数，系统调用它来创建进程，调用fork()函数时父进程，创建出的是子进程，子进程是父进程的一个拷贝，但是子进程拥有自己的PID，fork()函数非常特殊的会返回两次，父进程中可以通过fork()函数的返回值得到子进程的PID，而子进程的返回值永远是0，Python的os模块提供了fork()函数。windows系统中要实现跨平台的多进程编程，可以使用multiprocess模块的Process类来创建子进程，而且该模块提供了更高级的封装，例如批量启动进程的进程池Pool、用于进程间通信的队列Queue和管道Pipe<br>例如下载文件：</p>
+<pre><code>    from random import random
+    from time import time, sleep
+
+
+    def download_task(filename):
+        print(&quot;开始下载%s...&quot; % filename)
+        time_to_download = randint(5,10)
+        sleep(time_to_download)
+        print(&quot;%s下载完成，耗费了%d秒&quot; % (filename, time_to_download))
+
+    def main():
+        start = time()
+        download_task(&apos;python从入门到住院.pdf&apos;)
+        download_task(&quot;Peking Hot.avi&quot;)
+        end = time()
+        print(&quot;公共耗费了%.2f秒&quot; % (end - start))
+
+
+    if __name__ == &quot;__main__&quot;:
+        main()
+程序一步步的执行，只有个第一个文件下载完后才会下载下一个，显然如果有
+很多文件的话，速度会很慢，我们需要他们同时下载，这就使用了多进程</code></pre><p>多进程下载文件</p>
+<pre><code>from multiprocessing import Process
+from os import getpid
+from random import randint
+from time import time, sleep
+
+def download_task(filename):
+    print(&quot;启动下载进程，进程号[%d]&quot; % getpid())
+    print(&quot;开始下载%s..&quot; % filename)
+    time_to_download = randint(1,5)
+    sleep(time_to_download)
+    print(&quot;%s下载完成！耗费了%d秒&quot; % (filename, time_to_download))
+
+
+def main():
+    start = time()
+    p1 = Process(target=download_task, args=(&quot;python.md&quot;,))
+    p1.start()
+    p2 = Process(target=download_task, args=(&quot;tokhot.av&quot;,))
+    p2.start()
+    p1.join()
+    p2.join()
+    end = time()
+    print(&quot;总共耗费了%0.2秒&quot; % (end - start))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>Process类创建了进程对象，通过target参数传入一个函数表示进程启动后要执行的代码，后面的args是一个元组（特别注意），代表了传递给函数的参数。Process的start方法用来启动进程，而join方法表示等待进程执行结束。上面就使用了多进程，就可以同时下载两个文件了。（自行了解subprocess模块中的类和函数创建和启动子进程，通过管道和子进程进行通信）</p>
+<p>多进程可以使多个任务同时进程，那么假如进程之间要协调通信应该如何做到呢？</p>
+<pre><code>from multiprocessing import Process
+from time import sleep
+
+counter = 0
+
+def sub_task(string):
+    global counter
+    while counter &lt; 10:
+        print(string, end = &apos;&apos;, flush=True)
+        counter += 1
+        sleep(0.01)
+
+def main():
+    p1 = Process(target=sub_task, args=(&quot;ping&quot;,))
+    p1.start()
+    p2 = Process(target=sub_task, args=(&quot;pong&quot;,))
+    p2.start()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>乍一看，程序没有任何问题，ping  pong两个进程总共循环10次，是吗？其实会是<br>ping pong 各输出10次，这是因为，在程序中创建进程的时候，子进程复制了父进<br>程及其所有的额数据结构，每个子进程都有自己独立的内存空间，所以意味着两个子进程各有一个counter变量，所以各输出10次，要解决这个问题，简单的办法就是使用multiprocessing模块中的Queue类，它是可以被多个进程共享的队列，底层是通过管道和信号量（semaphore）机制实现的</p>
+<h2 id="Python中的多线程"><a href="#Python中的多线程" class="headerlink" title="Python中的多线程"></a>Python中的多线程</h2><p>Python早期的版本中引入了thread模块(现在名为_thread)实现多线程，<br>然而该模块过于底层，而且很多功能都没有提供，因此目前使用的多线程是<br>threading模块，该模块对多线程编程提供了更好的面向对象的封装。</p>
+<p>多线程下载文件</p>
+<pre><code>from random import randint
+from threading import Thread
+from time import sleep
+
+def download(filename):
+    print(&quot;开始下载%s&quot; % filename)
+    time_to_download = randint(1,5)
+    sleep(time_to_download)
+    print(&quot;%s下载完成!共耗费了%d秒&quot; % (filename, time_to_download))
+
+def main():
+    start = time()
+    t1 = Thread(target=download, args=(&quot;mik.pdf&quot;,))
+    t1.start()
+    t2 = Thread(target=download, args=(&quot;tohot.av&quot;,))
+    t2.start()
+    t1.join()
+    t2.join()
+    end = time()
+    print(&quot;总共耗费了%.3f秒&quot; % (end - start))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>可以直接使用threading模块Thread类来创建线程，但是也可以从已有的类创建新类，通过集成Thread类的方式来创建自定义的线程类，然后再创建线程对象并启动线程</p>
+<pre><code>from random import randint
+from threading import Thread
+from time import time, sleep
+
+
+class DownloadTask(Thread):
+
+    def __init__(self, filename):
+        super().__init()
+        self._filename = filename
+
+    def run(self):
+        print(&quot;开始下载%s..&quot; % self._filename)
+        time_to_download = randint(5, 10)
+        sleep(time_to_download)
+        print(&quot;%s下载完成，耗费%d秒&quot; % (self._filename, time_to_download))
+
+
+def main():
+    start = time()
+    t1 = DownloadTask(&quot;python.pdf&quot;)
+    t1.start()
+    t2 = DownloadTask(&quot;tokohot.av&quot;)
+    t2.start()
+    t1.join()
+    t2.join()
+    end = time()
+    print(&quot;总共耗费了%.2f&quot; % (end - start))
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>因为多个线程可以共享进程的内存空间，因此要实现多个进程间的通信相对简单，能想到的最直接的办法就是设置一个全局变量，多个线程共享这个全局变量即可。但是当多个线程共享同一个变量（称之为“资源”）的时候，很有可能产生不可控的结果从而导致程序失效甚至崩溃。如果一个资源被多个线程竞争使用，那么通常称之为“临界资源”，对临界资源的访问需要加上保护，否则资源就会处于“混乱”状态。做一个没有对临界资源进行保护的例子，（100个线程同时向一个银行账号转入一元钱，不保护的最后结果并不是100）</p>
+<pre><code>from time import sleep
+from threading import Thread
+
+
+class Account(object):
+
+    def __init__(self):
+        self._balance = 0
+
+    def deposit(self, money):
+        # 计算存款后的余额
+        new_balance = self._balance + money
+        # 模拟受理存款业务需要0.01秒的事件
+        sleep(0.01)
+        # 修改账户余额
+        self._balance = new_balance
+
+    @property
+    def balance(self):
+        return slef._balance
+
+
+class AddMoneyThread(Thread):
+
+    def __init__(self, account, money):
+        super().__init__()
+        self._account = account
+        self._money = money
+
+    def run(self):
+        self._account.deposit(self._money)
+
+
+def main():
+    account = Account()
+    threads = []
+    # 创建100个存款的线程向同一个账户中存钱
+    for _ in range(100):
+        t = AddMoneyThread(account, 1)
+        threads.append(t)
+        t.start()
+    # 等所有钱款的线程都执行完毕
+    for t in threads:
+        t.join()
+    print(&quot;账户余额为：￥%d元&quot; ￥ account.balance)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>运行结果小于100，之所以出现这种情况，就是上面所说的没有对银行账号这个<br>临界资源进行保护。多个线程同时向账户存钱时，会一起执行new_balance = self._balance + money这行代码，多个线程得到的账户余额初始状态下都是0，<br>所以都是0+1,结果就远远小于100了，这种情况下，“锁”就可以派上用场了。可以通过“锁”来保护“临界资源”，只有获得“锁”的线程才能访问“临界资源”，其他没有得到“锁”的线程就只能被阻塞起来，直到获得“锁”的线程释放了”锁”，其他线程才有机会拿到“锁”访问“临界资源”</p>
+<pre><code>from time import sleep
+from threading import Thread, Lock
+
+
+class Account(object):
+    def __init__(self):
+        self._balance = 0
+        self._lock = Lock()
+
+    def deposit(self, money):
+        # 先获取锁才能执行后续的代码
+        self._lock.acquire()
+        try:
+            new_balance = self._balance + money
+            sleep(0.01)
+            self._balance = new_balance
+        finally:
+            # 在finally中执行释放锁的操作保证正常异常锁都能释放
+            self._lock.release()
+
+    @property
+    def balance(self):
+        return self._balance
+
+class AddMoneyThread(Thread):
+
+    def __init__(self, account, money):
+        super().__init__()
+        self._account = account
+        self._money = money
+
+    def run(self):
+        self._account.deposit(self._money)
+
+
+def main():
+    account = Account()
+    threads = []
+    for _ in rnage(100):
+        t = AddMoneyThread(account, 1)
+        threads.append(t)
+        t.start()
+    for t in threads:
+        t.join()
+    print(&quot;账户余额为:￥%d元&quot; % account.balance)
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>但是Python的多线程并不能发挥CPU多核特性，这一点只要启动几个执行死循环的线程就可以得到证实，之所以如此，是因为Python解释器有一个“全局解释器锁”<br>（GIL）的东西，任何线程执行前都必须先获得GIL锁，然后没执行100条字节码，解释器就会自动释放GIL锁，让别的线程有机会执行。这是创建python的历史遗留问题，但是使用多线程在提升执行效率和改善用户体验方面还是有积极意义的。</p>
+<h2 id="多进程还是多线程"><a href="#多进程还是多线程" class="headerlink" title="多进程还是多线程"></a>多进程还是多线程</h2><p>无论是多进程还是多线程，只要数量一多，效率肯定上不去，为什么呢？加入你正在备战中考，晚上需要做语文，数学，英语，物理，化学这5门的作业，每项作业耗费1小时，如果你先花1小时做语文，再1小时做数学，这样依次全部做完，总共5小时，这种方式成为单任务模型。如果你打算切换到多任务模型，可以先1分钟做语文，再1分钟做数学，以此类推，只要切换速度足够快，这种方式就和单核CPU执行多任务是一样的了，以旁观者的角度来看，你就正在同时写5科作业<br>但是切换作业是由代价的，比如从语文切换到数学，你要先收拾桌子上的语文课本钢笔等（这叫保存现场），然后打开数学课本，找到圆规直尺等（这叫准备环境）<br>才能开始做数学作业，操作系统在切换进程或者线程时也是一样的，需要先保存当前执行的现场环境（CPU寄存器状态，内存页等），然后把新任务的执行环境准备好（恢复上次的寄存器状态，切换内存页等）才能开始执行，这个切换过程虽然快，但也是需要耗费时间的。如果有几千个任务同时进行，操作系统就可能主要忙着切换任务，根本没有时间去执行任务了，这种情况最常见的就是硬盘狂响，点窗口无反应，系统处于假死状态。所以，多任务一旦多到一个限度，反而会使得系统性能急剧下降，最终导致所有任务都做不好。<br>是否采用多任务的第二个考虑是任务的类型，可以把任务分为计算密集型和I/O密集型。计算密集型任务的特点是进行大量的计算，消耗CPU资源，比如对视频进行编码解码或者格式转换等等，这种任务全靠CPU的运算能力，虽然可以用多任务完成，但是任务越多，花在切换任务的时间就越多，CPU执行任务的效率就越低下。计算密集型任务由于主要消耗CPU资源，这类任务用Python这样的脚本语言去执行效率通常很低，所以最能胜任这类任务的是C语言，所以Python中有嵌入C/C++代码的机制。<br>除了计算密集型任务，其他的涉及到网络、存储介质I/O的任务都可以视为I/O密集型任务，这类任务的特点就是CPU消耗很小，任务的大部分时间都在等待I/O操作完成（因为I/O的速度远远低于CPU和内存的速度）。对于I/O密集型任务，<br>如果启动多任务就可以减少I/O等待时间从而让CPU高效率的运转。有一大类的任务<br>都属于I/O密集型任务，这其中就包括了网络应用和Web应用</p>
+<h2 id="单线程-异步I-O"><a href="#单线程-异步I-O" class="headerlink" title="单线程+异步I/O"></a>单线程+异步I/O</h2><p>现代操作系统对I/O操作的改进中最为重要的就是支持异步I/O。如果充分利用操作<br>系统提供的异步I/O支持，就可以用单进程单线程模型来执行多任务，这种全新的<br>模型成为事件驱动模型。Nginx就是支持异步I/O的Web服务器，它在单核CPU上<br>采用单进程模型就可以高效的支持多任务。在多核CPU上，可以运行多个进程（数量<br>与CPU核心数相同），充分利用多核CPU，用Node.js开发的服务器端程序也使用了这种工作模式，这也是当下实现多任务编程的一种趋势。<br>在Python语言中单进程+异步I/O的编程模式称为协程，有了协程的支持，就可以<br>基于事件驱动编写高效的多任务程序。协程的最大优势就是极高的执行效率，因为子程序切换不是线程切换，而是由程序自身控制，因此没有切换线程的开销。协程的第二大优势就是不需要多线程的锁机制，因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不用加锁，只需要判断状态就好了，所以执行效率比多线程高很多。如果想要充分利用CPU的多核特性，最简单的办法就是多进程+协程，既充分利用多核，又充分发挥协程的高效率，可获得极高的性能。</p>
+
     </div>
 
     
@@ -375,7 +610,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.</span> <span class="nav-text">进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多进程"><span class="nav-number">2.</span> <span class="nav-text">Python中的多进程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.</span> <span class="nav-text">进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多进程"><span class="nav-number">2.</span> <span class="nav-text">Python中的多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多线程"><span class="nav-number">3.</span> <span class="nav-text">Python中的多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多进程还是多线程"><span class="nav-number">4.</span> <span class="nav-text">多进程还是多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单线程-异步I-O"><span class="nav-number">5.</span> <span class="nav-text">单线程+异步I/O</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->

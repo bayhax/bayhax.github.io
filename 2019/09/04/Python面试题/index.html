@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-23T14:51:32.698Z">
+<meta property="og:updated_time" content="2019-09-24T15:19:32.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -292,7 +292,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-23 22:51:32" itemprop="dateModified" datetime="2019-09-23T22:51:32+08:00">2019-09-23</time>
+                <time title="修改时间：2019-09-24 23:19:32" itemprop="dateModified" datetime="2019-09-24T23:19:32+08:00">2019-09-24</time>
               </span>
             
           
@@ -473,7 +473,19 @@ xrange(5)----xrange(5)
     xrange(100)
     0 1</code></pre><h1 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h1></li>
 <li><p>什么是PEP8</p>
-</li>
+<pre><code>1.缩进。4个空格的缩进，不能使用tab，更不能tab+空格
+2.每行最大长度79，换行可以使用反斜杠，最好使用圆括号。
+换行点要在操作符的后边敲回车
+3.类和top-level函数定义之间空两行，类中的方法定义之间
+空一行，函数内逻辑无关段落之间空一行，其他地发尽量不要空行
+4.模块导入顺序：标准库  第三方库 自己写的库，中间空一行
+5.不要在一句import中多个库，比如import os,sys不推荐
+6.避免不必要的空格
+7.注释必须由
+8.函数命名要遵循规范
+9.尽可能使用is is not去掉==，比如if x is not None 要优于if x
+10.使用基于类的异常，每个模块或包都有自己的异常类，此异常类继承自Exception
+11.异常中try的代码尽可能的少。</code></pre></li>
 <li><p>了解Python之禅吗</p>
 </li>
 <li><p>了解docstring吗</p>
