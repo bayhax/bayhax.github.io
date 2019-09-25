@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-24T15:19:32.458Z">
+<meta property="og:updated_time" content="2019-09-25T14:40:52.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -210,7 +210,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">16</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">17</span></a>
 
   </li>
       
@@ -292,7 +292,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-24 23:19:32" itemprop="dateModified" datetime="2019-09-24T23:19:32+08:00">2019-09-24</time>
+                <time title="修改时间：2019-09-25 22:40:52" itemprop="dateModified" datetime="2019-09-25T22:40:52+08:00">2019-09-25</time>
               </span>
             
           
@@ -481,17 +481,57 @@ xrange(5)----xrange(5)
 4.模块导入顺序：标准库  第三方库 自己写的库，中间空一行
 5.不要在一句import中多个库，比如import os,sys不推荐
 6.避免不必要的空格
-7.注释必须由
+7.注释必须有
 8.函数命名要遵循规范
 9.尽可能使用is is not去掉==，比如if x is not None 要优于if x
 10.使用基于类的异常，每个模块或包都有自己的异常类，此异常类继承自Exception
 11.异常中try的代码尽可能的少。</code></pre></li>
 <li><p>了解Python之禅吗</p>
-</li>
+<pre><code>python交互式界面import this出现python之禅
+Beautiful is better than ugly.
+优美胜于丑陋
+Explicit is better than implicit.
+明了胜于晦涩
+Simple is better than complex.
+简洁胜于复杂
+Complex is better than complicated.
+复杂胜于凌乱
+Flat is better than nested.
+扁平胜于嵌套
+Sqparse is better than dense.
+间隔胜于紧凑
+Readability counts.
+可读性很重要
+Special cases aren&apos;t special enough to break the rulse.
+Although pracitcality beats purity.
+即便假借特例的实用性之名，也不可违背这些规则
+Errors should never pass ailently.
+Unless explicityly silences.
+不要包容所有错误，除非你确定这样做
+In the face of ambiguity, refuse the temptation to guess.
+当存在多种可能，不要尝试去猜测
+There should be one--and preferably only one --obvious way to do it.
+而是尽量去找一种，最好是唯一一种明显的解决方案
+Although that way may not be obvious at first unless you&apos;re Dutch.
+虽然这并不容易，因为你不是Dutch（python之父）
+Now is better than never.
+Although never is often better than *right* now,
+做也许好过不做，但是不假思索就动手还不如不做
+If the implementation is hard to explain, it&apos;s a bad idea.
+If the implementataion is easy to explain, it may be a good idea.
+如果你无法向别人描述你的方案，那肯定不是一个好方案，反之亦然。
+Namespace are one honking great idea -- let&apos;s do more of those!
+命名空间是一种绝妙的理念，我们应该多加利用。 </code></pre></li>
 <li><p>了解docstring吗</p>
-</li>
-<li><p>了解类型注解码</p>
-</li>
+<pre><code>docstring文档字符串
+代码中的注释，编写完代码，文档也有了
+三个双引号引起来的部分
+出现在模块、函数、类、方法里第一个语句的，就是docstring。会自动变成属性__doc__。</code></pre></li>
+<li><p>了解类型注解吗</p>
+<pre><code>因为python是动态语言，在使用变量前不需要声明变量，可以直接用
+所以有时候会错误的使用变量的类型。但是对实际运行不会有影响
+a: int = 2
+def add(a: int) -&gt; int:</code></pre></li>
 <li><p>列举你知道的Python对象的命名规范，例如方法或者类等</p>
 </li>
 <li><p>Python中的注释有哪几种</p>
@@ -787,7 +827,7 @@ return str</code></pre></li>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

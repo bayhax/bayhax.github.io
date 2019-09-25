@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="bayhax的博客">
 <meta property="og:description" content="进程和线程当今的计算机早就已经是多CPU或多核了，四核八核等等，目前的操作系统也都是支持“多任务”的操作系统。也就是说可以同时运行多个程序，也可以将一个程序分解为若干个相对独立的子任务，让多个子任务并发的执行，从而缩短程序的运行时间，让用户获得更好的体验。概念进程：进程是操作系统中执行的一个程序，操作系统以进程为单位分配存储空间，每个进程都有自己的地址空间、数据栈以及其他用于跟踪进程执行的辅助数据">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-24T15:19:35.973Z">
+<meta property="og:updated_time" content="2019-09-25T13:53:59.950Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python013">
 <meta name="twitter:description" content="进程和线程当今的计算机早就已经是多CPU或多核了，四核八核等等，目前的操作系统也都是支持“多任务”的操作系统。也就是说可以同时运行多个程序，也可以将一个程序分解为若干个相对独立的子任务，让多个子任务并发的执行，从而缩短程序的运行时间，让用户获得更好的体验。概念进程：进程是操作系统中执行的一个程序，操作系统以进程为单位分配存储空间，每个进程都有自己的地址空间、数据栈以及其他用于跟踪进程执行的辅助数据">
@@ -210,7 +210,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">16</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">17</span></a>
 
   </li>
       
@@ -292,7 +292,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-24 23:19:35" itemprop="dateModified" datetime="2019-09-24T23:19:35+08:00">2019-09-24</time>
+                <time title="修改时间：2019-09-25 21:53:59" itemprop="dateModified" datetime="2019-09-25T21:53:59+08:00">2019-09-25</time>
               </span>
             
           
@@ -537,6 +537,110 @@ if __name__ == &quot;__main__&quot;:
     main()</code></pre><p>但是Python的多线程并不能发挥CPU多核特性，这一点只要启动几个执行死循环的线程就可以得到证实，之所以如此，是因为Python解释器有一个“全局解释器锁”<br>（GIL）的东西，任何线程执行前都必须先获得GIL锁，然后没执行100条字节码，解释器就会自动释放GIL锁，让别的线程有机会执行。这是创建python的历史遗留问题，但是使用多线程在提升执行效率和改善用户体验方面还是有积极意义的。</p>
 <h2 id="多进程还是多线程"><a href="#多进程还是多线程" class="headerlink" title="多进程还是多线程"></a>多进程还是多线程</h2><p>无论是多进程还是多线程，只要数量一多，效率肯定上不去，为什么呢？加入你正在备战中考，晚上需要做语文，数学，英语，物理，化学这5门的作业，每项作业耗费1小时，如果你先花1小时做语文，再1小时做数学，这样依次全部做完，总共5小时，这种方式成为单任务模型。如果你打算切换到多任务模型，可以先1分钟做语文，再1分钟做数学，以此类推，只要切换速度足够快，这种方式就和单核CPU执行多任务是一样的了，以旁观者的角度来看，你就正在同时写5科作业<br>但是切换作业是由代价的，比如从语文切换到数学，你要先收拾桌子上的语文课本钢笔等（这叫保存现场），然后打开数学课本，找到圆规直尺等（这叫准备环境）<br>才能开始做数学作业，操作系统在切换进程或者线程时也是一样的，需要先保存当前执行的现场环境（CPU寄存器状态，内存页等），然后把新任务的执行环境准备好（恢复上次的寄存器状态，切换内存页等）才能开始执行，这个切换过程虽然快，但也是需要耗费时间的。如果有几千个任务同时进行，操作系统就可能主要忙着切换任务，根本没有时间去执行任务了，这种情况最常见的就是硬盘狂响，点窗口无反应，系统处于假死状态。所以，多任务一旦多到一个限度，反而会使得系统性能急剧下降，最终导致所有任务都做不好。<br>是否采用多任务的第二个考虑是任务的类型，可以把任务分为计算密集型和I/O密集型。计算密集型任务的特点是进行大量的计算，消耗CPU资源，比如对视频进行编码解码或者格式转换等等，这种任务全靠CPU的运算能力，虽然可以用多任务完成，但是任务越多，花在切换任务的时间就越多，CPU执行任务的效率就越低下。计算密集型任务由于主要消耗CPU资源，这类任务用Python这样的脚本语言去执行效率通常很低，所以最能胜任这类任务的是C语言，所以Python中有嵌入C/C++代码的机制。<br>除了计算密集型任务，其他的涉及到网络、存储介质I/O的任务都可以视为I/O密集型任务，这类任务的特点就是CPU消耗很小，任务的大部分时间都在等待I/O操作完成（因为I/O的速度远远低于CPU和内存的速度）。对于I/O密集型任务，<br>如果启动多任务就可以减少I/O等待时间从而让CPU高效率的运转。有一大类的任务<br>都属于I/O密集型任务，这其中就包括了网络应用和Web应用</p>
 <h2 id="单线程-异步I-O"><a href="#单线程-异步I-O" class="headerlink" title="单线程+异步I/O"></a>单线程+异步I/O</h2><p>现代操作系统对I/O操作的改进中最为重要的就是支持异步I/O。如果充分利用操作<br>系统提供的异步I/O支持，就可以用单进程单线程模型来执行多任务，这种全新的<br>模型成为事件驱动模型。Nginx就是支持异步I/O的Web服务器，它在单核CPU上<br>采用单进程模型就可以高效的支持多任务。在多核CPU上，可以运行多个进程（数量<br>与CPU核心数相同），充分利用多核CPU，用Node.js开发的服务器端程序也使用了这种工作模式，这也是当下实现多任务编程的一种趋势。<br>在Python语言中单进程+异步I/O的编程模式称为协程，有了协程的支持，就可以<br>基于事件驱动编写高效的多任务程序。协程的最大优势就是极高的执行效率，因为子程序切换不是线程切换，而是由程序自身控制，因此没有切换线程的开销。协程的第二大优势就是不需要多线程的锁机制，因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不用加锁，只需要判断状态就好了，所以执行效率比多线程高很多。如果想要充分利用CPU的多核特性，最简单的办法就是多进程+协程，既充分利用多核，又充分发挥协程的高效率，可获得极高的性能。</p>
+<h2 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h2><ol>
+<li><p>将耗时间的任务放到线程中以获得更好的的用户体验<br><block>“下载”和“关于”两个按钮，用休眠的方式模拟点击“下载”按钮会联网下载文件需要耗费10秒，如果不使用“多线程”，会发现，当点击“下载”按钮后整个程序的其他部分都被整个耗时间的任务阻塞而无法执行了，这显然是非常糟糕的用户体验</block></p>
+<pre><code>import time
+improt tkinter
+import tkinter.messagebox        
+def download():
+    # 模拟下载任务需要花费10秒
+    time.sleep(10)
+    tkinter.messagebox.showinfo(&quot;提示&quot;, &quot;下载完成！&quot;)
+def show_about():
+    tkinter.messagebox.showinfo(&quot;关于&quot;, &quot;author:bayhax&quot;)
+def main():
+    top = tkinter.TK()
+    top.title(&quot;单线程&quot;)
+    top.geometry(&quot;200x150&quot;)
+    top.wm_attributes(&quot;-topmost&quot;, True)
+    panel = tkinter.Frame(top)
+    button1 = tkinter.Button(panel, text=&quot;下载&quot;, command=download)
+    button1.pack(side=&quot;left&quot;)
+    button2 = tkinter.Button(panel, text=&quot;关于&quot;, command=download)
+    button2.pack(side=&quot;right&quot;)
+    panel.pack(side=&quot;bottom&quot;)
+    tkinter.mainloop()
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>如果使用多线程将耗时间的任务放到一个独立的线程中执行，这样就不会因为耗时间的任务而阻塞了其他主线程</p>
+<pre><code>import time
+import tkinter
+import tkinter.messagebox
+from threading import Thread
+def main():
+    class DownloadTaskHandler(Thread):
+        def run(self):
+            time.sleep(10)
+            tkinter.messagebox.showinfo(&quot;提示&quot;,&quot;下载完成&quot;)
+            # 启用下载按钮
+            button1.config(state=tkinter.NORMAL)
+    def download():
+        # 禁用下载按钮
+        button1.config(state=tkinter.DISABLED)
+        # 通过daemon参数将线程设置为守护进程（主程序退出就不再保留执行）
+        # 在线程中处理耗时间的下载任务
+        DownloadTaskHandler(daemon=True).start()
+    def show_about():
+        tkinter.messagebox.shorinfo(&quot;关于&quot;,&quot;author:bayhax&quot;)
+    top = tkinter.TK()
+    top.title(&quot;单线程&quot;)
+    top.geometry(&quot;200x150&quot;)
+    top.wm_attributes(&quot;-topmost&quot;, 1)
+    panel = tkinter.Frame(top)
+    button1 = tkinter.Button(panel, text=&quot;下载&quot;, command=download)
+    button1.pack(&quot;left&quot;)
+    button2 = tkinter.Button(panel, text=&quot;关于&quot;, command=download)
+    button2.pack(&quot;right&quot;)
+    panel.pack(side=&quot;bottom&quot;)
+    tkinter.mainloop()
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+<li><p>使用多进程对复杂任务进行“分而治之”，计算1-100000000的计算密集型任务</p>
+<pre><code>from time import time
+def main():
+    total = 0
+    number_list = [x for x in range(1, 100000000)]
+    start = time()
+    for number in number_list:
+        total += number
+    print(total)
+    end = time()
+    print(&quot;execution time %.3fs&quot; % (end - start))
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre></li>
+</ol>
+<p>上面的代码，故意创建了一个列表容器然后填入了100000000个数，这一步是耗时间的，所以为了公平起见，我们将这个任务分解到8个进程中去执行的时候，暂时不考虑列表切片操作花费的时间，只是把做运算和合并运算结果的时间统计出来</p>
+<pre><code>from multiprocessing import Process, Queur
+from random import randint
+from time import time
+def task_handler(curr_list, result_queue):
+    total = 0
+    for number in curr_list:
+        total += number
+    result_queue.put(total)
+def main():
+    process = []
+    number_list = [x for x in range(1, 100000000)]
+    result_queue = Queue()
+    index = 0
+    # 启动8个进程将数据切片后进行运算
+    for _ in range(8):
+        p = Process(target=task_handler, args=(number_list[index:index + 12500000], result_queue))
+        index += 12500000
+        process.append(p)
+        p.start
+    # 开始记录所有进程执行完成所花费的时间
+    start = time()
+    for p in process:
+        p.join()
+    # 合并执行结果
+    total = 0
+    while not result_queue.empty():
+        total += result_queue.get()
+    print(total)
+    end = time()
+    print(&quot;Execution time:&quot; (end - start), &apos;s&apos;, sep=&apos;&apos;)
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre><p>使用多进程后由于获得了更多的CPU执行时间以及更好的利用利用了CPU的多核特性，明显的减少了程序的运行时间，而且计算量越大效果越明显。还可以将多个进程部署在不同的计算机上，做成分布式进程，通过multiprocessing.managers模块中提供的管理器将Queue对象通过网络共享出来（注册到网络上让其他计算机可以访问），便可进行分布式计算。</p>
 
     </div>
 
@@ -562,6 +666,10 @@ if __name__ == &quot;__main__&quot;:
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2019/09/25/python014/" rel="prev" title="python014">
+                  python014 <i class="fa fa-chevron-right"></i>
+                </a>
               
             </div>
           </div>
@@ -610,7 +718,7 @@ if __name__ == &quot;__main__&quot;:
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.</span> <span class="nav-text">进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多进程"><span class="nav-number">2.</span> <span class="nav-text">Python中的多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多线程"><span class="nav-number">3.</span> <span class="nav-text">Python中的多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多进程还是多线程"><span class="nav-number">4.</span> <span class="nav-text">多进程还是多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单线程-异步I-O"><span class="nav-number">5.</span> <span class="nav-text">单线程+异步I/O</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.</span> <span class="nav-text">进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多进程"><span class="nav-number">2.</span> <span class="nav-text">Python中的多进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python中的多线程"><span class="nav-number">3.</span> <span class="nav-text">Python中的多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多进程还是多线程"><span class="nav-number">4.</span> <span class="nav-text">多进程还是多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单线程-异步I-O"><span class="nav-number">5.</span> <span class="nav-text">单线程+异步I/O</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用案例"><span class="nav-number">6.</span> <span class="nav-text">应用案例</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -628,7 +736,7 @@ if __name__ == &quot;__main__&quot;:
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
