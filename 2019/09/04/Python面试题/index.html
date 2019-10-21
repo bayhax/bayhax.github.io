@@ -63,7 +63,7 @@
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://bayhax.github.io/2019/09/04/Python面试题/interview_01.png">
-<meta property="og:updated_time" content="2019-09-26T13:40:34.508Z">
+<meta property="og:updated_time" content="2019-10-21T14:39:30.804Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -212,7 +212,7 @@
       
     
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">23</span></a>
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档<span class="badge">24</span></a>
 
   </li>
       
@@ -226,6 +226,19 @@
     
 
     <a href="/schedule/" rel="section"><i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>日程表</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-python">
+      
+    
+      
+    
+
+    <a href="/python/" rel="section"><i class="menu-item-icon fa fa-fw fa-python"></i> <br>python</a>
 
   </li>
   </ul>
@@ -294,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-09-26 21:40:34" itemprop="dateModified" datetime="2019-09-26T21:40:34+08:00">2019-09-26</time>
+                <time title="修改时间：2019-10-21 22:39:30" itemprop="dateModified" datetime="2019-10-21T22:39:30+08:00">2019-10-21</time>
               </span>
             
           
@@ -580,69 +593,157 @@ def add(a: int) -&gt; int:  参数a为int类型，返回值int类型</code></pre
 <pre><code>pylint  flake8</code></pre></li>
 </ol>
 <h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><ol>
-<li>列举Python中的基本数据类型</li>
-<li>如何区别可变数据和不可变数据</li>
-<li>将“hello world”转换为首字母大写”Hello World”</li>
-<li>如何检测字符串中只含有数字</li>
-<li>将字符串”ilovechina”进行反转</li>
-<li>Python中的字符串格式化方式你知道哪些</li>
-<li>有一个字符串开头和末尾都有空格，比如” adabdw “,要求写一个函数把这个<br> 字符串的前后空格都去掉</li>
-<li>获取字符串”123456”最后连个字符</li>
-<li>一个编码为GBK的字符串S，要将其转成UTF-8编码的字符串，应该如何操作</li>
-<li>s = ‘info: xiaoZhang 33     shandong’,<br>用正则切分字符串输出[‘info’,’xiaoZhang’,’33’,’shandong’]<br>a = “你好 中国 “，去除多余空格，只留一个空格</li>
-<li>怎样将字符串转换为小写<br>单引号 双引号 三引号的区别</li>
-</ol>
-<h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><ol>
-<li>已知AList = [1,2,3,1,2],对AList列表元素去重，写出具体过程</li>
-<li>如何实现’1,2,3’变成[‘1’,’2’,’3’]</li>
-<li>给定两个list,A和B，找出相同元素和不同元素</li>
-<li>[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]</li>
-<li>合并列表[1,5,7,9]和[2,2,6,8]</li>
-<li>如何打乱一个列表的元素</li>
+<li><p>列举Python中的基本数据类型</p>
+<pre><code>number/string/tuple/list/dict/set</code></pre></li>
+<li><p>如何区别可变数据和不可变数据</p>
+<pre><code>1) type() 函数查看类型
+2）id() 查看变量地址，如果两个变量储存同样的值，并且这两个变量的
+的地址一样，则是不可变数据，反之是可变数据。</code></pre></li>
+<li><p>将“hello world”转换为首字母大写”Hello World”</p>
+<pre><code>&quot;hello world&quot;.title()
+第一个单词的首字母大写   s.capitalize()</code></pre></li>
+<li><p>如何检测字符串中只含有数字</p>
+<pre><code>s.isdigit()返回True则只包含数字，
+s.isalpha()返回True则只包含字母，
+s.isalnum()返回True则数字字母混合，
+s.islower()是否是小写，数字算小写，
+s.upper()是否全是大写，
+s.istitle()是否是标题，首字母大写</code></pre></li>
+<li><p>将字符串”ilovechina”进行反转</p>
+<pre><code>reverse是对于列表而言，所以不行，
+切片，反向递进：b = s[::-1]
+reversed函数，c = &apos;&apos;.join(reversed(a))</code></pre></li>
+<li><p>Python中的字符串格式化方式你知道哪些</p>
+<pre><code>%s 
+.format()</code></pre></li>
+<li><p>有一个字符串开头和末尾都有空格，比如” adabdw “,要求写一个函数把这个<br> 字符串的前后空格都去掉</p>
+<pre><code>def rm_space(str1):
+    str2 = str1.replace(&quot; &quot;,&quot;&quot;)
+    # split转换成列表，再join去掉所有空格
+    # str2 = &quot;&quot;.join(str1.split())</code></pre></li>
+<li><p>获取字符串”123456”最后两个字符</p>
+<pre><code>a = str[len(str)-2:]</code></pre></li>
+<li><p>一个编码为GBK的字符串S，要将其转成UTF-8编码的字符串，应该如何操作</p>
+<pre><code>S.decode(&apos;gbk&apos;).decode(&apos;utf-8&apos;)</code></pre></li>
+<li><p>s = ‘info: xiaoZhang 33     shandong’,<br>用正则切分字符串输出[‘info’,’xiaoZhang’,’33’,’shandong’]<br>a = “你好     中国 “，去除多余空格，只留一个空格<br>t = re.split(r”: | “, “ “.join(s.split()))<br>print(“ “.join(s.split()))</p>
+</li>
+<li><p>怎样将字符串转换为小写<br>单引号 双引号 三引号的区别</p>
+<pre><code>s.lower()
+字符串如果是双引号引起来的，里面如果再想用引号就要用单引号。
+单引号也一样，单引号双引号没什么大区别。
+三引号引起来的字符串可以换行，可以当做docstring,在函数说明中</code></pre><h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2></li>
+<li><p>已知AList = [1,2,3,1,2],对AList列表元素去重，写出具体过程</p>
+<pre><code>blist = list(set(AList))</code></pre></li>
+<li><p>如何实现’1,2,3’变成[‘1’,’2’,’3’]</p>
+<pre><code>import re
+t = re.split(&quot;,&quot;,&quot;1,2,3&quot;)</code></pre></li>
+<li><p>给定两个list,A和B，找出相同元素和不同元素</p>
+<pre><code>list(set(A)&amp;set(B))  相同
+list(set(A)^set(B))  不相同</code></pre></li>
+<li><p>[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]</p>
+<pre><code>列表生成式
+l = [[1,2],[3,4],[5,6]]
+x = [j for i in l for j in i] 相当于两层循环</code></pre></li>
+<li><p>合并列表[1,5,7,9]和[2,2,6,8]</p>
+<pre><code>a.extend(b)</code></pre></li>
+<li><p>如何打乱一个列表的元素</p>
+<pre><code>import random
+random.shuffle(a)</code></pre></li>
 </ol>
 <h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><ol>
-<li>字典操作中del和pop有什么区别</li>
-<li>按照字典的内的年龄排序<br> d1 = [<pre><code>{&apos;name&apos;:&apos;alice&apos;,&apos;age&apos;:38}
-{&apos;name&apos;:&apos;bob&apos;,&apos;age&apos;:18}
-{&apos;name&apos;:&apos;Carl&apos;,age:28}</code></pre> ]</li>
-<li>请合并下面的两个字典a = {‘A’:1,”B”:2},b = {‘C’:3,’D’:4}</li>
-<li>如何使用生成式的方式生成一个字典，写一段功能代码</li>
-<li>如何把元组(“a”,”b”)和元组(1,2)变为字典{“a”:1,”b”:2}</li>
-</ol>
-<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ol>
-<li>Python常用的数据结构的类型及其特性<br> A: {1:0,2:0,3:0}<br> B: {“a”:0,”b”:0,”c”:0}<br> C: {(1,2):0,(2,3):0}<br> D: {[1,2]:0,[2,3]:0}</li>
-<li>如何交换字典{“A”:1,”B”:2}的键和值</li>
-<li>Python里面如何实现tuple和list的转换</li>
-<li>我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何<br> 对生成器类型的对象实现相同的功能呢？</li>
-<li>请将[i for i in range(3)]改成生成器</li>
-<li>a=’hello’和b=’你好’编码成bytes类型</li>
-<li>下面的代码输出结果是什么？<br> a = (1,2,3,[4,5,6,7],8)<br> a[2] = 2<br> print(a)</li>
-<li>下面的代码输出结果是什么?<br> a = (1,2,3,[4,5,6,7],8)<br> a[3][0] = 2<br> print(a)</li>
-</ol>
-<h1 id="操作类题目"><a href="#操作类题目" class="headerlink" title="操作类题目"></a>操作类题目</h1><ol>
-<li>Python中交换连个变量的值</li>
-<li>在读文件操作的时候会使用read、readline或者readlines，简述<br> 他们各自的作用</li>
-<li>json序列化时，可以处理的数据类型有哪些，如何定制支持datetime类型</li>
-<li>json序列化时，默认遇到中文会转换成Unicode，如果想要保留中文怎么办</li>
-<li>有两个磁盘文件A和B，各存放一行字母，要求把这两个文件中的信息合并，<br> （按字母顺序排列），输出到一个新文件C中。</li>
-<li>如果当前日期为20190530，要求写一个函数输出N天后的日期，（比如N为2，<br> 则输出20190601）</li>
-<li>写一个函数，接收证书参数n，返回一个函数，函数的功能是把函数的参数<br> 和n相乘并把结果返回</li>
-<li>下面的代码存在什么问题，如何改进<br> def strappend(num):<pre><code>str=&apos;first&apos;
+<li><p>字典操作中del和pop有什么区别</p>
+<pre><code>加入有字典变量a，那么操作为del a[key]   a.pop(key)
+del没有返回值，pop有返回值，返回value值</code></pre></li>
+<li><p>按照字典的内的年龄排序<br> d1 = [</p>
+<pre><code>{&apos;name&apos;:&apos;alice&apos;,&apos;age&apos;:38},
+{&apos;name&apos;:&apos;bob&apos;,&apos;age&apos;:18},
+{&apos;name&apos;:&apos;Carl&apos;,&apos;age&apos;:28}</code></pre><p> ]<br> d1.sort(key=lambda x: x[‘age’])</p>
+</li>
+<li><p>请合并下面的两个字典a = {‘A’:1,”B”:2},b = {‘C’:3,’D’:4}</p>
+<pre><code>a.update(b)  没有返回值
+c = {**a,**b}  有返回值</code></pre></li>
+<li><p>如何使用生成式的方式生成一个字典，写一段功能代码</p>
+<pre><code>{key:value for key,value in d.items()}</code></pre></li>
+<li><p>如何把元组(“a”,”b”)和元组(1,2)变为字典{“a”:1,”b”:2}</p>
+<pre><code>dict(zip(t1,t2))</code></pre><h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2></li>
+<li><p>Python常用的数据结构的类型及其特性</p>
+<pre><code>下列对字典对象的键类型描述不正确的是D，因为字典的键值必须为可hash类型
+列表是可变数据类型，不可hash
+A: {1:0,2:0,3:0}
+B: {&quot;a&quot;:0,&quot;b&quot;:0,&quot;c&quot;:0}
+C: {(1,2):0,(2,3):0}
+D: {[1,2]:0,[2,3]:0}</code></pre></li>
+<li><p>如何交换字典{“A”:1,”B”:2}的键和值</p>
+<pre><code>s = {value:key for key,value in s.items()}
+s = dict(zip(s.values,s.keys))</code></pre></li>
+<li><p>Python里面如何实现tuple和list的转换</p>
+<pre><code>直接强制类型转换，转换成什么就用什么类型</code></pre></li>
+<li><p>我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何<br> 对生成器类型的对象实现相同的功能呢？</p>
+<pre><code>from itertools import islice
+gen = iter(range(10))
+for i in islice(gen,0,4):
+    print(i)</code></pre></li>
+<li><p>请将[i for i in range(3)]改成生成器</p>
+<pre><code>a = (i for i in range(3))</code></pre></li>
+<li><p>a=’hello’和b=’你好’编码成bytes类型</p>
+<pre><code>a = b&apos;hello&apos;
+b = bytes(&quot;你好&quot;,&apos;utf-8&apos;)
+c = &apos;你好&apos;.encode(&apos;utf-8&apos;)</code></pre></li>
+<li><p>下面的代码输出结果是什么？</p>
+<pre><code>a = (1,2,3,[4,5,6,7],8)
+a[2] = 2
+print(a)
+报错异常，元组的元素不可变</code></pre></li>
+<li><p>下面的代码输出结果是什么?</p>
+<pre><code>a = (1,2,3,[4,5,6,7],8)
+a[3][0] = 2
+print(a)
+里面元素是可变的，所以为a = (1,2,3,[2,5,6,7],8)</code></pre><h1 id="操作类题目"><a href="#操作类题目" class="headerlink" title="操作类题目"></a>操作类题目</h1></li>
+<li><p>Python中交换两个变量的值</p>
+<pre><code>a, b = b,a</code></pre></li>
+<li><p>在读文件操作的时候会使用read、readline或者readlines，简述<br> 他们各自的作用</p>
+<pre><code>read()每次读取整个文件，通常用于将一个文件读取到一个字符串变量中
+readline()一行一行读取，加载到内存中，对于大文件耗资源
+readlines()将文件的句柄生成一个生成器，读的时候每次生成，省资源，耗时</code></pre></li>
+<li><p>json序列化时，可以处理的数据类型有哪些，如何定制支持datetime类型</p>
+</li>
+<li><p>json序列化时，默认遇到中文会转换成Unicode，如果想要保留中文怎么办</p>
+</li>
+<li><p>有两个磁盘文件A和B，各存放一行字母，要求把这两个文件中的信息合并，<br> （按字母顺序排列），输出到一个新文件C中。</p>
+</li>
+<li><p>如果当前日期为20190530，要求写一个函数输出N天后的日期，（比如N为2，<br> 则输出20190601）</p>
+</li>
+<li><p>写一个函数，接收证书参数n，返回一个函数，函数的功能是把函数的参数<br> 和n相乘并把结果返回</p>
+</li>
+<li><p>下面的代码存在什么问题，如何改进<br> def strappend(num):</p>
+<pre><code>str=&apos;first&apos;
 for i in range(num):
     str+=str(i)
 return str</code></pre></li>
-<li>一行代码输出1-100之间的所有偶数</li>
-<li>with语句的作用，写一段代码</li>
-<li>Python字典和json字符串相互转换方法</li>
-<li>请写一个Python逻辑，计算一个文件中的大写字母的数量</li>
-<li>请写一段Python连接Mongo数据库，然后查询的代码</li>
-<li>说一说Redis的基本类型</li>
-<li>请写一段Python连接MySQL数据库的代码</li>
-<li>了解Redis的事务吗</li>
-<li>了解数据库的三范式吗</li>
-<li>了解分布式锁吗</li>
-<li>用Python实现一个Redis的分布式锁的功能</li>
-<li>写一段Python使用Mongo数据库创建索引的代码</li>
+<li><p>一行代码输出1-100之间的所有偶数</p>
+</li>
+<li><p>with语句的作用，写一段代码</p>
+</li>
+<li><p>Python字典和json字符串相互转换方法</p>
+</li>
+<li><p>请写一个Python逻辑，计算一个文件中的大写字母的数量</p>
+</li>
+<li><p>请写一段Python连接Mongo数据库，然后查询的代码</p>
+</li>
+<li><p>说一说Redis的基本类型</p>
+</li>
+<li><p>请写一段Python连接MySQL数据库的代码</p>
+</li>
+<li><p>了解Redis的事务吗</p>
+</li>
+<li><p>了解数据库的三范式吗</p>
+</li>
+<li><p>了解分布式锁吗</p>
+</li>
+<li><p>用Python实现一个Redis的分布式锁的功能</p>
+</li>
+<li><p>写一段Python使用Mongo数据库创建索引的代码</p>
+</li>
 </ol>
 <h1 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h1><ol>
 <li>函数装饰器有什么作用，请列举说明</li>
@@ -857,7 +958,7 @@ return str</code></pre></li>
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
