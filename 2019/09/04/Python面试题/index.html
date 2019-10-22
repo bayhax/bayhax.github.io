@@ -63,7 +63,7 @@
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://bayhax.github.io/2019/09/04/Python面试题/interview_01.png">
-<meta property="og:updated_time" content="2019-10-21T14:39:30.804Z">
+<meta property="og:updated_time" content="2019-10-22T14:06:28.935Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -307,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-21 22:39:30" itemprop="dateModified" datetime="2019-10-21T22:39:30+08:00">2019-10-21</time>
+                <time title="修改时间：2019-10-22 22:06:28" itemprop="dateModified" datetime="2019-10-22T22:06:28+08:00">2019-10-22</time>
               </span>
             
           
@@ -706,24 +706,81 @@ print(a)
 readline()一行一行读取，加载到内存中，对于大文件耗资源
 readlines()将文件的句柄生成一个生成器，读的时候每次生成，省资源，耗时</code></pre></li>
 <li><p>json序列化时，可以处理的数据类型有哪些，如何定制支持datetime类型</p>
-</li>
+<pre><code>可以处理：str  int  list  tuple dict  bool  None
+因为datetime类不支持json序列化，所以应该进行拓展
+#自定义时间序列化
+import json
+from datetime import datetime, date
+# JSONEncoder不知道怎么把数据转换成json字符串的时候
+# 它就会调用default()函数，所以处理json不支持的数据类型的时候
+# 都是重写这个函数，default()函数默认是直接抛出异常
+class DateToJson(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime(&apos;%Y-%m-%d %H: %M : %S&apos;)
+        elif isinstance(obj, date):
+            return obj.strftime(&apos;%Y-%m-%d&apos;)
+        else:
+            return json.JSONEncoder.default(self, obj)
+d = {&apos;name&apos;:&apos;csd&apos;, &apos;data&apos;: datetime.now()}
+print(json.dumps(d, cls=DateToJson))</code></pre></li>
 <li><p>json序列化时，默认遇到中文会转换成Unicode，如果想要保留中文怎么办</p>
-</li>
+<pre><code>通过json.dumps的ensure_ascii参数解决
+import json
+a = json.dumps({&apos;name&apos;:&apos;张三&apos;},ensure_ascii=False)
+print(a)</code></pre></li>
 <li><p>有两个磁盘文件A和B，各存放一行字母，要求把这两个文件中的信息合并，<br> （按字母顺序排列），输出到一个新文件C中。</p>
-</li>
+<pre><code>with open(&apos;A.txt&apos;) as f1:
+    f1_txt = f1.readline()
+with open(&apos;B.txt&apos;) as f2:
+    f2_txt = f2.readline()
+f3_txt = f1_txt + f2_txt
+f3_list = sorted(f3_txt)
+with open(&apos;C.txt&apos;,&apos;a+&apos;) as f:
+    f.write(&quot;&quot;.join(f3_list))</code></pre></li>
 <li><p>如果当前日期为20190530，要求写一个函数输出N天后的日期，（比如N为2，<br> 则输出20190601）</p>
-</li>
-<li><p>写一个函数，接收证书参数n，返回一个函数，函数的功能是把函数的参数<br> 和n相乘并把结果返回</p>
-</li>
-<li><p>下面的代码存在什么问题，如何改进<br> def strappend(num):</p>
-<pre><code>str=&apos;first&apos;
-for i in range(num):
-    str+=str(i)
-return str</code></pre></li>
+<pre><code># datetime库中timedelta方法，参数默认为0，可选
+# datetime.timedelta(days=0,secondes=0,microseconds=0,milliseconde=0,minutes=0,hours=0,weeks=0)
+import datetime
+def datetime_operate(n: int):
+    now = datetime.datetime.now()
+    _new_date = now + datetime.timedelta(days=n)
+    new_date = _new_date.strftime(&quot;%Y%m%d&quot;)
+    return new_date
+if __name__ == &quot;__main__&quot;:
+    print(datetime_operate(4))</code></pre></li>
+<li><p>写一个函数，接收整数参数n，返回一个函数，函数的功能是把函数的参数<br> 和n相乘并把结果返回</p>
+<pre><code># 闭包
+def mul_operate(num):
+    def g(val):
+        return num * val
+    return g
+m = mul_operate(8)
+print(m(5))</code></pre></li>
+<li><p>下面的代码存在什么问题，如何改进</p>
+<pre><code>def strappend(num):
+    str=&apos;first&apos;
+    for i in range(num):
+        str+=str(i)
+    return str
+# 函数命名规范问题，str_append,变量名str不合理，不应该使用python
+# 内置的的名称，而且此处不仔细会产生歧义，是将数字强制转换为str类型，
+# 还是str变量的第i个元素而且str是不可变对象，所以每次都会创建新的存储
+# 空间num越大，存储空间越大，内存消耗严重，改为yeild生成器.
+def str_append(num):
+    s = &apos;first&apos;
+    for i in range(num):
+        s += str(i)
+        yield s
+if __name__ == &quot;__main__&quot;:
+    for i in str_append(3):
+        print(i)</code></pre></li>
 <li><p>一行代码输出1-100之间的所有偶数</p>
-</li>
+<pre><code>列表生成式
+a = [i for i in range(101) if i % 2 == 0]</code></pre></li>
 <li><p>with语句的作用，写一段代码</p>
-</li>
+<pre><code># with确保对资源的使用过程不论是否发生异常都会执行必要的清理操作
+# 比如文件的关闭，线程中锁的自动获取和释放等等</code></pre></li>
 <li><p>Python字典和json字符串相互转换方法</p>
 </li>
 <li><p>请写一个Python逻辑，计算一个文件中的大写字母的数量</p>
@@ -737,7 +794,11 @@ return str</code></pre></li>
 <li><p>了解Redis的事务吗</p>
 </li>
 <li><p>了解数据库的三范式吗</p>
-</li>
+<pre><code>1NF:强调的是列的原子性，即列不能够再分成其他列
+2NF:在1NF的基础上，必须有主键，包含在主键中的列必须完全依赖于
+    主键，不能只依赖于主键的一部分
+3NF:在2NF的基础上，非主键的列必须直接依赖于主键，不能存在传递依赖
+    即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键 </code></pre></li>
 <li><p>了解分布式锁吗</p>
 </li>
 <li><p>用Python实现一个Redis的分布式锁的功能</p>
