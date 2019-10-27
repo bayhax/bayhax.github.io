@@ -63,7 +63,7 @@
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://bayhax.github.io/2019/09/04/Python面试题/interview_01.png">
-<meta property="og:updated_time" content="2019-10-22T14:06:28.935Z">
+<meta property="og:updated_time" content="2019-10-27T12:12:07.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -307,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-10-22 22:06:28" itemprop="dateModified" datetime="2019-10-22T22:06:28+08:00">2019-10-22</time>
+                <time title="修改时间：2019-10-27 20:12:07" itemprop="dateModified" datetime="2019-10-27T20:12:07+08:00">2019-10-27</time>
               </span>
             
           
@@ -780,19 +780,130 @@ if __name__ == &quot;__main__&quot;:
 a = [i for i in range(101) if i % 2 == 0]</code></pre></li>
 <li><p>with语句的作用，写一段代码</p>
 <pre><code># with确保对资源的使用过程不论是否发生异常都会执行必要的清理操作
-# 比如文件的关闭，线程中锁的自动获取和释放等等</code></pre></li>
+# 比如文件的关闭，线程中锁的自动获取和释放等等
+# 一般访问文件资源时，容易犯两个错误，
+# 一忘了关闭文件释放资源，二忘了没有异常处理
+f = open(&quot;test.txt&quot;,&apos;r&apos;)  # 打开
+data = f.read()  # 读取
+f.close  # 关闭
+# 改进写法,虽然避免了异常发生时没有关闭文件，但代码不简洁
+f = open(&apos;test.txt&apos;,&apos;r&apos;)
+try:
+    data = f.read()
+except e:
+    print(e)
+finally:
+    f.close()
+# 使用with方法,简洁方便
+with open(&apos;test.txt&apos;,&apos;r&apos;) as f:
+    f.read()
+# with的实现
+class Test:
+    def __enter__(self):
+        print(&apos;__enter__() is call!&apos;)
+        return self
+    def dosomething(self):
+        print(&apos;dosomething!&apos;)
+    def __exit__(self, exc_type, exc_value, traceback):
+        print(&quot;__exit__() is call!&quot;)
+        print(f&apos;type:{exc_type}&apos;)
+        print(f&apos;value:{exc_value}&apos;)
+        print(f&apos;trace:{traceback}&apos;)
+        print(&quot;__exit()__ is call!&quot;)
+with Test() as sample:
+    pass
+# 当对象被实例化时，就会主动调用__enter__()方法，任务执行完成后调用
+# __exit__()方法，另外，__exit__()方法是带有三个参数的，如果上下文运
+# 行时没有发生异常，三个参数为None。</code></pre></li>
 <li><p>Python字典和json字符串相互转换方法</p>
-</li>
+<pre><code>Python中使用dumps方法将dict对象转换为json对象，使用loads方法将json对象转换为dict对象
+dic = {&apos;a&apos;:123, &apos;b&apos;:&quot;456&quot;, &apos;c&apos;:&quot;liming&quot;}
+json_str = json.dumps(dic)
+dic2 = json.loads(json_str)
+print(dic2)
+打印出与dic一样的字典对象
+import json
+dic = {&apos;a&apos;:123,&apos;b&apos;:&quot;456&quot;, &apos;c&apos;:&quot;liming&quot;}
+dic_str = json.loads(str(dic).replace(&quot;&apos;&quot;,&quot;\&quot;&quot;))
+print(dic_str)
+# 注意dic字典中key值是单引号，当用loads方法时，里面的参数必须是jsons
+# tr类型，而json的标准格式不支持单引号字符串，所以使用replace方法将
+# 单引号替换为双引号，避免出现错误。json.decoder.JSONDecodeError: 
+# Expecting property name enclosed in double quotes</code></pre></li>
 <li><p>请写一个Python逻辑，计算一个文件中的大写字母的数量</p>
-</li>
+<pre><code>with open(&apos;test.txt&apos;) as f:
+    count = 0
+    for i in f.read():
+        if i.isupper():
+            count += 1
+print(count)</code></pre></li>
 <li><p>请写一段Python连接Mongo数据库，然后查询的代码</p>
-</li>
+<pre><code>import pymongo
+db_configs = {
+    &apos;type&apos;:&apos;mongo&apos;,
+    &apos;host&apos;:&apos;192.168.1.1&apos;,
+    &apos;port&apos;:&apos;2300&apos;,
+    &apos;user&apos;:&apos;bayhax&apos;,
+    &apos;passwd&apos;:&apos;whl19960411,,&apos;,
+    &apos;db_name&apos;:&apos;bayhax&apos;
+}
+class Mongo():
+    def __init__(self, db=db_configs[&apos;db_name&apos;], username=db_configs[&apos;user&apos;], password=db_configs[&apos;passwd&apos;]):
+    self.client = pymongo.MongoClient(f&apos;mongodb://{db_configs[&quot;host&quot;]}:db_configs[&quot;port&quot;])
+    self.username = username
+    self.password = password
+    if self.username and self.password&quot;
+        self.db1 = self.client[db].authenticate(self.username, self.password)
+    self.db1 = self.client[db]
+    def find_data(self):
+        # 获取状态为0的数据
+        data = self.db1.test.find({&quot;status&quot;:0})
+        gen = (item for item in data)
+        return gen
+    if __name__ == &quot;__main__&quot;:
+        m = Mongo()
+        print(m.find_data())</code></pre></li>
 <li><p>说一说Redis的基本类型</p>
-</li>
-<li><p>请写一段Python连接MySQL数据库的代码</p>
-</li>
+<pre><code>string
+hash
+list
+set
+zset(sorted set 有序集合)</code></pre></li>
+<li><p>请写一段Python连接Redis/MySQL数据库的代码</p>
+<pre><code>from redis import StrictRedis, ConnectionPool
+redis_url = &quot;redis://://xxxx@192.168.1.1:6379/15&quot;
+pool = ConnectionPool.from_url(redis_url, decode_response=True)
+r = StrictRedis(connection_pool=poll)
+
+conn = pymysql.connect(host=&apos;localhost&apos;,port=3306,user=&apos;root&apos;,
+    passwd = &apos;123&apos;, db=&apos;user&apos;, charset = &apos;utf8mb4&apos;)
+    cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
+    cursor.execute(sql语句)
+    conn.close()</code></pre></li>
 <li><p>了解Redis的事务吗</p>
-</li>
+<pre><code>redis事务是一些redis命令的集合，有两个特点
+1.事务是一个单独的隔离操作，事务中的所有命令都会序列化，按顺序的执行。
+    事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。
+2.事务是一个事务的命令是一个原子操作，事务中的命令要么全部被执行，要么    全部都不执行，一般来说，事务有四个他行ACID，分别为原子性，一致性，     隔离性，持久性。以事务从开始到执行会经历三个阶段：
+    开始事务   命令入队   执行事务
+import redis
+import sys
+def run():
+    try:
+        conn = redis.StrictRedis(&quot;192.168.1.1&quot;)
+        # python中redis事务通过pipeline的封装实现
+        pipe = conn.pipeline()
+        pipe.sadd(&quot;s001&quot;,&apos;a&apos;)
+        sys.exit()
+        # 在事务还没有提交前退出，所以事务不会被执行
+        pipe.sadd(&apos;s001&apos;,&apos;b&apos;)
+        pipe.execute()
+        pass
+    except Exception as err:
+        print(err)
+        pass
+if __name__ == &quot;__main__&quot;:
+    run()</code></pre></li>
 <li><p>了解数据库的三范式吗</p>
 <pre><code>1NF:强调的是列的原子性，即列不能够再分成其他列
 2NF:在1NF的基础上，必须有主键，包含在主键中的列必须完全依赖于
@@ -800,70 +911,521 @@ a = [i for i in range(101) if i % 2 == 0]</code></pre></li>
 3NF:在2NF的基础上，非主键的列必须直接依赖于主键，不能存在传递依赖
     即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键 </code></pre></li>
 <li><p>了解分布式锁吗</p>
-</li>
+<pre><code>分布式锁是控制分布式系统之间的同步访问共享资源的一种方式。对于分布式锁
+有三点：
+1.任何一个时间点必须只能够有一个客户端拥有锁。
+2.不能够有死锁，也就是最终客户端都能够获得锁，尽管可能会经历失败
+3.错误容忍性要好，只要有大部分的Redis实例存货，客户端就应该能够获得锁
+分布式锁的条件：
+互斥性：分布式锁需要保证在不同节点的不同线程的互斥
+可重入性：同一个节点上的同一个线程如果获取了锁之后，能够再次获取这个锁
+锁超时：支持超时释放锁，防止死锁
+高效，高可用：枷锁和解锁需要高效，同时也需要保证高可用防止分布式锁失效
+            可以增加降级
+支持阻塞和非阻塞：可以实现超时获取失败，tryLock（long timeOut）     支持公平锁和非公平锁
+分布式锁的实现方案：
+1.数据库实现（乐观锁）
+2.基于zookeeper的实现
+3.基于Redis的实现（推荐）</code></pre></li>
 <li><p>用Python实现一个Redis的分布式锁的功能</p>
-</li>
+<pre><code>redis分布式锁的实现方式：SETNS + GETSET，NX是Not exists的缩写，
+SETNS命令就应该理解为：SET IF Not eXists.多个进程执行Redis命令
+SETNX lock.foo &lt;current Unix time + lock timeout + 1&gt;
+如果SETNX返回1，说明该进程获得锁，SETNX将键lock.foo的值设置为锁的超时时间（当前时间+锁的有效时间）。如果SETNX返回0，说明其他进程已经获得了锁，进程不能进入临界区。进程可以在一个循环中不断的尝试SETNX操作，以期获得锁
+import time
+import redis
+from conf.config import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+class RedisLock:
+    def __init__(self):
+        self.conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=1)
+        self._lock = 0
+        self.lock_key = &apos;&apos;
+    @staticmethod
+    def my_float(timestamp):
+        &apos;&apos;&apos;
+        Args:
+            timestamp:
+        Returns:
+            float或者0
+            如果取出的是None,说明原本锁并没人用，getset已经写入，返回0，可以继续操作。
+    &apos;&apos;&apos;
+    if timestamp:
+        return float(timestamp)
+    else:
+        # 防止取出的值为None,转换float报错
+        return 0
+@staticmethod
+def get_lock(cls, key, timeout=10):
+    cls.lock_key = f&quot;{key}_dynamic_lock&quot;
+    while cls._lock != 1:
+        timestamp = time.time() + timeout + 1
+        cls._lock = cls.conn.setnx(cls.lock_key, timestamp)
+        # if条件中，可能在运行到or之后被释放，也可能在and之后被释放
+        # 将导致get到一个None，float失败
+        if cls._lock == 1 or (
+                        time.time() &gt; cls.my_float(cls.conn.get(cls.lock_key)) and time.time() &gt; cls.my_float(cls.conn.getset(cls.lock_key, timestamp))):
+            break
+        else:
+            time.sleep(0.3)
+    @staticmethod
+    def release(cls):
+        if cls.conn.get(cls.lock_key) and time.time() &lt; cls.conn.get(cls.lock_key):
+def redis_lock_deco(cls):
+    def _deco(fun):
+        def __deco(*args, **kwargs):
+            cls.get_lock(cls, args[1])
+            try:
+                return func(*args, **kwargs)
+            finally:
+                cls.release(cls)
+        return __deco
+@redis_lock_deco(RedisLock())
+def my_func():
+    print(&quot;myfunc() called.&quot;)
+    time.sleep(20)
+if __name__ == &quot;__main__&quot;:
+    my_func()</code></pre></li>
 <li><p>写一段Python使用Mongo数据库创建索引的代码</p>
-</li>
+<pre><code>import pymongo
+db_configs = {
+    &apos;type&apos;: &apos;mongo&apos;,
+    &apos;host&apos;: &apos;地址&apos;,
+    &apos;port&apos;: &apos;端口&apos;,
+    &apos;user&apos;: &apos;spider_data&apos;,
+    &apos;passwd&apos;: &apos;密码&apos;,
+    &apos;db_name&apos;: &apos;spider_data&apos;
+}
+class Mongo():
+    def __init__(self, db=db_configs[&quot;db_name&quot;], username=db_configs[&quot;user&quot;],
+                password=db_configs[&quot;passwd&quot;]):
+        self.client = pymongo.MongoClient(f&apos;mongodb://{db_configs[&quot;host&quot;]}:{db_configs[&quot;port&quot;]}&apos;)
+        self.username = username
+        self.password = password
+        if self.username and self.password:
+            self.db1 = self.client[db].authenticate(self.username, self.password)
+        self.db1 = self.client[db] 
+    def add_index(self):
+        &quot;&quot;&quot;
+            通过create_index添加索引
+        &quot;&quot;&quot;
+        self.db1.test.create_index([(&apos;name&apos;, pymongo.ASCENDING)], unique=True)
+    def get_index(self,):
+        &quot;&quot;&quot;
+            查看索引列表
+        &quot;&quot;&quot;
+        indexlist=self.db1.test.list_indexes()
+        for index in indexlist:
+            print(index)
+if __name__ == &apos;__main__&apos;:
+    m = Mongo()
+    m.add_index()
+    print(m.get_index())</code></pre></li>
 </ol>
 <h1 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h1><ol>
-<li>函数装饰器有什么作用，请列举说明</li>
-<li>Python垃圾回收机制</li>
-<li>魔法函数<strong>call</strong>怎么使用</li>
-<li>如何判断一个对象是函数还是方法</li>
-<li>@classmethod和@staticmethod用法和区别</li>
-<li>Python中的接口如何实现</li>
-<li>Python中的反射了解吗</li>
-<li>metaclass作用，以及应用场景</li>
-<li>hasattr() getattr() setattr()的用法</li>
-<li>请列举你知道的Python的魔法方法及用途</li>
-<li>如何知道一个Python对象的类型</li>
-<li>Python的传参是传值还是传址</li>
-<li>Python中的元类(metaclass)使用距离</li>
-<li>简述any()和all()方法</li>
-<li>filter方法求出列表所有奇数并构造新列表，a = [1,2,3,4,5,6,7,8,9]</li>
-<li>什么是猴子补丁</li>
-<li>在Python中是如何管理内存的</li>
-<li>当退出Python时是否释放所有内存分配</li>
-</ol>
-<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><ol>
-<li>使用正则表达式匹配出 <html><h1><font size="3px">百度一下，你就知道</font></h1></html>
+<li><p>函数装饰器有什么作用，请列举说明</p>
+<pre><code>装饰器就是一个函数，它可以在不需要做任何代码变动的前提下给一个函数增加额外功能，启动装饰的效果。经常用于有切面需求的场景，比如插入日志，性能测试，事务处理，缓存，全校校验等场景。
+from functools import wraps
+def log(label):
+    def decorate(func):
+        @wraps(func)
+        def _wrap(*args, **kwargs):
+            try:
+                func(*args, **kwargs)
+                print(&quot;name&quot;,func.__name__)
+            except Exception as e:
+                print(e.args)
+        return decorate
+@log(&quot;info&quot;)
+def foo(a, b, c):
+    print(a+b+c)
+    print(&quot;in foo&quot;)
+if __name__ == &quot;__main__&quot;:
+    foo(1,2,3)
+    # decorate()  # decorate=decorate(foo)</code></pre></li>
+<li><p>Python垃圾回收机制</p>
+<pre><code>python不像C++,JAVA语言那样，他们不可以不用事先声明变量类型而直接对变量进行复制，对Python语言来讲，对象的类型和内存都是在运行时确定的。这也是Python称为动态语言类型的原因
+1.引用计数机制
+2.标记-清除
+3.分代回收</code></pre></li>
+<li><p>魔法函数<strong>call</strong>怎么使用</p>
+<pre><code>_call_ 可以把实例当做函数调用。
+class Bar:
+    def __call__(self, *args, **kwargs):
+        print(&quot;in call&quot;)
+if __name__ == &quot;__main__&quot;:
+    b = Bar()
+    b()</code></pre></li>
+<li><p>如何判断一个对象是函数还是方法</p>
+<pre><code>from types import MethodType, FunctionType
+class Bar:
+    def foo(self):
+        pass
+def foo2():
+    pass
+def run():
+    print(&quot;foo是函数&quot;, isinstance(Bar().foo, FunctionType))
+    print(&quot;foo是方法&quot;, isinstance(Bar().foo, MethodType))
+    print(&quot;foo2是函数&quot;, isinstance(foo2, FunctionType))
+    print(&quot;foo2是函数&quot;, isinstance(foo2, MethodType))</code></pre></li>
+<li><p>@classmethod和@staticmethod用法和区别</p>
+<pre><code>相同：@staticmethod和@classmethod 都可以直接类名.方法名()来调用，不
+    用在实例化一个类。@classmethod我们要写一个只在类中运行而不在实例中运行的方法，如果想让方法不在实例中运行，可以这样
+    def iget_no_of_instance(ins_obj):
+        return ins_obj.__class__.no_inst
+    class Kls(object):
+        no_inst = 0
+        def __init__(self):
+            Kls.no_inst = Kls.no_inst + 1
+    ik1 = Kls()
+    ik2 = Kls()
+    print(iget_no_of_instance(ik1))
+    @staticmethod经常有一些跟类有关系的功能但在运行时又不需要实例和类
+    参与的情况下需要用到静态方法
+    IND = &apos;ON&apos;
+    class Kls(object):
+        def __init__(self, data):
+            self.data = data
+        @staticmethod
+        def check_ind():
+            return (IND == &apos;ON&apos;)
+        def do_reset(self):
+            if self.check_ind():
+                print(&quot;Reset done for &quot;, self.data)
+        def set_db(self):
+            if self.check_ind():
+                self.db = &apos;New db connection&apos;
+            print(&apos;DB connection made for: &apos;, self.data)
+ik1 = Kls(12)
+ik1.do_reset()
+ik1.set_db()</code></pre></li>
+<li><p>Python中的接口如何实现</p>
+<pre><code>接口提取了一群共同的函数，可以把接口当做一个函数的集合，然后让子类去实现接口中的函数。但是在Python中没有叫做interface的关键字，如果非要去模仿接口的概念，可以使用抽象类来实现，抽象类是一个特殊的类，特殊类只能被继承，不能被实例化。使用abc模块实现抽象类</code></pre></li>
+<li><p>Python中的反射了解吗</p>
+<pre><code>Python中的反射机制设定较为简单，一共有四个关键函数
+getattr,hasattr,setattr,delattr</code></pre></li>
+<li><p>metaclass作用，以及应用场景</p>
+<pre><code>metaclass元类,metaclass是类似创建类的模板，所有的类都是通过元类create的（调用new），这使得我们可以自己自由的控制创建类的那个过程，实现所需要的功能。
+可以使用元类创建单例模式和实现ORM模式</code></pre></li>
+<li><p>hasattr() getattr() setattr()的用法</p>
+<pre><code>hasattr可以判断一个对象是否含有某个属性
+getattr可以充当get获取对象的属性
+setattr可以充当person.name=&apos;liming&apos;的赋值操作
+class Person():
+    def __init__(self):
+        self.name = &apos;liming&apos;
+        self.age = 12
+    def show(self):
+        print(self.name)
+        print(self.age)
+    def set_name(self):
+        setattr(Person, &apos;sex&apos;, &apos;男&apos;)
+    def get_name(self):
+        print(getattr(self, &apos;name&apos;))
+        print(getattr(self, &apos;age&apos;))
+        print(getattr(self, &apos;sex&apos;))
+def run():
+    if hasattr(Person, &apos;show&apos;):
+        print(&quot;判断Person类是否含有show方法&quot;)
+    Person().set_name()
+    Person().get_name()
+if __name__ == &quot;__main__&quot;:
+    run()</code></pre></li>
+<li><p>请列举你知道的Python的魔法方法及用途</p>
+<pre><code>1.__init__:
+    类的初始化方法，获取任何传给构造器的参数，比如调用
+    x=SomeClass(10,&apos;foo&apos;), __init__就会接收到10 和 &apos;foo&apos;。
+    __init__在Python的类定义中用的最多
+2. __new__:
+    __new__ 是对象实例化时第一个调用的方法，它只取cls参数，并把其他
+    参数传给__init__。__new__很少使用，但当类继承自一个像元组或者字符串这样不经常改变类型的时候会使用
+3. __del__:
+    __new__ 和 __init__是对象的构造器，__del__ 是对象的销毁器。
+    它并非实现了语句 del x（因此该语句不等同于x.__del__()).而是定义
+    了当对象被垃圾回收时的行为。当对象需要在销毁时做一些处理的时候用这个方法很有用，比如socket对象，文件对象。但是需要注意的是，当Python解释器退出但对象仍然存活的时候，__del__并不会执行。所以要养成一个手工清理的好习惯。比如及时关闭连接。</code></pre></li>
+<li><p>如何知道一个Python对象的类型</p>
+<pre><code>type(对象名称)</code></pre></li>
+<li><p>Python的传参是传值还是传址</p>
+<pre><code>两者都不是，传的对象的引用</code></pre></li>
+<li><p>Python中的元类(metaclass)使用举例</p>
+<pre><code>实现单例模式
+class Singleton(type):
+    def __init__(self, *args, **kwargs):
+        print(&quot;in __init__&quot;)
+        self.__instance = None
+        super(Singleton, self).__init__(*args, **kwargs)
+    def __call__(self, *args, **kwargs):
+        print(&quot;in __call__&quot;)
+        if self.__instance is None:
+            self.__instance = super(Singleton, self).__call__(*args, **kwargs)
+            return self.__instance
+class Foo(metaclass=Singleton):
+    pass  
+    # 代码执行到这里的时候，元类中的__new__方法和__init__方法 
+    # 已经被执行了，而不是在FOO实例化的时候执行，而且只执行一次
+foo1 = Foo()
+foo2 = Foo()
+print(foo1 is foo2)</code></pre></li>
+<li><p>简述any()和all()方法</p>
+<pre><code>any(x)判断x对象是否为空对象，如果都为空，0，false则返回false，
+如果不都为空，0，false返回true
+all(x)如果all(x)参数x对象的所有元素部位0 &apos;&apos; False或者x为空对象，
+则返回True，否则返回False</code></pre></li>
+<li><p>filter方法求出列表所有奇数并构造新列表，a = [1,2,3,4,5,6,7,8,9]</p>
+<pre><code>print(list(filter(lambda x : x % 2 == 1, a)))
+现在一般常用列表生成式，不用filter或者map方法</code></pre></li>
+<li><p>什么是猴子补丁</p>
+<pre><code>monkey patching：在运行时动态修改模块、类或者函数。通常是添加功能或
+    者修正缺陷。猴子补丁在代码运行时内存中）发挥作用，不会修改源码。
+    因此只对当前运行的程序实例有效。因为猴子补丁破坏了封装，而且容易
+    导致程序与补丁代码的实现细节紧密耦合，所以被视为临时的变通方案，
+    不是集成代码的推荐方式
+def post():
+    print(&quot;this is post&quot;)
+    print(&quot;想不到吧&quot;)
+class Http():
+    #classmethod
+    def get(self):
+        print(&quot;this is get&quot;)
+def main():
+    Http.get = post  # 动态的修改了get原因的功能
+if __name__ == &quot;__main__&quot;:
+    main()
+    Http.get()</code></pre></li>
+<li><p>在Python中是如何管理内存的</p>
+<pre><code>垃圾回收：
+引用计数：Python采用了类似windows内核对象一样的方式来对内存进行管理，都维护一个对指向该对象的引用的计数。当变量被绑定在一个对象上的时候，该变量引用计数就是1，（还有其他一些情况也会导致变量引用计数的增加），系统会自动维护这些标签，并定时扫描，当某标签的引用计数变为0的时候，该对象就会被回收。
+内存池机制：Python的内存机制以金字塔行，1,2主要有操作系统进行操作
+第0层是C中的malloc，free等内存分配和释放函数进行操作
+第1层和第2层是内存池，由Python的接口函数PyMem_Malloc函数实现，当对象小于256K时由该层直接分配内存，
+第2层是最上层，也就是对Python对象的直接操作
+在C中如果频繁的调用malloc和free时，会产生性能问题，再加上频繁的分配与释放小块的内存会产生内存碎片，Python在这里主要的工作是
+如果请求分配的内存在1--256字节之间就是用自己的内存管理系统，否则直接使用malloc。还是会调用malloc分配内存，但每次回分配一块大小为256K的内存。经由内存池登记的内存到最后还是会回收到内存池，并不会调用C的free释放掉，这样是为了下次使用方便，对于简单的Python对象，例如数值，字符串，元组采用的是复制的方式（深拷贝），也就是说当将另一个变量B赋值给变量A时，虽然A和B的内存空间仍然相同，但是当A的值发生变化时，会重新给A分配空间，A和B的地址变得不再相同。</code></pre></li>
+<li><p>当退出Python时是否释放所有内存分配</p>
+<pre><code>不是，循环引用其他对象或引用自全局命名空间的对象的模块，在Python退出时并非完全释放，另外，也不会释放C库保留的内存部分。</code></pre><h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1></li>
+<li><p>使用正则表达式匹配出</p>
+ <html><h1><font size="3px">百度一下，你就知道</font></h1></html>
  中的地址
- a="张明 98分"，用re.sub,将98替换为100</li>
-<li>正则表达式匹配中(.*)和(.*?)匹配区别</li>
-<li>写一段匹配邮箱的正则表达式</li>
-</ol>
-<h1 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h1><ol>
-<li>解释一下Python中的pass语句的作用</li>
-<li>简述你对input()函数的理解</li>
-<li>Python中的is和==</li>
-<li>Python中的作用域</li>
-<li>三元运算写法和应用场景</li>
-<li>了解enumerate吗</li>
-<li>列举5个Python中的标准模块</li>
-<li>如何在函数中设置一个全局变量</li>
-<li>pathlib的用法举例</li>
-<li>Python中的异常处理，写一个简单的应用场景</li>
-<li>Python中递归的最大次数，那么如何突破呢</li>
-<li>什么是面向对象的mro</li>
-<li>isinstance作用及应用场景</li>
-<li>什么是断言，应用场景</li>
-<li>lambda表达式格式及应用场景</li>
-<li>新式类和旧式类的区别</li>
-<li>dir()是干什么用的</li>
-<li>一个包里有三个模块，demo1.py demo2.py demo3.py，但是<br>使用from tools import * 导入时，如何保证只有demo1 demo3被导入了</li>
-<li>列举5个Python中的异常类以及其含义</li>
-<li>copy和deepcopy的区别是什么</li>
-<li>代码中经常遇到的*args, **kwargs含义及用法</li>
-<li>Python中会有函数或成员变量包含单下划线前缀和结尾<br>和双下划线前缀结尾，区别是什么</li>
-<li>w a+ wb文件写入模式的区别</li>
-<li>举例sort和sorted的区别</li>
-<li>什么是负索引</li>
-<li>pprint模块是干什么用的</li>
-<li>解释一下Python中的赋值运算符 逻辑运算符</li>
-<li>讲讲python中的位运算符</li>
-<li>在Python 中如何使用多进制数字</li>
-<li>怎样生命多个变量并赋值</li>
+
+<pre><code>import re
+source = &apos;&lt;html&gt;&lt;h1&gt;&lt;font size=&apos;3px&apos;&gt;www.baidu.com&lt;/font&gt;&lt;/h1&gt;&lt;html&gt;&apos;
+pat = re.compile(&apos;&lt;html&gt;&lt;h1&gt;&lt;font size=&apos;3px&apos;&gt;(.*?)&lt;/font&gt;&lt;/h1&gt;&lt;/html&gt;&apos;)
+print(pat.findall(source)[0])</code></pre><p> a=”张明 98分”，用re.sub,将98替换为100</p>
+<pre><code>import re
+a = &apos;张明 98分&apos;
+print(re.sub(r&apos;\d+&apos;,&apos;100&apos;),s)</code></pre></li>
+<li><p>正则表达式匹配中(.*)和(.*?)匹配区别</p>
+<pre><code>(.*)为贪婪匹配模式极可能多的匹配内容
+(.*?)为非贪婪或者懒惰匹配模式，一般匹配到结果就好，匹配字符以少为主，
+import re
+s = &apos;&lt;html&gt;&lt;div&gt;文本1&lt;/div&gt;&lt;div&gt;文本2&lt;/div&gt;&lt;/html&gt;&apos;
+pat1 = re.compile(r&apos;\&lt;div&gt;(.*?)\&lt;/div&gt;&apos;)
+print(pat1.findall(s))
+pat2 = re.compile(r&apos;\&lt;div&gt;(.*)\&lt;/div&gt;&apos;)
+print(pat2.findall(s))</code></pre></li>
+<li><p>写一段匹配邮箱的正则表达式</p>
+<pre><code>电子邮件地址有统一的标准格式：用户名@服务器域名。用户名表示邮件信箱、注册名或信件接收者的用户标识，@符号后是你使用的邮件服务器的域名。@可以读成“at”，也就是“在”的意思。整个电子邮件地址可理解为网络中某台服务器上的某个用户的地址。
+用户名，可以自己选择。由字母 a～z(不区分大小写)、数字 0～9、点、减号或下划线组成；只能以数字或字母开头和结尾。
+与你使用的网站有关，代表邮箱服务商。例如网易的有@163.com 新浪有@vip.sina.com 等。
+r&quot;^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$&quot;
+下面解释上面的表达式
+首先强调一点关于\w 的含义，\w 匹配英文字母和俄语字母或数字或下划线或汉字。
+注意^[]和[^]的区别，[]表示字符集合，^[]表示已[]内的任意字符集开始，[^]表示。
+^[a-zA-Z0-9]+：这里注意^[]和[^]的,第一个^表示已什么开头，第二个[]的^表示不等于[]内。所以这段表示以英文字母和数字开头，后面紧跟的+，限定其个数&gt;=1 个。
+[a-zA-Z0-9.+-]+：表示匹配英文字母和数字开头以及.+-, 的任意一个字符，并限定其个数&gt;=1 个。为了考虑@前面可能出现.+-（但是不在开头出现）。
+@就是邮箱必备符号了
+@[a-zA-Z0-9-]+.：前面的不用说了，后面的.表示.转义了,也是必备符号。
+[ a-zA-Z0-9-.]+：$符表示以什么结束,这里表示以英文字和数字或 -. 1 个或多个结尾。
+来个例子验证一波：
+import re
+plt=re.compile(r&quot;^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$&quot;)
+b=plt.findall(&apos;adas+fefe.we@qq.com.cn&apos;)
+print(b)
+网上找了个验证邮件地址的通用正则表达式（符合 RFC 5322 标准）     
+(?：[a-z0-9!#$%&amp;&apos;*+/=?^_`{|}~-]+(?：\.[a-z0-9!#$%&amp;&apos;*+/=?^_`{|}~-]+)*|&quot;(?：[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*&quot;)@(?：(?：[a-z0-9](?：[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?：[a-z0-9-]*[a-z0-9])?|\[(?：(?：25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?：25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]：(?：[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])</code></pre><h1 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h1></li>
+<li><p>解释一下Python中的pass语句的作用</p>
+<pre><code>占位符，在写一个函数的时候，不确定里面些什么的时候，pass留位置，以后再写。
+def foo():
+    pass</code></pre></li>
+<li><p>简述你对input()函数的理解</p>
+<pre><code>python3中input函数接收用户输入的字符串，
+python2中有input 和 raw_input两种，input是接收的整型数据
+raw_input接收的是字符串类型</code></pre></li>
+<li><p>Python中的is和==</p>
+<pre><code>==判断的是两个对象的值是否相等，is判断的更严格，他判断的是两个对象的地址和值是否完全相同</code></pre></li>
+<li><p>Python中的作用域</p>
+<pre><code>本地作用于(local)--&gt;当前作用域被嵌入的本地作用域(Enclosing locals)
+\--&gt;全局/模块作用域(global)---&gt;内置作用域(Built-in)</code></pre></li>
+<li><p>三元运算写法和应用场景</p>
+<pre><code>a = 2
+b = 5
+#普通写法
+if a &gt; b:
+    val = True
+else:
+    val = Flase
+# 三元运算符
+val = a if a &gt; b else b
+print(val)</code></pre></li>
+<li><p>了解enumerate吗</p>
+<pre><code>enumerate可以在迭代一个对象的时候，同时获取当前对象的索引和值
+from string import ascii_lowercase
+s = ascii_lowercase
+for index, value in enumerate(s):
+    print(index, value)</code></pre></li>
+<li><p>列举5个Python中的标准模块</p>
+<pre><code>os:系统模块，python访问操作系统的模块
+sys：访问由解释器使用或维护的变量，与解释器进行交互的函数，运行时
+urllib：网络请求模块，包括对url的解析
+pathlib：路径操作模块，比os模块拼接方便
+asyncio:python的异步库，基于事件循环的协程模块
+re:正则表达式模块
+itertools：提供了操作生成器的一些模块</code></pre></li>
+<li><p>如何在函数中设置一个全局变量</p>
+<pre><code>global设置
+n = 0
+def foo():
+    global n
+    n = 100
+foo()
+print(n)</code></pre></li>
+<li><p>pathlib的用法举例</p>
+<pre><code>pathlib可以对文件以及文件的其他属性进行操作。</code></pre></li>
+<li><p>Python中的异常处理，写一个简单的应用场景</p>
+<pre><code>除数为0的情况
+try:
+    1 / 0
+except ZeroDivisionError as e:
+    print(e.args)</code></pre></li>
+<li><p>Python中递归的最大次数，那么如何突破呢</p>
+<pre><code>默认递归最大层数为1000，可以更改
+import sys
+sys.setrecursionlimit(1500)  # 更改最大层数为1500
+这个只是修改的解释器在解释时允许的最大递归层数，此外，真正限制最大递归层数的是操作系统</code></pre></li>
+<li><p>什么是面向对象的mro</p>
+<pre><code>多继承调用的时候应该有个先后顺序，避免重复调用。mro()方法可以获取继承关系，叫做方法解析顺序method resolution order</code></pre></li>
+<li><p>isinstance作用及应用场景</p>
+<pre><code>isinstance判断一个对象是否为另一个对象的子类。比如bool是int的子类
+print(isinstance(True,int))</code></pre></li>
+<li><p>什么是断言，应用场景</p>
+<pre><code>assert,一般在表达式为True的情况下，程序才能通过
+assert()方法，断言成功，程序继续执行，断言失败，程序报错
+可以帮助别人或者自己以后看代码时理解代码
+找出程序逻辑不对的地方，断言会提醒你某个对象应该处于何种状态
+而且，断言为假，会抛出AssertionError异常，可能终止程序
+def foo(a):
+    assert a == 2,Exception(&quot;不等于2&quot;)
+    print(&quot;ok&quot;,a)
+if __name__ == &quot;__main__&quot;:
+    foo(1)</code></pre></li>
+<li><p>lambda表达式格式及应用场景</p>
+<pre><code>lambda表达式就是一个匿名函数，在函数编程中经常作为参数使用
+a = [(&apos;a&apos;,1),(&apos;b&apos;,2),(&apos;c&apos;,3),(&apos;d&apos;,4)]
+a_1 = list(map(lambda x:x[0],a))</code></pre></li>
+<li><p>新式类和旧式类的区别</p>
+<pre><code>python2中默认经典类，只有显示继承了object才是新式类，
+python3中默认是新式类，经典类被移除，不必显示的继承object，新式类
+都从object继承，经典类不需要。新式类的MRO基类搜索顺序采用算法广度
+优先搜索，而就是累的MRO采用的是深度优先搜索。新式类相同父类执行一次
+构造函数，经典类重复执行多次</code></pre></li>
+<li><p>dir()是干什么用的</p>
+<pre><code>当使用某个对象不知道它具体的有哪些属性或者方法时可以使用dir()查看</code></pre></li>
+<li><p>一个包里有三个模块，demo1.py demo2.py demo3.py，但是<br>使用from tools import * 导入时，如何保证只有demo1 demo3被导入了</p>
+<pre><code>增加_init_.py文件，内容为
+__all__ = [&apos;demo1&apos;,&apos;demo3&apos;]</code></pre></li>
+<li><p>列举5个Python中的异常类以及其含义</p>
+<pre><code>AttributeError对象没有这个属性
+NotImplementedError尚未实现的方法
+StopIteration迭代器没有更多的值
+TypeError类型无效
+IndentationError缩进错误</code></pre></li>
+<li><p>copy和deepcopy的区别是什么</p>
+<pre><code>copy浅拷贝，只拷贝父对象，不拷贝对象内部的子对象
+deepcopy深拷贝，拷贝对象及其内部子对象</code></pre></li>
+<li><p>代码中经常遇到的*args, **kwargs含义及用法</p>
+<pre><code>函数定义中*args和**kwargs传递可变参数。
+其中*args用来将参数打包成tuple给函数调用，
+而**kwargs打包关键字参数成dict给函数调用</code></pre></li>
+<li><p>Python中会有函数或成员变量包含单下划线前缀和结尾<br>和双下划线前缀结尾，区别是什么</p>
+<pre><code>单下划线 开始的成员变量叫做保护变量，约定只有类对象和子类对象自己能访问这些变量；
+双下划线 开始的成员变量是私有成员，只有类对象自己能访问，连子类对象也不能访问到；
+以单下划线开头(_foo）表的是不能直接访问的类属性，需要通过提供的接口进行访问，不能用from xxx import *导入，以双下划线(__foo)代表类的私有成员
+以双下划线开头和结尾的代表是Python中他叔方法的标识
+class Person():
+    &apos;&apos;&apos;docstring for ClassName&apos;&apos;&apos;
+    def __init__(self):
+        self.__age = 12
+        self._sex = &apos;f&apos;
+    def _sex&quot;(self):
+        return &apos;男&apos;
+    def set_age(self,age):
+        self.__age = age
+    def get_age(self):
+        return self.__age
+if __name__ == &quot;__main__&quot;:
+    p = Person()
+    print(p._sex)
+    # print(p.__age) 私有成员，访问不成功
+    print(p._Person__age)</code></pre></li>
+<li><p>w a+ wb文件写入模式的区别</p>
+<pre><code>w直接写入，如果文件存在则覆盖
+a+如果文件存在，则会追加，不覆盖
+wb以二进制字节类型写入文件</code></pre></li>
+<li><p>举例sort和sorted的区别</p>
+<pre><code>相同点：
+    sort 和sorted都可以对列表元素进行排序，
+不同点：
+    sort()是在原位重新排列列表，而sorted是产生一个新列表。sort是
+    应用在list上的方法，sorted可以对所有可以迭代的对象进行排序操作
+    list的sort方法返回的是对已经存在的列表进行操作，而内建函数sorted
+    方法返回的是一个新的list，而不是在原来的基础上进行的操作</code></pre></li>
+<li><p>什么是负索引</p>
+<pre><code>表示从后面取元素，倒数第一个元素为-1</code></pre></li>
+<li><p>pprint模块是干什么用的</p>
+<pre><code>pprint是print函数的美化版，可以通过import pprint导入
+import pprint
+pprint.pprint(&quot;this is pprint&quot;)
+# 会将字符串引号引起来输出</code></pre></li>
+<li><p>解释一下Python中的赋值运算符 逻辑运算符</p>
+<pre><code>赋值运算符
+a=7
+a+=1
+print(a)
+a-=1
+print(a)
+a*=2
+print(a)
+a/=2
+print(a)
+a**=2
+print(a)
+a//=3
+print(a)
+a%=4
+print(a)
+逻辑运算符
+print(False and True) #False
+print(7&lt;7 or True) #True
+print(not 2==2) #False</code></pre></li>
+<li><p>讲讲python中的位运算符</p>
+<pre><code>按二进制位进行操作
+a = 0011 1100
+b = 0000 1101
+a&amp;b = 0000 1100
+a|b = 0011 1101
+a^b = 0011 0001
+~a  = 1100 0011</code></pre></li>
+<li><p>在Python 中如何使用多进制数字</p>
+<pre><code>二进制数字由 0 和 1 组成，我们使用 0b 或 0B 前缀表示二进制数
+print(int(0b1010))#10
+使用 bin()函数将一个数字转换为它的二进制形式
+print(bin(0xf))#0b1111
+八进制数由数字 0-7 组成，用前缀 0o 或 0O 表示 8 进制数
+print(oct(8))#0o10
+十六进数由数字 0-15 组成，用前缀 0x 或者 0X 表示 16 进制数
+print(hex(16))#0x10
+print(hex(15))#0xf</code></pre></li>
+<li><p>怎样声明多个变量并赋值</p>
+<pre><code>a,b,c = 1,2,3</code></pre></li>
 </ol>
 <h1 id="算法和数据结构"><a href="#算法和数据结构" class="headerlink" title="算法和数据结构"></a>算法和数据结构</h1><ol>
 <li>已知<br> AList = [1,2,3]<br> BSet = {1,2,3}<br> 从AList和BSet中查找4，最坏时间复杂度哪个大<br> 从AList和BSet中插入4，最坏时间复杂度哪个大</li>
