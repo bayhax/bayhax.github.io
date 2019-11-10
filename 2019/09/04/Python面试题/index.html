@@ -63,7 +63,7 @@
 <meta property="og:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://bayhax.github.io/2019/09/04/Python面试题/interview_01.png">
-<meta property="og:updated_time" content="2019-11-04T14:03:33.971Z">
+<meta property="og:updated_time" content="2019-11-10T03:49:11.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="python面试题">
 <meta name="twitter:description" content="基本问题 列出5个常用Python标准库 &amp;lt;strong&amp;gt;自身库：&amp;lt;/strong&amp;gt; os        与操作系统相关联的函数 datetime  日期和时间处理的方法   random    生成随机数 math      数学库函数，对底层C函数库的访问 zlib      通用的数据打包和压缩 pymsql    连接mysql数据库 threading 线程管理">
@@ -307,7 +307,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-04 22:03:33" itemprop="dateModified" datetime="2019-11-04T22:03:33+08:00">2019-11-04</time>
+                <time title="修改时间：2019-11-10 11:49:11" itemprop="dateModified" datetime="2019-11-10T11:49:11+08:00">2019-11-10</time>
               </span>
             
           
@@ -1544,10 +1544,10 @@ print(l)</code></pre></li>
 <li><p>写一个拓扑排序</p>
 <pre><code>&quot;&quot;&quot;
 拓扑排序
-对应于该图的拓扑排序。每一个有向无环图都至少存在一种拓扑排序。
+对拓扑排序。每一个有向无环图都至少存在一种拓扑排序。
 &quot;&quot;&quot;
 import pysnooper
-from typing import Mapping
+from typing import Mapping 
 @pysnooper.snoop()
 def topological_sort(graph： Mapping)：
     # in_degrees = {&apos;a&apos;： 0, &apos;b&apos;： 0, &apos;c&apos;： 0, &apos;d&apos;： 0, &apos;e&apos;： 0, &apos;f&apos;： 0}
@@ -1622,15 +1622,282 @@ if __name__ == &apos;__main__&apos;：
     print(&quot;func2&quot;, timer2.timeit(1000000))
     timer3 = Timer(&quot;func3()&quot;, &quot;from __main__ import func3&quot;)
     print(&quot;func3&quot;, timer3.timeit(1000000))</code></pre><ol start="12">
-<li>单链表反转</li>
-</ol>
-<ol start="13">
-<li>交叉链表求交点</li>
-<li>用队列实现栈</li>
-<li>找出数据流的中位数</li>
-<li>二叉搜索树中第K小的元素</li>
-</ol>
-<h1 id="爬虫相关"><a href="#爬虫相关" class="headerlink" title="爬虫相关"></a>爬虫相关</h1><ol>
+<li><p>单链表反转</p>
+<pre><code>class Node：
+    def __init__(self, val=None)：
+        self.val = val
+        self.next = None
+class SingleLinkList：
+    def __init__(self, head=None)：
+        &quot;&quot;&quot;链表的头部&quot;&quot;&quot;
+        self._head = head
+    def add(self, val： int)：
+        &quot;&quot;&quot;
+        给链表添加元素
+        ：param val： 传过来的数字
+        ：return：
+        &quot;&quot;&quot;
+        # 创建一个节点
+        node = Node(val)
+        if self._head is None：
+            self._head = node
+        else：
+            cur = self._head
+            while cur.next is not None：
+                cur = cur.next  # 移动游标
+            cur.next = node  # 如果 next 后面没了证明以及到最后一个节点了
+    def traversal(self)：
+        if self._head is None：
+            return
+        else：
+            cur = self._head
+            while cur is not None：
+                print(cur.val)
+                cur = cur.next
+    def size(self)：
+        &quot;&quot;&quot;
+        获取链表的大小
+        ：return：
+        &quot;&quot;&quot;
+        count = 0
+        if self._head is None：
+            return count
+        else：
+            cur = self._head
+            while cur is not None：
+                count += 1
+                cur = cur.next
+            return count
+    def reverse(self)：
+        &quot;&quot;&quot;
+        单链表反转
+        思路：
+        让 cur.next 先断开即指向 none，指向设定 pre 游标指向断开的元素，然后
+        cur.next 指向断开的元素，再把开始 self._head 再最后一个元素的时候.
+        ：return：
+        &quot;&quot;&quot;
+        if self._head is None or self.size() == 1：
+            return
+        else：
+            pre = None
+            cur = self._head
+            while cur is not None：
+                post = cur.next
+                cur.next = pre
+                pre = cur
+                cur = post
+            self._head = pre  # 逆向后的头节点     
+if __name__ == &apos;__main__&apos;：
+    single_link = SingleLinkList()
+    single_link.add(3)
+    single_link.add(5)
+    single_link.add(6)
+    single_link.add(7)
+    single_link.add(8)
+    print(&quot;对链表进行遍历&quot;)
+    single_link.traversal()
+    print(f&quot;size：{single_link.size()}&quot;)
+    print(&quot;对链表进行逆向操作之后&quot;)
+    single_link.reverse()
+    single_link.traversal()</code></pre></li>
+<li><p>交叉链表求交点</p>
+<pre><code># Definition for singly-linked list.
+class ListNode：
+    def __init__(self, x)：
+        self.val = x
+        self.next = None
+class Solution：
+    def getIntersectionNode(self, headA, headB)：
+        &quot;&quot;&quot;
+        ：tye head1, head1： ListNode
+        ：rtye： ListNode
+        &quot;&quot;&quot;
+        if headA is not None and headB is not None：
+            cur1, cur2 = headA, headB
+            while cur1 != cur2：
+                cur1 = cur1.next if cur1 is not None else headA
+                cur2 = cur2.next if cur2 is not None else headB
+            return cur1
+cur1、cur2，2 个指针的初始位置是链表 headA、headB 头结点，cur1、cur2 两个指针一直往后遍历。 直到 cur1 指针走到链表的末尾，然后 cur1 指向 headB； 直到 cur2 指针走到链表的末尾，然后 cur2 指向 headA； 然后再继续遍历； 每次 cur1、cur2 指向 None，则将 cur1、cur2 分别指向 headB、headA。 循环的次数越多，cur1、cur2 的距离越接近，直到 cur1 等于 cur2。则是两个链表的相交点。</code></pre></li>
+<li><p>用队列实现栈</p>
+<pre><code>from queue import Queue
+#使用 2 个队列实现
+class MyStack：
+    def __init__(self)：
+        &quot;&quot;&quot;
+        Initialize your data structure here.
+        &quot;&quot;&quot;
+        # q1 作为进栈出栈，q2 作为中转站
+        self.q1 = Queue()
+        self.q2 = Queue()
+    def push(self, x)：
+        &quot;&quot;&quot;
+        Push element x onto stack.
+        ：type x： int
+        ：rtype： void
+        &quot;&quot;&quot;
+        self.q1.put(x)
+    def pop(self)：
+        &quot;&quot;&quot;
+        Removes the element on top of the stack and returns that element.
+        ：rtype： int
+        &quot;&quot;&quot;
+        while self.q1.qsize() &gt; 1：
+            self.q2.put(self.q1.get())  # 将 q1 中除尾元素外的所有元素转到 q2 中
+        if self.q1.qsize() == 1：
+            res = self.q1.get()  # 弹出 q1 的最后一个元素
+            self.q1, self.q2 = self.q2, self.q1  # 交换 q1,q2
+            return res
+    def top(self)：
+        &quot;&quot;&quot;
+        Get the top element.
+        ：rtype： int
+        &quot;&quot;&quot;
+        while self.q1.qsize() &gt; 1：
+            self.q2.put(self.q1.get())  # 将 q1 中除尾元素外的所有元素转到 q2 中
+        if self.q1.qsize() == 1：
+            res = self.q1.get()  # 弹出 q1 的最后一个元素
+            self.q2.put(res)  # 与 pop 唯一不同的是需要将 q1 最后一个元素保存到 q2 中
+            self.q1, self.q2 = self.q2, self.q1  # 交换 q1,q2
+            return res
+    def empty(self)：
+        &quot;&quot;&quot;
+        Returns whether the stack is empty.
+        ：rtype： bool
+        &quot;&quot;&quot;
+        return not bool(self.q1.qsize() + self.q2.qsize())  # 为空返回 True，不为空返回 False
+#使用 1 个队列实现
+class MyStack2(object)：
+    def __init__(self)：
+        &quot;&quot;&quot;
+        Initialize your data structure here.
+        &quot;&quot;&quot;
+        self.sq1 = Queue()
+    def push(self, x)：
+        &quot;&quot;&quot;
+        Push element x onto stack.
+        ：type x： int
+        ：rtype： void
+        &quot;&quot;&quot;
+        self.sq1.put(x)
+    def pop(self)：
+        &quot;&quot;&quot;
+        Removes the element on top of the stack and returns that element.
+        ：rtype： int
+        &quot;&quot;&quot;
+        count = self.sq1.qsize()
+        if count == 0：
+            return False
+        while count &gt; 1：
+            x = self.sq1.get()
+            self.sq1.put(x)
+            count -= 1
+        return self.sq1.get()
+    def top(self)：
+        &quot;&quot;&quot;
+        Get the top element.
+        ：rtype： int
+        &quot;&quot;&quot;
+        count = self.sq1.qsize()
+        if count == 0：
+            return False
+        while count：
+            x = self.sq1.get()
+            self.sq1.put(x)
+            count -= 1
+        return x
+    def empty(self)：
+        &quot;&quot;&quot;
+        Returns whether the stack is empty.
+        ：rtype： bool
+        &quot;&quot;&quot;
+        return self.sq1.empty()
+if __name__ == &apos;__main__&apos;：
+    obj = MyStack2()
+    obj.push(1)
+    obj.push(3)
+    obj.push(4)
+    print(obj.pop())
+    print(obj.pop())
+    print(obj.pop())
+    print(obj.empty())</code></pre></li>
+<li><p>找出数据流的中位数</p>
+<pre><code>对于一个升序排序的数组，中位数为左半部分的最大值，右半部分的最小值，而左右两部分可以是无需的，只要保证左半部分的数均小于右半部分即可。因此，左右两半部分分别可用最大堆、最小堆实现。
+如果有奇数个数，则中位数放在左半部分；如果有偶数个数，则取左半部分的最大值、右边部分的最小值之平均值。
+分两种情况讨论： 当目前有偶数个数字时，数字先插入最小堆，然后选择最小堆的最小值插入最大堆（第一个数字插入左半部分的最小堆）。
+当目前有奇数个数字时，数字先插入最大堆，然后选择最大堆的最大值插入最小堆。 最大堆：根结点的键值是所有堆结点键值中最大者，且每个结点的值都比其孩子的值大。 最小堆：根结点的键值是所有堆结点键值中最小者，且每个结点的值都比其孩子的值小。
+# -*- coding：utf-8 -*-
+from heapq import *
+class Solution：
+    def __init__(self)：
+        self.maxheap = []
+        self.minheap = []
+    def Insert(self, num)：
+        if (len(self.maxheap) + len(self.minheap)) &amp; 0x1：  # 总数为奇数插入最大堆
+            if len(self.minheap) &gt; 0：
+                if num &gt; self.minheap[0]：  # 大于最小堆里的元素
+                    heappush(self.minheap, num)  # 新数据插入最小堆
+                    heappush(self.maxheap, -self.minheap[0])  # 最小堆中的最小插入最大堆
+                    heappop(self.minheap)
+                else：
+                    heappush(self.maxheap, -num)
+            else：
+                heappush(self.maxheap, -num)
+        else：  # 总数为偶数 插入最小堆
+            if len(self.maxheap) &gt; 0：  # 小于最大堆里的元素
+                if num &lt; -self.maxheap[0]：
+                    heappush(self.maxheap, -num)  # 新数据插入最大堆
+                    heappush(self.minheap, -self.maxheap[0])  # 最大堆中的最大元素插入最小堆
+                    heappop(self.maxheap)
+                else：
+                    heappush(self.minheap, num)
+            else：
+                heappush(self.minheap, num)
+    def GetMedian(self, n=None)：
+        if (len(self.maxheap) + len(self.minheap)) &amp; 0x1：
+            mid = self.minheap[0]
+        else：
+            mid = (self.minheap[0] - self.maxheap[0]) / 2.0
+        return mid
+if __name__ == &apos;__main__&apos;：
+    s = Solution()
+    s.Insert(1)
+    s.Insert(2)
+    s.Insert(3)
+    s.Insert(4)
+    print(s.GetMedian())</code></pre></li>
+<li><p>二叉搜索树中第K小的元素</p>
+<pre><code>二叉搜索树(Binary Search Tree)，又名二叉排序树(Binary Sort Tree)二叉搜索树是具有有以下性质的二叉树：
+若左子树不为空，则左子树上所有节点的值均小于或等于它的根节点的值。
+若右子树不为空，则右子树上所有节点的值均大于或等于它的根节点的值。
+左、右子树也分别为二叉搜索树。
+二叉搜索树按照中序遍历的顺序打印出来正好就是排序好的顺序。所以对其遍历一个节点就进行计数，计数达到 k 的时候就结束。
+class TreeNode：
+    def __init__(self, x)：
+        self.val = x
+        self.left = None
+        self.right = None
+class Solution：
+    count = 0
+    nodeVal = 0
+    def kthSmallest(self, root, k)：
+        &quot;&quot;&quot;
+        ：type root： TreeNode
+        ：type k： int
+        ：rtype： int
+        &quot;&quot;&quot;
+        self.dfs(root, k)
+        return self.nodeVal
+    def dfs(self, node, k)：
+        if node != None：
+            self.dfs(node.left, k)
+            self.count = self.count + 1
+            if self.count == k：
+                self.nodeVal = node.val
+                # 将该节点的左右子树置为 None,来结束递归，减少时间复杂度
+                node.left = None
+                node.right = None
+            self.dfs(node.right, k)</code></pre><h1 id="爬虫相关"><a href="#爬虫相关" class="headerlink" title="爬虫相关"></a>爬虫相关</h1></li>
 <li><p>在requests模块中，requestes.content和requestes.text区别</p>
 <pre><code>requests.content获取的是字节,requesets.text获取的文本内容</code></pre></li>
 <li><p>简要写一下lxml模块的使用方法框架</p>
@@ -1646,39 +1913,69 @@ elif isinstance(_content,str):
     content = _content
 print(content)</code></pre></li>
 <li><p>说一说scrapy的工作流程</p>
-</li>
+<pre><code>spider 把百度需要下载的第一个 url：www.baidu.com 交给引擎。
+引擎把 url 交给调度器排序入队处理。
+调度器把处理好的 request 返回给引擎。
+通过引擎调动下载器，按照下载中间件的设置下载这个 request。
+下载器下载完毕结果返回给引擎（如果失败：不好意思，这个 request 下载失败，然后引擎告诉调度器，这个 request 下载失败了，你记录一下，我们待会儿再下载。）
+引擎调度 spider，把按照 Spider 中间件处理过了的请求，交给 spider 处理。
+spider 把处理好的 url 和 item 传给引擎。
+引擎根据不同的类型调度不同的模块，调度 Item Pipeline 处理 item。
+把 url 交给调度器。 然后从第 4 步开始循环，直到获取到你需要的信息，
+注意！只有当调度器中不存在任何 request 了，整个程序才会停止。</code></pre></li>
 <li><p>scrapy的去重原理</p>
-</li>
+<pre><code>scrapy本身自带一个去重中间件，scrapy源码中可以找到一个dupefilters.py去重器。里面有个方法叫做request_seen，它在scheduler（发起请求的第一时间）的时候被调用。他代码里面调用了request_fingerprint方法（就是给request生成一个指纹）。给每一个传递过来的url生成一个固定长度的哈希值。但是这种量级千万到亿的级别内存是可以应付的。</code></pre></li>
 <li><p>scrapy中间件有几种类，你用过哪些中间件</p>
-</li>
+<pre><code>scrapy的中间件理论上有三种（Schduler Middleware, Spider Middleware,Downloader Middleware)。在应用上一般有以下两种中间件：
+Spider Middleware：主要功能是在爬虫运行过程中进行一些处理。
+下载器中间件 Downloader Middleware:这个中间件可以实现修改User-Agent等headers信息，处理重定向，设置代理，失败重试，设置cookies等功能。</code></pre></li>
 <li><p>你写爬虫的时候都遇到了什么问题，反爬虫措施，你是怎么解决的</p>
-</li>
+<pre><code>Headers：从用户的headers进行反爬是最常见的发爬虫策略。Headers是一种区分浏览器和机器行为中最简单的方法，还有一些网站会对Referer（上级连接）进行检测（机器行为不太可能通过链接跳转实现）从而实现反爬虫。相应的解决措施：通过审查元素或者开发者工具获取相应的headers然后把相应的headers传输给Python的requests，绕过反爬虫措施。
+IP限制：一些网站会根据IP地址访问的频率次数进行反爬。如果单一IP地址访问频率过高，服务器会短时间内禁止这个IP访问。解决措施：构造自己的IP代理池，然后每次访问时随机选择代理（有些ip地址不稳定需要经常检查更新）
+UA限制：UA是用户访问网站时候的浏览器标识，其反爬机制与IP类似。
+解决措施：使用随机UA。
+验证码反爬虫或者模拟登录 验证码：办法古老但相当有效果。如果一个爬虫要解释一个验证码中的内容，这在原来通过图像识别可以实现，但是现在的验证码干扰线，噪点很多，很难识别。解决措施：验证码识别的基本方法：截图，二值化，中值滤波去燥，分割，紧缩重排（高矮同一），字库特征匹配识别。复杂的情况需求接入打码平台。
+Ajax动态加载，网页不希望被爬虫拿到的数据使用Ajax动态加载，这样就位爬虫造成了绝大的麻烦，如果一个爬虫不具备js引擎或者具备js引擎，但是没有处理js返回的方案，或者具备了js引擎但是没办法让站点显示启动脚本设置，ajax动态加载反制爬虫还是相当有效果的。
+Ajax动态加载的工作原理，从网页的URL加载网页的源代码后，会在浏览器里执行JavaScript程序，这些程序会加载出更多的内容，并把这些内容传输到网页中。这就是为什么有些网页直接爬取它的url时却没有数据的原因。
+处理方法：找对应的ajax接口，一般数据返回类型为json
+cookie限制  一次打开网页会生成一个随机的cookie，如果再次打开网页这个cookie不存在，那么久再次设置，第三次打开仍然不存在，就非常可能是爬虫
+解决措施：在headers挂上相应的cookie或者根据其他方法进行构造（例如从中选取几个字母进行构造）。如果过于复杂，可以考虑使用selenium模块（完全模拟浏览器行为）</code></pre></li>
 <li><p>为什么会用到代理</p>
-</li>
+<pre><code>如果使用同一个ip去不断的访问网站的话，会很容易封ip，严重的永久封禁，导致访问不了网站，不只是通过程序，通过浏览器也无法访问。</code></pre></li>
 <li><p>代理失效了怎么办</p>
-</li>
+<pre><code>一般通过大家代理池来实现代理切换等操作，来实现时使用新的代理ip，避免代理失效的问题。</code></pre></li>
 <li><p>列出你知道的header的内容以及信息</p>
-</li>
+<pre><code>User-Agent:它的内容包含发出请求的用户信息。
+Accept：指定客户端能够接受的内容类型
+Accept-Encoding:指定浏览器可以支持的web服务器返回内容压缩编码类型。
+Accept-Language:浏览器可接受的语言。
+Connection:表示是否需要永久链接。
+Content-Length:请求的内容长度。
+If-Modified-Since:如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回304代码。
+Referer:先前网页的地址，当前请求网页紧随其后，即来路。</code></pre></li>
 <li><p>说一说打开浏览器访问 百度一下，你就知道 获取到结果的流程</p>
-</li>
+<pre><code>浏览器向DNS服务器发送baidu.com域名解析请求，DNS服务器返回解析后的ip给客户端浏览器，浏览器向该ip发送页面请求。DNS服务器接收到请求后，查询该页面，并将页面发送给客户端浏览器。客户端浏览器接收到页面后，解析页面中的引用，并再次向服务器发送引用资源请求。服务器收到资源请求后，查找并返回资源给客户端，客户端浏览器接收到资源后渲染，输出页面给客户。</code></pre></li>
 <li><p>爬取速度过快出现了验证码怎么处理</p>
-</li>
+<pre><code>一般在爬取过程中出现了验证码根据不同的情况，处理不一样。如果在一开始访问就有验证码，那么就像办法绕开验证码，比如通过wap端或者app去发现其他接口等，如果不行就得破解验证码了，复杂验证码就需要接入第三方打码平台了。如果开始的时候没有验证码，爬了一段时间出现验证码，可以考虑更新ip，可能是访问频率过高导致的。</code></pre></li>
 <li><p>scrapy和scrapy-redis有什么区别，为什么选择redis数据库</p>
-</li>
-<li><p>分布式爬虫主要解决什么文集团</p>
-</li>
+<pre><code>scrapy是一个python爬虫框架，爬取效率极高，具有高度定制性，但是不支持分布式。而scrapy-redis一套基于redis数据库，运行在scrapy框架之上的组件，可以让scrapy支持分布式策略，Slaver端共享Master端redis数据库里的item队列，请求队列和请求指纹集合。
+选择redis数据库是因为它支持主从同步，而且数据都是缓存在内存中，所以基于redis的分布式爬虫，对请求和数据的高频读取效率非常高。</code></pre></li>
+<li><p>分布式爬虫主要解决什么问题？</p>
+<pre><code>主要为了给爬虫加速。解决了单个ip的限制，宽带的影响。以及CPU的使用情况和io等一系列操作。</code></pre></li>
 <li><p>写爬虫用多进程好还是多线程好，为什么</p>
-</li>
+<pre><code>多线程，因为爬虫是网络操作属于io密集型操作适合多线程或者协程。</code></pre></li>
 <li><p>解析网页的解析器使用最多的是哪几个</p>
-</li>
+<pre><code>lxml，pyquery</code></pre></li>
 <li><p>需要登录的网页，如何解决同时限制ip，cookie，session<br>(其中有一些是动态生成的)，在不使用爬虫爬取的情况下</p>
-</li>
+<pre><code>解决ip可以搭建代理ip地址池，adsl拨号使用等。
+不适用动态爬取的情况下可以使用反编译JS文件获取相应的文件，或者换用其他平台（比如手机端）看看是否可以获取相应的json文件，一般要学会习惯性的先找需要爬取网站的h5页面，看看有没有提供接口，进而简化操作。</code></pre></li>
 <li><p>验证码的解决（简单的：对图像做处理后可以得到，困难的：<br>验证码是点击，拖动等动态进行的）</p>
-</li>
+<pre><code>图形验证码：干扰，杂色不是特别多的图片可以使用开源库Tesseract进行识别，太过复杂就是用第三方打码平台。
+点击或者拖动滑块验证码可以借助selenium，无图形界面浏览器（chromedirver或者phantomjs）和pillow包来模拟人的点击和滑动操作，pillow可以根据色差识别需要滑动的位置。</code></pre></li>
 <li><p>使用最多的数据库(mysql,mongodb,redis),对它们的理解</p>
-</li>
-</ol>
-<h1 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h1><ol>
+<pre><code>MySQL数据库：开源免费的关系型数据库，实现创建数据库，数据表和表的字段，表与表之间可以进行关联（一对多，多对多），是持久化存储。
+MongoDB：非关系型数据库，数据库的三元素是数据库，集合，文档，可以进行持久化存储，也可以作为内存数据库，存储数据不需要事先设定格式，数据以键值对形式存储。
+redis：非关系型数据库，使用前可以不用设置格式，以键值对方式保存，文件格式相对自由，主要用与缓存数据库，也可以进行持久化存储。</code></pre><h1 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h1></li>
 <li><p>TCP和UDP的区别</p>
 <pre><code>UDP是面向无连接的通讯协议，UDP数据包括目的端口号和源端口号
 优点：udp速度快，操作简单，要求系统资源较少，由于通讯不需要连接，可以
