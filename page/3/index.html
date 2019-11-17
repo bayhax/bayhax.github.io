@@ -304,7 +304,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-10 11:49:11" itemprop="dateModified" datetime="2019-11-10T11:49:11+08:00">2019-11-10</time>
+                <time title="修改时间：2019-11-17 16:04:05" itemprop="dateModified" datetime="2019-11-17T16:04:05+08:00">2019-11-17</time>
               </span>
             
           
@@ -322,39 +322,290 @@
       
           <h1 id="基本问题"><a href="#基本问题" class="headerlink" title="基本问题"></a>基本问题</h1><ol>
 <li><p>列出5个常用Python标准库</p>
-<pre><code>&lt;strong&gt;自身库：&lt;/strong&gt;
-os        与操作系统相关联的函数
-datetime  日期和时间处理的方法  
-random    生成随机数
-math      数学库函数，对底层C函数库的访问
-zlib      通用的数据打包和压缩
-pymsql    连接mysql数据库
-threading 线程管理
-multiprocessing  进程管理       
-queue     队列
-&lt;strong&gt;第三方库：&lt;/strong&gt;
-django
-flask
-requests
-virtualenv
-selenium
-scrapy
-xadmin
-celery
-re
-hashlib
-md5
-&lt;strong&gt;常用科学计算库：&lt;/strong&gt;
-Numpy
-Scipy
-Pandas</code></pre></li>
+<pre><code>Python标准库非常庞大，包含了很多内置模块（C编写），用以实现系统级功能，例如I/O，还有大量以Python编写的模块，提供了日常编程中许多问题的标准解决方案。其中有些模块经过专门设计，通过将特定平台功能抽象化为平台中立的API来增加Python程序的可移植性。Windows版本的Python安装程序包通常包含整个标准库，还有许多额外的组件。但是类Unix系统下，Python会分成一系列的软件包，因此可能需要使用操作系统提供的包管理工具来获取部分或者全部可选组件。
+如果不确定接口里函数有哪些或者怎么用，可以通过引入模块后，
+dir(os)和help(os)查看有哪些函数和用法
+操作系统接口：
+1.os:提供了许多与操作系统交互的函数
+    import os
+    os.getcwd()
+    os.chdir(&apos;home/bin&apos;)
+    os.system(&apos;mkdir today&apos;)  # 执行mkdir命令
+    注意：一定要使用import os 而不是from os import *，避免内建的
+        open()函数被os.open()隐式替换掉。
+    对于平时文件和目录管理任务，shutil模块提供了更易于使用的更高级别的接口。
+    import shutil
+    shutil.copyfile(&apos;data.db&apos;,&apos;archive.db&apos;)
+    shutil.move(&apos;buil/executables&apos;,&apos;installdir&apos;)
+2.文件通配符glob模块，提供了在目录中使用通配符搜索创建文件列表的函数
+    import glob
+    glob.glob(&apos;*.py&apos;)  # 搜索出所有py文件
+3.命令行参数sys，通用实用程序脚本通常需要处理命令行参数。这些参数作为列表存储在sys模块的argv属性中。命令行运行python demo.py one two时
+    import sys
+    print(sys.argv)
+    输出 demo.py one two
+argparse模块提供了一种处理命令行参数的机制。它应该总是优先于直接手工处理的sys.argv.
+    import argparse
+    from getpass import getuser
+    parser = argparse.ArgumentParser(description=&apos;An example&apos;)
+    parser.add_argument(&apos;name&apos;,nargs=&apos;?&apos;,default=getuser(),help=&apos;The name of someone to greet&apos;)
+    parser.add_argument(&apos;--verbose&apos;,&apos;-v&apos;,action=&apos;count&apos;)
+    args = parser.parser_args()
+    greeting = [&apos;Hi&apos;,&apos;Hello&apos;,&apos;Greetings! its wonderful&apos;][args.verbos % 3]
+    print(f&apos;{greeting},{args.name}&apos;)
+    if not args.verbose:
+        print(&apos;Try running this again with multiple &quot;-v&quot; flags!&apos;)
+    sys模块还有stdin,stdout,stderr的属性，后者对于发出警告和错误消息非常有用，即使在stdout被重定向后也可以看到
+    sys.stderr.write(&apos;Warning,log file not found starting\n&apos;)
+4.字符串模式匹配re，正则表达式
+    import re
+    re.findall(r&apos;\bf[a-z]*&apos;,&apos;which foot or hand fell fastest&apos;)
+    re.sub(r&apos;(\b[a-z]+) \1&apos;,r&apos;\1&apos;,&apos;cat in the hat&apos;)
+    当只需要简单的功能时，首选字符串方法，因为容易调试和阅读
+    &apos;tea for too&apos;.replace(&apos;too&apos;,&apos;two&apos;)
+5.数学
+math模块提供了对浮点数数学的底层C库函数的访问：
+    import math
+    math.cos(math.pi / 4)
+    math.log(1024,2)
+random模块提供了随机选择的工具
+    import random
+    random.choice([&apos;apple&apos;,&apos;pear&apos;,&apos;banana&apos;])
+    random.sample(range(100),10)  # 随机选10个数当样本
+    random.random()  # 0到1随机一个float数
+    random.randrange(6)
+statistics模块，计算数值数据的基本统计属性（均值，中位数，方差）
+import statistics
+data = [2.75,1.75,1.25,0.25,.0.5,1.25]
+statistics.mean(data)  # 平均值
+statistics.median(data)  # 中位数
+statistics.variance(data)  # 方差
+SciPy项目&lt;https://scipy.org&gt;有许多其他模块用于数值计算
+6.互联网访问
+urllib.request用于从URL检索数据，smtplib用于发送邮件
+from urllib.request import urlopen
+with urlopen(&apos;http://tycho.usno.navy.mil&apos;) as response:
+    for line in response:
+        line = line.decode(&apos;utf-8&apos;)
+        if &apos;EST&apos; in line or &apos;EDT&apos; in line:
+            print(line)  # 获取西方时间
+import smtplib
+server = smtplib.SMTP(&apos;localhost&apos;)  # 邮件服务器运行地
+server.sendmail(&apos;bayhax@163.com&apos;,&apos;whlbayahx@163.com&apos;,
+&quot;&quot;&quot;To:whlbayahx@163.com
+From:bayhax@163.com
+fd
+&quot;&quot;&quot;)
+server.quit()
+7.日期和时间
+datetime 提供了简单和复杂的方式操作日期和时间的类。虽然支持时间和日期算法，但实现的重点是有效的成员提取进行输出格式化操作。
+    from datetime import date
+    now = date.today()
+    now.strftime(&quot;%m-%d-%y. %d %b %Y is a %A on the %d day of %B&quot;)
+    birthday = date(1949,10,1)
+    age = now - birthday
+    age.days
+8.数据压缩 zlib gzip bz2 lzma zipfile tarfile
+    import zlib
+    s = b&apos;witch which has which witchs wrist watch&apos;
+    len(s)
+    t = zlib.compress(s)
+    len(t)
+    zlib.decompress(t)
+    zlib.crc32(s)
+9.性能测试timeit
+    from timeit import Timer
+    Timer(&apos;t=a;a=b;b=t&apos;,&apos;a=1;b=2&apos;).timeit()
+    Timer(&apos;a,b=b,a&apos;,&apos;a=1,b=2&apos;).timeit()
+    与timeit的精细粒度级别相反，profile和pstats模块提供了用于在较大代码块中识别时间关键部分的工具。
+10.质量控制
+开发高质量软件的一种方法是在开发过程中为每个函数编写测试，并在开发过程中经常运行这些测试。
+doctest模块提供了一个工具，用于扫描模块并验证程序文档字符串中嵌入的测试。测试构造就像将典型调用及其结果剪切并粘贴到文档字符串一样简单。这通过向用户提供示例来改进文档，并且允许doctest模块确保代码保持对文档的真实。
+    def average(values):
+        &quot;&quot;&quot;Computes the arithmetic mean of a list of numbers.
+        \&gt;&gt;&gt; print(average([10,30,70]))
+        40.0
+        &quot;&quot;&quot;
+        return sum(values) / len(values)
+    import doctest
+    doctest.testmod()
+unittest模块不像doctest模块那样易于使用，但是它允许在已个单独的文件中维护更全面的测试集
+    import unittest
+    class TestStatisticalFunctions(unittest.TestCase):
+        def test_average(self):
+            self.assertEqual(average([20,30,70]),40.0)
+            self.assertEqual(round(average([1,5,7]),1),4.3)
+            with self.assertRaise(ZeroDivisionError):
+                average([])
+            with self.assertRaise(TypeError):
+                average(20,30,70)
+    unittest.main()
+11.自带电池
+    Python有“自带电池”的理念。通过其包的复杂和强大功能可以最好地看到这一点。例如:
+    xmlrpc.client 和 xmlrpc.server 模块使得实现远程过程调用变得小菜一碟。尽管存在于模块名称中，但不需要直接了解或处理XML。
+    email 包是一个用于管理电子邮件的库，包括MIME和其他符合 RFC 2822 规范的邮件文档。与 smtplib 和 poplib 不同（它们实际上做的是发送和接收消息），电子邮件包提供完整的工具集，用于构建或解码复杂的消息结构（包括附件）以及实现互联网编码和标头协议。
+    json 包为解析这种流行的数据交换格式提供了强大的支持。 csv 模块支持以逗号分隔值格式直接读取和写入文件，这种格式通常为数据库和电子表格所支持。 XML 处理由 xml.etree.ElementTree ， xml.dom 和 xml.sax 包支持。这些模块和软件包共同大大简化了 Python 应用程序和其他工具之间的数据交换。
+    sqlite3 模块是 SQLite 数据库库的包装器，提供了一个可以使用稍微非标准的 SQL 语法更新和访问的持久数据库。
+    国际化由许多模块支持，包括 gettext ， locale ，以及 codecs 包。
+专业编程需要的包，很少用在脚本中，上面多数用在脚本中。
+12.格式化输出
+reprlib提供了一个定制化版本的repr()函数，用于缩略显示大型或深层嵌套的容器对象。
+    import reprlib
+    reprlib.repr(set(&apos;supercalifragilisticexpialidocious&apos;))
+pprint模块提供了更加复杂的打印控制，其输出的内置对象和用户自定义对象能够被解释器直接读取。当输出结果过长而需要折行时，’美化输出机制’会添加换行符和缩进，以更清楚展示数据结构。
+    import pprint
+    t = [[[[&apos;black&apos;,&apos;cyan&apos;],&apos;white&apos;,[&apos;green&apos;,&apos;red&apos;]],[[&apos;magenta&apos;,&apos;yellow&apos;],&apos;blue&apos;]]]
+    pprint.pprint(t, width=30)
+textwrap模块能够格式化文本段落，以适应屏幕宽度
+    import textwrap
+    doc = &quot;&quot;&quot;The wrap() method is just like fill() expect that         it returns a list of strings instead of one big          string with newlines to separate the wrapped lines.&quot;&quot;&quot;
+    print(textwrap.fill(doc, width=40))
+locale模块处理与特定地域文化相关的数据格式，locale模块的format函数包含一个grouping属性，可以直接将数字格式化为带有组分隔符的样式：
+    import locale
+    locale.setlocale(locale.LC_ALL,&apos;English_United States.1252&apos;)
+    conv = locale.localeconv()
+    x = 1234567.8
+    locale.format(&quot;%d&quot;, x, grouping=True)
+    locale.format_string(&quot;%s%.*f&quot;,(conv[&apos;currency_symbo&apos;],conv[&apos;frac_digits&apos;],x),grouping=True)
+13.模板
+string模块包含一个通用的Template类，具有适用于最终用户的简化语法。允许用户在不更改应用逻辑的情况下定制自己的应用。
+上述格式化操作是通过占位符实现的，占位符由$加上合法的Python标识符构成。一旦使用花括号将占位符括起来，就可以在后面直接跟上更多的字母和数字而无需空格分割。$$将被转义成单个字符$
+    from string import Template
+    t = Template(&apos;${village}folkk send $$110 to $cause&apos;)
+    t.substitute(village=&apos;Nottingham&apos;,cause=&apos;the dicth fund&apos;)
+如果在字典或关键字参数中未提供某个占位符的值，那么substitute()方法将抛出KeyError。对于邮件合并类型的应用，用户可提供的数据有可能是不完整的，此时使用safe_substitute()方法更加合适--如果数据丢失，它会直接将占位符原样保留
+    t = Template(&apos;Return the $item to $owner.&apos;)
+    d = dict(item=&apos;unladen swallow&apos;)
+    t.substitute(d)
+    t.safe_substitute(d)
+Template的子类可以自定义定界符。例如
+    照片浏览器的批量重命名功能
+    import time, os.path
+    photofiles = [&apos;img_1074.jpg&apos;,&apos;img_1076.jpg&apos;,&apos;img_1077.jpg&apos;]
+    class BatchRename(Template):
+        delimiter = &apos;%&apos;
+    fmt = input(&apos;Enter rename style (%d-date %n-seqnum %f-format): &apos;)
+    t = BatchRename(fmt)
+    date = time.strftime(&apos;%d%b%y&apos;)
+    for i,filename in enumerate(phototfiles):
+        base,ext = os.path.splitext&quot;(filename)
+        newname = t.substitute(d=date,n=i,f=ext)
+        print(&apos;{0} --&gt; {1}&apos;.format(filename, newname))
+13.二进制数据记录格式
+struct模块提供了pack()和unpack()函数，用于处理不定长度的二进制记录格式。Pack代码&apos;H&apos;,&apos;I&apos;分别代表了两字节和四字节无符号证书。&quot;&lt;&quot;代表他们是标准尺寸的小尾型字节序：
+    import struct
+    with open(&apos;myfile.zip&apos;,&apos;rb&apos;) as f:
+        data = f.read()
+    start = 0
+    for i in range(3):
+        start += 14
+        fields = struct.unpack(&apos;&lt;IIIHH&apos;,data[start:start+16])
+        crc32, comp_size, uncomp_size, filenamesize, extra_size = fields
+        start += 16
+        filename = data[start:start+filenamesize]
+        start += filenamesize
+        extra = data[start:start+extra+size]
+        print(filename, hex(crc32), comp_size, uncomp_size)
+        start += extra_size + comp_size
+14.多线程
+线程是一种对于非顺序依赖的多个任务进行解耦的技术。多线程可以提高应用的响应效率，当接收用户输入的同事，保持其他任务在后台运行。例如将I/O和计算应用在两个并行的线程中。
+    import threading, zipfile
+    class AsyncZip(thread.Thread):
+        def __init__(self, infile, outfile):
+            threading.Thread.__init__(self)
+            self.infile = infile
+            self.outfile = outfile
+        def run(self):
+            f = zipfile.ZipFile(self.outfile,&apos;w&apos;,zipfile.ZIP_DEFLATED)
+            f.write(self.infile)
+            f.close()
+            print(&apos;Finished background zip of:&apos;,self.infile)
+    background = AsyncZip(&apos;mydata.txt&apos;,&apos;myarchive.zip&apos;)
+    background.start()
+    print(&apos;The main program continues to run in foreground&apos;)
+    background.join()
+    print(&apos;Main program waited until background was done.&apos;)
+多线程应用面临的主要挑战是，相互协调的多个线程之间需要共享数据或其他资源。为此，threading 模块提供了多个同步操作原语，包括线程锁、事件、条件变量和信号量。
+尽管这些工具非常强大，但微小的设计错误却可以导致一些难以复现的问题。因此，实现多任务协作的首选方法是将对资源的所有请求集中到一个线程中，然后使用 queue 模块向该线程供应来自其他线程的请求。应用程序使用 Queue 对象进行线程间通信和协调，更易于设计，更易读，更可靠。
+15.日志记录
+logging模块提供功能齐全且灵活的日志记录系统。
+import logging
+logging.debug(&apos;Debugging information&apos;)
+logging.info(&apos;Informational message&apos;)
+logging.warning(&apos;Warning:config file %s not found&apos;)
+logging.error(&apos;Error occurred&apos;)
+logging.critical(&apos;Critical error -- shutting down&apos;)
+默认情况下，informational 和 debugging 消息被压制，输出会发送到标准错误流。其他输出选项包括将消息转发到电子邮件，数据报，套接字或 HTTP 服务器。新的过滤器可以根据消息优先级选择不同的路由方式：DEBUG，INFO，WARNING，ERROR，和 CRITICAL。
+日志系统可以直接从 Python 配置，也可以从用户配置文件加载，以便自定义日志记录而无需更改应用程序。
+16.弱引用
+Python 会自动进行内存管理（对大多数对象进行引用计数并使用 garbage collection 来清除循环引用）。 当某个对象的最后一个引用被移除后不久就会释放其所占用的内存。
+此方式对大多数应用来说都适用，但偶尔也必须在对象持续被其他对象所使用时跟踪它们。 不幸的是，跟踪它们将创建一个会令其永久化的引用。 weakref 模块提供的工具可以不必创建引用就能跟踪对象。 当对象不再需要时，它将自动从一个弱引用表中被移除，并为弱引用对象触发一个回调。 典型应用包括对创建开销较大的对象进行缓存:
+    import weakref, gc
+    class A:
+        def __init__(self, value):
+            self.value = value
+        def __repr__(self):
+            return str(self.value)
+    a = A(10)
+    d = weakref.WeakValueDictionary()
+    d[&apos;primary&apos;] = a
+    d[&apos;primary&apos;]
+    del a
+    gc.collect()
+    d[&apos;primary&apos;]
+17.用于操作列表的工具
+array模块提供了一种array()对象，类似于列表，但只能存储类型一致的数据且存储密集更高。
+    from array import array
+    a = array(&apos;H&apos;, [4000,10,700,20000])
+    sum(a)
+    a[1:3]
+collections模块提供了deque()对象，类似于列表，但从左端添加和弹出的速度较快，而在中间查找的速度较慢。适用于实现队列和广度优先树搜索。
+    from collections import deque
+    d = deque([&apos;task1&apos;,&apos;task2&apos;,&apos;task3&apos;])
+    d.append(&apos;task4&apos;)
+    print(&apos;Handling&apos;,d.popleft())
+    unsearched = deque([starting_node])
+    def breadth_first_search(unsearched):
+        node = unsearched.popleft()
+        for m in gen_moves(node):
+            if is_goal(m):
+                return m
+            unsearched.append(m)
+在替代的列表实现以外，标准库也提供了其他工具，例如bisect模块具有用于操作排序列表的函数：
+    import bisect
+    scores = [(100,&apos;perl&apos;),(200,&apos;tcl&apos;),(400,&apos;lua&apos;),(500,&apos;python&apos;)]
+    bisect.insort(scores, (300,&apos;ruby&apos;))
+heapq模块提供了基于常规列表来实现堆的函数。最小值的条目总是保持在位置零。这对于需要重复访问最小元素而不希望运行完整列表排序的应用来说非常有用。
+from heapq import heapify, heappop, heappush
+data = [1,3,5,6,7,9,2,4,6,8,0]
+heapify(data)
+heappush(data, -5)
+[heappop(data) for i in range(3)]
+18.十进制浮点运算
+decimal模块提供了Decimal数据类型用于十进制浮点运算。相比内置的float二进制浮点实现。该类特别适用于：
+    财务应用和其他需要精确十进制表示的用途，
+    控制精度
+    控制四舍五入以满足法律或监管要求
+    跟踪有效小数位
+    用户期望结果与手工完成的计算相匹配的应用程序
+    from decimal import *
+    round(Decimal(&apos;0.70&apos;) * Decimal(&apos;1.05&apos;), 2)
+Decimal表示的结果会保留尾部的零，并根据具有两个有效位的被乘数自动推出四个有效位。Decimal可以模拟手工运算来避免当二进制浮点数无法精确表示十进制数时会导致的问题。
+精确表示特性使得Decimal类能够执行对于二进制浮点数来说不适用的模运算和相等性检测
+    Decimal(&apos;1.00&apos;) % Decimal(&apos;.10&apos;)  # Decimal(&apos;0.00&apos;)
+    1.00 % 0.10   # 两个结果不一样  0.0999999999995
+    sum([Decimal(&apos;0.1&apos;)]*10) == Decimal(&apos;1.0&apos;)  # True
+    sum([0.1]*10) == 1.0  # False
+decimal模块提供了运算所需要的足够精度
+getcontext().prec = 36
+Decimal(1) / Decimal(7)</code></pre></li>
 <li><p>Python内建数据类型有哪些？</p>
-<pre><code>字符串(str)---不可变
-列表(list)----可变
-元组(tuple)--不可变
-字典(dict)----可变
-整型(int)----不可变
-布尔(bool)---不可变</code></pre></li>
+<pre><code>数字(number)---不可变
+字符串(str)---不可变
+元组(tuple)---不可变
+列表(list)---可变
+字典(dict)---可变
+集合(set)---可变</code></pre></li>
 <li><p>简述with方法打开处理文件帮我们做了什么？</p>
 <pre><code>f = open(&quot;./test.txt&quot;, &quot;wb&quot;)
 try:
@@ -362,8 +613,8 @@ try:
 except:
     pass
 finally:
-    f.close()</code></pre><p>打开文件在进行读写的时候可能会出现一些异常状况，如果按照常规的f.open写法，我们需要try-except-finally做异常判断，并且文件最终不管遇到什么情况，都执行finally:f.close(),而with方法就帮我们实现了finally中的f.close()</p>
-</li>
+    f.close()
+打开文件在进行读写的时候可能会出现一些异常状况，如果按照常规的f.open写法，我们需要try-except-finally做异常判断，并且文件最终不管遇到什么情况，都执行finally:f.close(),而with方法就帮我们实现了finally中的f.close()</code></pre></li>
 <li><p>列出Python中可变数据类型和不可变数据类型</p>
 <pre><code>可变： list dict set
 不可变： int str bool tuple</code></pre></li>
